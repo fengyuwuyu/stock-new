@@ -1,0 +1,39 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<form id="searchForm" method="post">
+						<div class="col-sm-3">
+							<#input id="begin" name="开始日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${begin}" />
+		                </div>
+						<div class="col-sm-3">
+							<#NameCon id="最小涨幅" name="increase" />
+		                </div>
+						<div class="col-sm-3">
+							<#SelectCon id="searchType" name="搜索类型" class="easyui-combobox" data-options="valueField:'id',textField:'text',panelHeight:'auto',editable:false, url:'${ctxPath}/searcher/searchTypes',value:-1" />
+		                </div>
+						<div class="col-sm-3">
+							<a id="btn-search" href="#" class="easyui-splitbutton"
+								iconCls="icon-search" menu="#menu-reset" plain="false">查询</a>
+							<div id="menu-reset">
+								<div id="btn-reset" iconCls="icon-reset">重置</div>
+							</div>
+		                </div>
+	                </form>
+				</div>
+			</div>
+			<div class="easyui-panel warp" data-options="border:false">
+				<form id="listForm" method="post">
+					<table id="data-list"></table>
+				</form>
+			</div>
+
+			<div id="stock-win"></div>
+		</div>
+	</div>
+</div>
+<script	src="${ctxPath}/static/js/commons/YDataGrid.js"></script>
+<script src="${ctxPath}/static/modular/stock/stockMain.js"></script>
+@}

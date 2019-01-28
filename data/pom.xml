@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ll</groupId>
+    <artifactId>privacy</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>data</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>data-stock</module>
+  </modules>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.bdtd</groupId>
+  		<artifactId>card-data-common</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+</project>
