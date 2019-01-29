@@ -1,0 +1,35 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form id="addForm" class="form-horizontal">
+
+            <input type="hidden" id="id" value="">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="symbol" name="股票代码" type="text" dataOptions="validType:'length[0, 10]'" underline="true" />
+                            <#input id="beginDate" name="开始时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" underline="true" />
+                            <#input id="endDate" name="结束时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" underline="true" />
+                            <#input id="buyPrice" name="买入价格" type="text" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="sellPriceHigh" name="最高出售价格" type="text" underline="true" />
+                            <#input id="sellPriceLow" name="最低出售价格" type="text" underline="true" />
+                            <#input id="createDate" name="创建时间" type="datetime" clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" underline="true" />
+                            <#input id="updateDate" name="更新时间" type="datetime" clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MonitorInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="MonitorInfoDlg.close()"/>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/stock/monitor/monitor_info.js"></script>
+@}

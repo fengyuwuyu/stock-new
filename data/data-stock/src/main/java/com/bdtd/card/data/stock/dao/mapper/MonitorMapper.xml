@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdtd.card.data.stock.dao.MonitorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.bdtd.card.data.stock.model.Monitor">
+        <id column="id" property="id" />
+        <result column="symbol" property="symbol" />
+        <result column="begin_date" property="beginDate" />
+        <result column="end_date" property="endDate" />
+        <result column="buy_price" property="buyPrice" />
+        <result column="sell_price_high" property="sellPriceHigh" />
+        <result column="sell_price_low" property="sellPriceLow" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, symbol, begin_date, end_date, buy_price, sell_price_high, sell_price_low, create_date, update_date
+    </sql>
+
+</mapper>
