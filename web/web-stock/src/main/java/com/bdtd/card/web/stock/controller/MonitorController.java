@@ -1,6 +1,6 @@
 package com.bdtd.card.web.stock.controller;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 import com.bdtd.card.common.web.base.BaseController;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import com.bdtd.card.common.util.MapUtil;
  * 股票监控控制器
  *
  * @author 
- * @Date 2019-01-29 17:01:10
+ * @Date 2019-01-29 22:29:28
  */
 @Controller
 @RequestMapping("/monitor")
@@ -66,6 +66,7 @@ public class MonitorController extends BaseController {
     @ResponseBody
     public Object list(String condition, Integer offset, Integer limit) {
     	QueryWrapper<Monitor> wrapper = new QueryWrapper<>();
+    	wrapper.orderByDesc(Consts.DEFAULT_SORT_FIELD);
     	IPage<Map<String, Object>> page = monitorService.pageMaps(new Page<>(offset, limit), wrapper);
 		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
     }
@@ -76,6 +77,9 @@ public class MonitorController extends BaseController {
     @RequestMapping(value = "/add")
     @ResponseBody
     public Object add(Monitor monitor) {
+    	LocalDateTime createDate = LocalDateTime.now();
+    	monitor.setCreateDate(createDate);
+    	monitor.setUpdateDate(createDate);
         monitorService.save(monitor);
         return SUCCESS_TIP;
     }
@@ -96,6 +100,8 @@ public class MonitorController extends BaseController {
     @RequestMapping(value = "/update")
     @ResponseBody
     public Object update(Monitor monitor) {
+    	LocalDateTime createDate = LocalDateTime.now();
+    	monitor.setUpdateDate(createDate);
         monitorService.updateById(monitor);
         return SUCCESS_TIP;
     }
