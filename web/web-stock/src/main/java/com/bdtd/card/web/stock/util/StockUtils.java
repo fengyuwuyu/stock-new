@@ -62,6 +62,7 @@ public class StockUtils {
 		}
 		Integer checkDay = MakeMoneyStrategy.CHECK_DAY;
 		Integer increaseDay = MakeMoneyStrategy.INCREASE_DAY;
+		Integer futureDay = MakeMoneyStrategy.futureDay;
 		Float minIncrease = MakeMoneyStrategy.MIN_INCREASE;
 		Float minTotalIncrease = MakeMoneyStrategy.INCREASE;
 		
@@ -89,7 +90,7 @@ public class StockUtils {
 			total += s.getFutureIncrease();
 		}
 		average = total / result.size();
-		return new ResultCompare(checkDay, increaseDay, minIncrease, minTotalIncrease, increaseCount, decreaseCount, average, max, min, day);
+		return new ResultCompare(checkDay, increaseDay, futureDay, minIncrease, minTotalIncrease, increaseCount, decreaseCount, average, max, min, day);
 	}
 
 	public static int getIndex(List<StockMain> stockMains, Date date) {

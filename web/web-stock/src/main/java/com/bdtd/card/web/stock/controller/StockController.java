@@ -22,9 +22,10 @@ public class StockController {
 	private StockMainServiceI stockMainServiceI;
 
 	@RequestMapping("/showChartIndex")
-	public String showChart(Model model, Date begin, String symbol) {
+	public String showChart(Model model, Date begin, String symbol, Integer type) {
 		model.addAttribute("symbol", symbol);
 		model.addAttribute("begin", begin);
+		model.addAttribute("type", type);
 		return PREFIX + "showChart.html";
 	}
 

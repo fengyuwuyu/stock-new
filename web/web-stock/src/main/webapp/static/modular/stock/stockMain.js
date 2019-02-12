@@ -12,41 +12,46 @@ YiYa.stockMain = function(){
 							{field : 'symbol',title:'股票编号',align:'center',width:80},
 							{field : 'hasIncrease',title:'过去十天增长',align:'center',width:80,sortable : true},
 							{field : 'maxIncrease',title:'最大增长',align:'center',width:80,sortable : true, hidden: true},
-							{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true},
-							{field : 'increase',title:'增长比',align:'center',width:80,sortable : true},
-							{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true},
+							{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true, hidden: false},
+							{field : 'increase',title:'增长比',align:'center',width:80,sortable : true, hidden: true},
+							{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true, hidden: true},
 							/*{field : 'open',title:'开盘价',align:'center',width:80},
 							{field : 'close',title:'收盘价',align:'center',width:80},
 							{field : 'volume',title:'成交量',align:'center',width:80},*/
 							{field : 'increases',title:'历史涨幅',align:'center',width:200},
-							{field : 'futureIncreases',title:'未来涨幅',align:'center',width:200},
+							{field : 'futureIncreases',title:'未来涨幅',align:'center',width:200, hidden: true},
 							{field : 'volumes',title:'历史成交量',align:'center',width:200, hidden: true}/*,
 							{field : 'closes',title:'历史收盘价',align:'center',width:200}*/
 						]],
 						onDblClickRow : function(index,row){
-//					var config = YiYa.stockMain.getQueryTime();
 					var begin = $('#begin').val();
-					console.log(begin)
-					window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+row.symbol+'&begin='+begin);
-//					$('#stock-win').window({
-//						title : '个股详情',
-//						width : 1200,
-//						height : 500,
-//						href : Feng.ctxPath+'view/stockChart.jsp?symbol='+row.symbol+'&begin='+begin+'&end='+end,
-//						draggable : false,
-//						minimizable : false,
-//						maximizable : false,
-//						closable : true,
-//						modal : true
-//					});
-//					$('#stock-win').window('show');
-				}
+					window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+row.symbol+'&begin='+begin + '&type=2');
+				},
+				toolbar: [{
+					id:'btn-detail',
+					text:'走势详情',
+					iconCls:'icon-edit',
+//					btnType:'detail',
+					handler: function() {
+						var rows = _box.utils.getCheckedRows();
+						if (_box.utils.checkSelectOne(rows)){
+							var begin = $('#begin').val();
+							window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+rows[0].symbol+'&begin='+begin + '&type=2');
+						}
+					}
+				}, {
+					id:'btn-detail',
+					text:'未来涨幅',
+					iconCls:'icon-edit',
+//					btnType:'detail',
+					handler: function() {
+						var rows = _box.utils.getCheckedRows();
+						if (_box.utils.checkSelectOne(rows)){
+							alert(rows[0].futureIncrease)
+						}
+					}
+				}]
 			}
-		},
-		initDateBox : function(){
-		},
-		getQueryTime : function(){
-			return {"begin" : $('#begin').datebox('getValue'),"end":$('#end').datebox('getValue')};
 		},
 		checkTime : function(){
 			var time = this.getQueryTime();

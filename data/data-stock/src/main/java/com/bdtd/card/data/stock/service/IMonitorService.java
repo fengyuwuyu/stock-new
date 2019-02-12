@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMonitorService extends IService<Monitor> {
 
+	void doMonitor();
 }

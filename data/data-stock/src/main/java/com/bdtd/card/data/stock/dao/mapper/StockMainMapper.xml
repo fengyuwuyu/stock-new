@@ -221,7 +221,12 @@
 				</if>
 				<if test="end==null">
 					day between DATE_ADD(#{begin},INTERVAL -120 day) and 
-					DATE_ADD(#{begin},INTERVAL 10 day)<!-- DATE_ADD(#{begin},INTERVAL 10 day) -->
+					<if test="type == 1">
+						#{begin}
+					</if>
+					<if test="type == 2">
+						DATE_ADD(#{begin},INTERVAL 20 day)
+					</if>
 				</if>
 			</if>
 			<if test="begin==null">

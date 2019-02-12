@@ -31,10 +31,11 @@ public class StaticticsController {
 	private static final int MAX_INSERT_SIZE = 10000;
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private int[] checkDays = {7};
-	private int[] increaseDays = {5, 6, 7};
-	private float[] minIncreases = {-5F, -4F, -3F};
-	private float[] increases = {10F, 11F, 12F, 13F};
+	private int[] checkDays = {10};
+	private int[] increaseDays = {6};
+	private int[] futureDays = {5, 10, 15, 20};
+	private float[] minIncreases = {-5F};
+	private float[] increases = {10F};
 	
 	@Autowired
 	private StockMainMapper stockMainMapper;
@@ -44,6 +45,8 @@ public class StaticticsController {
 	private ResultDetailMapper resultDetailMapper;
 	@Autowired
 	MakeMoneyStrategy makeMoneyStrategy;
+	
+	
 
 	@RequestMapping("/create")
 	@ResponseBody
@@ -71,24 +74,28 @@ public class StaticticsController {
 							continue;
 						}
 
-						List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
-						for (int l = 10; l < days.size() - 1; l++) {
-							Date date = days.get(l);
-							List<ResultDetail> result = new ArrayList<>(100);
-							for (List<StockMain> stockMains : stockMainMap.values()) {
-								int index = StockUtils.getIndex(stockMains, date);
-								if (index == -1) {
-									continue;
+						for (int k2 = 0; k2 < futureDays.length; k2++) {
+							int futureDay = futureDays[k2];
+							MakeMoneyStrategy.futureDay = futureDay;
+							List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
+							for (int l = 10; l < days.size() - 1; l++) {
+								Date date = days.get(l);
+								List<ResultDetail> result = new ArrayList<>(100);
+								for (List<StockMain> stockMains : stockMainMap.values()) {
+									int index = StockUtils.getIndex(stockMains, date);
+									if (index == -1) {
+										continue;
+									}
+									try {
+										makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+									} catch (Exception e) {
+										log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+									}
 								}
-								try {
-									makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
-								} catch (Exception e) {
-									log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+								ResultCompare compare = StockUtils.createResultCompare(result, date);
+								if (compare != null) {
+									list.add(compare);
 								}
-							}
-							ResultCompare compare = StockUtils.createResultCompare(result, date);
-							if (compare != null) {
-								list.add(compare);
 							}
 						}
 					}

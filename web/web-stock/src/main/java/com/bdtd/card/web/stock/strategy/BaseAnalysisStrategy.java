@@ -10,11 +10,11 @@ import com.bdtd.card.web.stock.util.StockUtils;
 
 public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 	
-	private int count = 20;
+	private int count = 10;
 	protected int computeDay = 10;
+	public static int futureDay = 5;
 	
 	public ResultDetail createResultDetail(StockMain curr, Float maxIncrease, int index, List<StockMain> stockMains) {
-		int futureCount = 5;
 		StringBuilder increases = new StringBuilder();
 		StringBuilder volumes = new StringBuilder();
 		StringBuilder futureIncreases = new StringBuilder();
@@ -25,7 +25,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		for (int i = tmp ; i <= index; i++) {
 			StockMain main = stockMains.get(i);
 			increases.append(main.getIncrease() + ", ");
-			volumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
+			volumes.append(CommonsUtil.formatDecimal(main.getVolume().doubleValue() / curr.getVolume().doubleValue()) + ", ");
 			closes.append(main.getClose() + ", ");
 		}
 
@@ -43,7 +43,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		float max = 0;
 		Float futureIncrease = 0F;
 		if (index != stockMains.size() - 1) {
-			int futureIndex = (index + futureCount) > stockMains.size() ? stockMains.size() : index + futureCount;
+			int futureIndex = (index + futureDay) > stockMains.size() ? stockMains.size() : index + futureDay;
 			for (int i = index + 1; i < futureIndex; i++) {
 				if (stockMains.get(i).getClose() > max) {
 					max = stockMains.get(i).getClose();

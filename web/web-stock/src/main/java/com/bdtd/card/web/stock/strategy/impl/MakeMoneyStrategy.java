@@ -15,9 +15,9 @@ import com.bdtd.card.web.stock.util.StockUtils;
 @Service
 public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 	
-	public static int CHECK_DAY = 8;
+	public static int CHECK_DAY = 10;
 	public static int INCREASE_DAY = 6;
-	public static float MIN_INCREASE = -3F;
+	public static float MIN_INCREASE = -5F;
 	public static float INCREASE = 10F;
 	
 	@Override
@@ -30,13 +30,23 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 		StockMain curr = stockMains.get(index);
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		
-		// 1.
+		// 1. 计算前十天最大涨幅，若小于INCREASE则返回
 		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - CHECK_DAY, index);
 		if (entity.getMaxIncrease() < INCREASE) {
 			return ;
 		}
 		
-		// 2.
+		// 2.选择处于顶点且距当天跌幅小于百分之五
+		if (entity.getMaxIndex() != index) {
+			float min = Float.MAX_VALUE;
+			for (int i = entity.getMaxIndex() + 1; i < index; i++) {
+				min = stockMains.get(i).getClose() < min ? stockMains.get(i).getClose() : min;
+			}
+			if ((min - entity.getMax()) * 100 / entity.getMax() < MIN_INCREASE) {
+				return ;
+			}
+		}
+		
 		int increaseCount = 0;
 		for (int i = index - CHECK_DAY + 1; i <= index; i++) {
 			if (stockMains.get(i).getIncrease() > 0) {

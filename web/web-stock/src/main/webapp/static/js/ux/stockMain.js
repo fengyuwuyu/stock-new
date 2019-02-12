@@ -1,4 +1,4 @@
-$package("YiYa.stockMain");
+//$package("YiYa.stockMain");
 
 YiYa.stockMain = function(){
 	_box = null;

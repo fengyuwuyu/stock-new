@@ -20,7 +20,9 @@ public class MaxIncreaseStrategy extends BaseAnalysisStrategy {
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		if (maxIncrease >= limit) {
 			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
-			result.add(analysisResult);
+			if (analysisResult.getFutureIncrease() > limit) {
+				result.add(analysisResult);
+			}
 		}
 	}
 

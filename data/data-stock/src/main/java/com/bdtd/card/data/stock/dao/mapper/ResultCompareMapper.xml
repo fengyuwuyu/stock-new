@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="check_day" property="checkDay" jdbcType="INTEGER" />
     <result column="increase_day" property="increaseDay" jdbcType="INTEGER" />
+    <result column="future_day" property="futureDay" jdbcType="INTEGER" />
     <result column="min_increase" property="minIncrease" jdbcType="REAL" />
     <result column="min_total_increase" property="minTotalIncrease" jdbcType="REAL" />
     <result column="increase_count" property="increaseCount" jdbcType="INTEGER" />
@@ -15,17 +16,17 @@
 	<result column="day" property="day" jdbcType="DATE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, check_day, increase_day, min_increase, min_total_increase, increase_count, decrease_count, 
+    id, check_day, increase_day, future_day, min_increase, min_total_increase, increase_count, decrease_count, 
     average, max, min, `day`
   </sql>
   
   <insert id="insertList" parameterType="java.util.List">
-  	insert into result_compare (check_day, increase_day, 
+  	insert into result_compare (check_day, increase_day, future_day, 
       min_increase, min_total_increase, increase_count, 
       decrease_count, average, max, 
       min, `day`)
     values <foreach collection="list" item="item" separator=",">
-    	(#{item.checkDay,jdbcType=INTEGER}, #{item.increaseDay,jdbcType=INTEGER}, 
+    	(#{item.checkDay,jdbcType=INTEGER}, #{item.increaseDay,jdbcType=INTEGER}, #{item.futureDay,jdbcType=INTEGER}, 
       #{item.minIncrease,jdbcType=REAL}, #{item.minTotalIncrease,jdbcType=REAL}, #{item.increaseCount,jdbcType=INTEGER}, 
       #{item.decreaseCount,jdbcType=INTEGER}, #{item.average,jdbcType=REAL}, #{item.max,jdbcType=REAL}, 
       #{item.min,jdbcType=REAL}, #{item.day}) 
@@ -51,11 +52,11 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into result_compare (check_day, increase_day, 
+    insert into result_compare (check_day, increase_day, future_day,
       min_increase, min_total_increase, increase_count, 
       decrease_count, average, max, 
       min, `day`)
-    values (#{checkDay,jdbcType=INTEGER}, #{increaseDay,jdbcType=INTEGER}, 
+    values (#{checkDay,jdbcType=INTEGER}, #{increaseDay,jdbcType=INTEGER}, #{item.futureDay,jdbcType=INTEGER}, 
       #{minIncrease,jdbcType=REAL}, #{minTotalIncrease,jdbcType=REAL}, #{increaseCount,jdbcType=INTEGER}, 
       #{decreaseCount,jdbcType=INTEGER}, #{average,jdbcType=REAL}, #{max,jdbcType=REAL}, 
       #{min,jdbcType=REAL}, #{day})
@@ -71,6 +72,9 @@
       </if>
       <if test="increaseDay != null" >
         increase_day,
+      </if>
+      <if test="futureDay != null" >
+        future_day,
       </if>
       <if test="minIncrease != null" >
         min_increase,
@@ -103,6 +107,9 @@
       </if>
       <if test="increaseDay != null" >
         #{increaseDay,jdbcType=INTEGER},
+      </if>
+      <if test="futureDay != null" >
+        #{futureDay,jdbcType=INTEGER},
       </if>
       <if test="minIncrease != null" >
         #{minIncrease,jdbcType=REAL},

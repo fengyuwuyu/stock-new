@@ -3,35 +3,38 @@ package com.bdtd.card.data.stock.model;
 import java.util.Date;
 
 public class ResultCompare {
-    private Long id;
+	private Long id;
 
-    private Integer checkDay;
+	private Integer checkDay;
 
-    private Integer increaseDay;
+	private Integer increaseDay;
+	private Integer futureDay;
 
-    private Float minIncrease;
+	private Float minIncrease;
 
-    private Float minTotalIncrease;
+	private Float minTotalIncrease;
 
-    private Integer increaseCount;
+	private Integer increaseCount;
 
-    private Integer decreaseCount;
+	private Integer decreaseCount;
 
-    private Float average;
+	private Float average;
 
-    private Float max;
+	private Float max;
 
-    private Float min;
+	private Float min;
 
-    private Date day;
-    
-    public ResultCompare() {
+	private Date day;
+
+	public ResultCompare() {
 	}
 
-	public ResultCompare(Integer checkDay, Integer increaseDay, Float minIncrease, Float minTotalIncrease,
-			Integer increaseCount, Integer decreaseCount, Float average, Float max, Float min, Date day) {
+	public ResultCompare(Integer checkDay, Integer increaseDay, Integer futureDay, Float minIncrease,
+			Float minTotalIncrease, Integer increaseCount, Integer decreaseCount, Float average, Float max, Float min,
+			Date day) {
 		this.checkDay = checkDay;
 		this.increaseDay = increaseDay;
+		this.futureDay = futureDay;
 		this.minIncrease = minIncrease;
 		this.minTotalIncrease = minTotalIncrease;
 		this.increaseCount = increaseCount;
@@ -42,92 +45,100 @@ public class ResultCompare {
 		this.day = day;
 	}
 
+	public Integer getFutureDay() {
+		return futureDay;
+	}
+
+	public void setFutureDay(Integer futureDay) {
+		this.futureDay = futureDay;
+	}
+
 	public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Integer getCheckDay() {
-        return checkDay;
-    }
+	public Integer getCheckDay() {
+		return checkDay;
+	}
 
-    public void setCheckDay(Integer checkDay) {
-        this.checkDay = checkDay;
-    }
+	public void setCheckDay(Integer checkDay) {
+		this.checkDay = checkDay;
+	}
 
-    public Integer getIncreaseDay() {
-        return increaseDay;
-    }
+	public Integer getIncreaseDay() {
+		return increaseDay;
+	}
 
-    public void setIncreaseDay(Integer increaseDay) {
-        this.increaseDay = increaseDay;
-    }
+	public void setIncreaseDay(Integer increaseDay) {
+		this.increaseDay = increaseDay;
+	}
 
-    public Float getMinIncrease() {
-        return minIncrease;
-    }
+	public Float getMinIncrease() {
+		return minIncrease;
+	}
 
-    public void setMinIncrease(Float minIncrease) {
-        this.minIncrease = minIncrease;
-    }
+	public void setMinIncrease(Float minIncrease) {
+		this.minIncrease = minIncrease;
+	}
 
-    public Float getMinTotalIncrease() {
-        return minTotalIncrease;
-    }
+	public Float getMinTotalIncrease() {
+		return minTotalIncrease;
+	}
 
-    public void setMinTotalIncrease(Float minTotalIncrease) {
-        this.minTotalIncrease = minTotalIncrease;
-    }
+	public void setMinTotalIncrease(Float minTotalIncrease) {
+		this.minTotalIncrease = minTotalIncrease;
+	}
 
-    public Integer getIncreaseCount() {
-        return increaseCount;
-    }
+	public Integer getIncreaseCount() {
+		return increaseCount;
+	}
 
-    public void setIncreaseCount(Integer increaseCount) {
-        this.increaseCount = increaseCount;
-    }
+	public void setIncreaseCount(Integer increaseCount) {
+		this.increaseCount = increaseCount;
+	}
 
-    public Integer getDecreaseCount() {
-        return decreaseCount;
-    }
+	public Integer getDecreaseCount() {
+		return decreaseCount;
+	}
 
-    public void setDecreaseCount(Integer decreaseCount) {
-        this.decreaseCount = decreaseCount;
-    }
+	public void setDecreaseCount(Integer decreaseCount) {
+		this.decreaseCount = decreaseCount;
+	}
 
-    public Float getAverage() {
-        return average;
-    }
+	public Float getAverage() {
+		return average;
+	}
 
-    public void setAverage(Float average) {
-        this.average = average;
-    }
+	public void setAverage(Float average) {
+		this.average = average;
+	}
 
-    public Float getMax() {
-        return max;
-    }
+	public Float getMax() {
+		return max;
+	}
 
-    public void setMax(Float max) {
-        this.max = max;
-    }
+	public void setMax(Float max) {
+		this.max = max;
+	}
 
-    public Float getMin() {
-        return min;
-    }
+	public Float getMin() {
+		return min;
+	}
 
-    public void setMin(Float min) {
-        this.min = min;
-    }
+	public void setMin(Float min) {
+		this.min = min;
+	}
 
-    public Date getDay() {
-        return day;
-    }
+	public Date getDay() {
+		return day;
+	}
 
-    public void setDay(Date day) {
-        this.day = day;
+	public void setDay(Date day) {
+		this.day = day;
 	}
 
 	@Override

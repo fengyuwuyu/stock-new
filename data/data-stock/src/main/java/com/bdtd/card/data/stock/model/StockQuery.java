@@ -12,17 +12,17 @@ public class StockQuery extends PageModel {
 	private Date end;
 	private Boolean down = true;
 	private String symbol;
-	private int type;
+	private Integer type;
 	private float minIncrease;
 	private int minVolume;
 	private int remainDays;
 	private int order;
 
-	public int getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
