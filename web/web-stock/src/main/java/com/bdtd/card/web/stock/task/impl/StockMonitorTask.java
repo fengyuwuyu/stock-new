@@ -2,6 +2,8 @@ package com.bdtd.card.web.stock.task.impl;
 
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import com.bdtd.card.web.stock.task.ITask;
 @Service
 public class StockMonitorTask implements ITask {
 	
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private IMonitorService monitorService;
 	@Autowired
@@ -24,13 +28,13 @@ public class StockMonitorTask implements ITask {
 	public void run() {
 		if (CommonsUtil.checkTime(this.holidayMapper)) {
 			monitorService.doMonitor();
-			this.start();
 		}
 	}
 
 	@Override
 	public void start() {
-		ThreadPool.execute(this, delay , TimeUnit.SECONDS);
+		log.info("StockMonitorTask启动了，每{}秒执行一次！", delay);
+		ThreadPool.execute(this, 0L, delay , TimeUnit.SECONDS);
 	}
 
 }

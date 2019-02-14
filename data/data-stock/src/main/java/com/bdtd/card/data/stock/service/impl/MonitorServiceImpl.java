@@ -86,7 +86,13 @@ public class MonitorServiceImpl extends ServiceImpl<MonitorMapper, Monitor> impl
 						long buyVolume4 = Long.valueOf(contents[16]);
 						float buy5 = Float.valueOf(contents[19]);
 						long buyVolume5 = Long.valueOf(contents[18]);
-						
+						long totalBuyVolume = 0L;
+						totalBuyVolume += buyVolume1;
+						totalBuyVolume += buyVolume2;
+						totalBuyVolume += buyVolume3;
+						totalBuyVolume += buyVolume4;
+						totalBuyVolume += buyVolume5;
+
 						long sellVolume1 = Long.valueOf(contents[20]);
 						float sell1 = Float.valueOf(contents[21]);
 						long sellVolume2 = Long.valueOf(contents[22]);
@@ -97,6 +103,12 @@ public class MonitorServiceImpl extends ServiceImpl<MonitorMapper, Monitor> impl
 						float sell4 = Float.valueOf(contents[27]);
 						long sellVolume5 = Long.valueOf(contents[28]);
 						float sell5 = Float.valueOf(contents[29]);
+						long totalSellVolume = 0L;
+						totalSellVolume += sellVolume1;
+						totalSellVolume += sellVolume2;
+						totalSellVolume += sellVolume3;
+						totalSellVolume += sellVolume4;
+						totalSellVolume += sellVolume5;
 						
 						MonitorType monitorType = MonitorType.typeOf(monitor.getMonitorType());
 						switch (monitorType) {
