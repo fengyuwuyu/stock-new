@@ -17,3 +17,8 @@ spring:
       enabled: true
       additional-paths: src/main/java
       exclude: static/**,WEB-INF/view/**
+bdtd:
+  mail:
+    from-mail: personal.llei@aliyun.com
+    from-mail-password: ASDll7582596$
+    
