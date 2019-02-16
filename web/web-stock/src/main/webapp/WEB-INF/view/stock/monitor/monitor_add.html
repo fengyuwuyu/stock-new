@@ -7,15 +7,16 @@
 
             <div class="row">
                 <div class="col-sm-6 b-r">
-                            <#input id="symbol" name="股票代码" type="text" dataOptions="validType:'length[0, 10]'" underline="true" />
-                            <#input id="beginDate" name="开始时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" underline="true" />
-                            <#input id="endDate" name="结束时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                            <#input id="symbol" name="股票代码" type="text" dataOptions="required:true, validType:'length[1, 10]'" underline="true" />
+                            <#input id="beginDate" name="开始时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" dataOptions="required:true" underline="true" />
+                            <#input id="endDate" name="结束时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" dataOptions="required:true" underline="true" />
+                            <#input id="buyPrice" name="买入价格" type="text" dataOptions="required:true" />
                 </div>
 
                 <div class="col-sm-6">
-                            <#input id="buyPrice" name="买入价格" type="text" underline="true" />
-                            <#input id="sellPriceHigh" name="最高出售价格" type="text" underline="true" />
-                            <#input id="sellPriceLow" name="最低出售价格" type="text" underline="true" />
+                            <#input id="sellPriceHigh" name="最高出售价格" type="text" dataOptions="required:true" underline="true" />
+                            <#input id="sellPriceLow" name="最低出售价格" type="text" dataOptions="required:true" underline="true" />
+                            <#select id="monitorType" name="监控类型" type="text" dataOptions="required:true, validType:'number'" itemList="${monitorTypeItemList}" />
                 </div>
             </div>
 

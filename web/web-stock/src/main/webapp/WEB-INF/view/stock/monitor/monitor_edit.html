@@ -7,15 +7,16 @@
 
             <div class="row">
                 <div class="col-sm-6 b-r">
-                           <#input id="symbol" name="股票代码" type="text" dataOptions="validType:'length[0, 10]'" underline="true"  value="${item.symbol}" />
-                           <#input id="beginDate" name="开始时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" underline="true"  value="${item.beginDate}" />
-                           <#input id="endDate" name="结束时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})"  value="${item.endDate}" />
+                           <#input id="symbol" name="股票代码" type="text" dataOptions="required:true, validType:'length[1, 10]'" underline="true"  value="${item.symbol}" />
+                           <#input id="beginDate" name="开始时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" dataOptions="required:true" underline="true"  value="${item.beginDate}" />
+                           <#input id="endDate" name="结束时间" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" dataOptions="required:true" underline="true"  value="${item.endDate}" />
+                            <#input id="buyPrice" name="买入价格" type="text" dataOptions="required:true"  value="${item.buyPrice}" />
                 </div>
 
                 <div class="col-sm-6">
-                            <#input id="buyPrice" name="买入价格" type="text" underline="true" value="${item.buyPrice}" />
-                            <#input id="sellPriceHigh" name="最高出售价格" type="text" underline="true"  value="${item.sellPriceHigh}" />
-                            <#input id="sellPriceLow" name="最低出售价格" type="text" underline="true"  value="${item.sellPriceLow}" />
+                            <#input id="sellPriceHigh" name="最高出售价格" type="text" dataOptions="required:true" underline="true"  value="${item.sellPriceHigh}" />
+                            <#input id="sellPriceLow" name="最低出售价格" type="text" dataOptions="required:true" underline="true"  value="${item.sellPriceLow}" />
+                            <#select id="monitorType" name="监控类型" type="text" dataOptions="required:true, validType:'number'"  itemList="${monitorTypeItemList}" value="${item.monitorType}" />
                 </div>
             </div>
 

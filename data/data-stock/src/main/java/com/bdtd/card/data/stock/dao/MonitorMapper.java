@@ -1,6 +1,9 @@
 package com.bdtd.card.data.stock.dao;
 
 import com.bdtd.card.data.stock.model.Monitor;
+
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2019-01-29
  */
 public interface MonitorMapper extends BaseMapper<Monitor> {
+
+	List<Monitor> findAll();
 
 }

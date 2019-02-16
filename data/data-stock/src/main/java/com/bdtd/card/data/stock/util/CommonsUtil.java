@@ -241,17 +241,14 @@ public class CommonsUtil {
 		}
 		int hour = now.getHours();
 		int minute = now.getMinutes();
+		
 		if (hour >= 9 && hour < 12) {
 			if (hour == 9) {
-				if (minute >= 25) {
-					return true;
-				} else {
+				if (minute < 30) {
 					return false;
 				}
 			} else if (hour == 11) {
-				if (minute <= 30) {
-					return true;
-				} else {
+				if (minute > 30) {
 					return false;
 				}
 			}
