@@ -36,6 +36,12 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 			return ;
 		}
 		
+		if (stockMains.get(index - 1).getIncrease() > 0 || stockMains.get(index - 1).getIncrease() < MIN_INCREASE || stockMains.get(index).getIncrease() < 0 || stockMains.get(index).getIncrease() < -MIN_INCREASE) {
+//			return ;
+		}
+		
+		
+		
 		// 2.选择处于顶点且距当天跌幅小于百分之五
 		if (entity.getMaxIndex() != index) {
 			float min = Float.MAX_VALUE;

@@ -8,24 +8,24 @@ YiYa.stockMain = function(){
 				url : Feng.ctxPath +'searcher/findIncreaseTopn',
 				idField : 'symbol',
 				columns:[[
-							{field:'ck',checkbox:true},
-							{field : 'symbol',title:'股票编号',align:'center',width:80},
-							{field : 'hasIncrease',title:'过去十天增长',align:'center',width:80,sortable : true},
-							{field : 'maxIncrease',title:'最大增长',align:'center',width:80,sortable : true, hidden: true},
-							{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true, hidden: false},
-							{field : 'increase',title:'增长比',align:'center',width:80,sortable : true, hidden: true},
-							{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true, hidden: true},
-							/*{field : 'open',title:'开盘价',align:'center',width:80},
-							{field : 'close',title:'收盘价',align:'center',width:80},
-							{field : 'volume',title:'成交量',align:'center',width:80},*/
-							{field : 'increases',title:'历史涨幅',align:'center',width:200},
-							{field : 'futureIncreases',title:'未来涨幅',align:'center',width:200, hidden: true},
-							{field : 'volumes',title:'历史成交量',align:'center',width:200, hidden: true}/*,
-							{field : 'closes',title:'历史收盘价',align:'center',width:200}*/
-						]],
-						onDblClickRow : function(index,row){
+					{field:'ck',checkbox:true},
+					{field : 'symbol',title:'股票编号',align:'center',width:80},
+					{field : 'hasIncrease',title:'过去十天增长',align:'center',width:80,sortable : true},
+					{field : 'maxIncrease',title:'最大增长',align:'center',width:80,sortable : true, hidden: true},
+					{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true, hidden: false},
+					{field : 'increase',title:'增长比',align:'center',width:80,sortable : true, hidden: true},
+					{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true, hidden: true},
+					/*{field : 'open',title:'开盘价',align:'center',width:80},
+					{field : 'close',title:'收盘价',align:'center',width:80},
+					{field : 'volume',title:'成交量',align:'center',width:80},*/
+					{field : 'increases',title:'历史涨幅',align:'center',width:200},
+					{field : 'futureIncreases',title:'未来涨幅',align:'center',width:200, hidden: true},
+					{field : 'volumes',title:'历史成交量',align:'center',width:200, hidden: true}/*,
+					{field : 'closes',title:'历史收盘价',align:'center',width:200}*/
+				]],
+				onDblClickRow : function(index,row){
 					var begin = $('#begin').val();
-					window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+row.symbol+'&begin='+begin + '&type=2');
+					window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+row.symbol+'&begin='+begin + '&type=1');
 				},
 				toolbar: [{
 					id:'btn-detail',
