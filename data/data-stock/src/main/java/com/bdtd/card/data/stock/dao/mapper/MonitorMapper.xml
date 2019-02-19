@@ -12,21 +12,22 @@
         <result column="sell_price_high" property="sellPriceHigh" />
         <result column="sell_price_low" property="sellPriceLow" />
         <result column="monitor_type" property="monitorType" />
+        <result column="status" property="status" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, symbol, begin_date, end_date, buy_price, sell_price_high, sell_price_low, monitor_type, create_date, update_date
+        id, symbol, begin_date beginDate, end_date endDate, buy_price buyPrice, sell_price_high sellPriceHigh, sell_price_low sellPriceLow, monitorType, status, create_date createDate, update_date updateDate
     </sql>
     
     <sql id="Base_Column_List_Prefix">
-        a.id, a.symbol, a.begin_date, a.end_date, a.buy_price, a.sell_price_high, a.sell_price_low, a.monitor_type, a.create_date, a.update_date
+        a.id, a.symbol, a.begin_date beginDate, a.end_date endDate, a.buy_price buyPrice, a.sell_price_high sellPriceHigh, a.sell_price_low sellPriceLow, a.monitorType, a.status, a.create_date createDate, a.update_date updateDate
     </sql>
     
     <select id="findAll" resultType="com.bdtd.card.data.stock.model.Monitor">
     	select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) type from stock_monitor a 
-    	left join stock b on a.symbol=b.symbol
+    	left join stock b on a.symbol=b.symbol where a.status = 1
     </select>
 
 </mapper>

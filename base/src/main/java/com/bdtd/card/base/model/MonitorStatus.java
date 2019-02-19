@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum MonitorType {
+public enum MonitorStatus {
 
-	BUY(1, ""),
-	SELL(2, ""),
+	CREATED(1, "新增"),
+	NOTIFIED(2, "已通知"),
+	DELETED(3, "已删除"),
 	;
 	
 	private int type;
 	private String desc;
-	private MonitorType(int type, String desc) {
+	private MonitorStatus(int type, String desc) {
 		this.type = type;
 		this.desc = desc;
 	}
@@ -24,11 +25,11 @@ public enum MonitorType {
 		return desc;
 	}
 	
-	private static final Map<Integer, MonitorType> CACHE = new HashMap<>(MonitorType.values().length);
-	private static final List<Map<String, Object>> ITEM_LIST = new ArrayList<>(MonitorType.values().length);
+	private static final Map<Integer, MonitorStatus> CACHE = new HashMap<>(MonitorStatus.values().length);
+	private static final List<Map<String, Object>> ITEM_LIST = new ArrayList<>(MonitorStatus.values().length);
 	
 	static {
-		for (MonitorType type : MonitorType.values()) {
+		for (MonitorStatus type : MonitorStatus.values()) {
 			CACHE.put(type.getType(), type);
 			Map<String, Object> map = new HashMap<>(2);
 			map.put("id", type.getType());
@@ -39,7 +40,7 @@ public enum MonitorType {
 		
 	}
 	
-	public static MonitorType typeOf(int type) {
+	public static MonitorStatus typeOf(int type) {
 		return CACHE.get(type);
 	}
 	

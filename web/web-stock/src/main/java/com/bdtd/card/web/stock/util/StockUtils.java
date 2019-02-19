@@ -19,6 +19,7 @@ public class StockUtils {
 	 * @return
 	 */
 	public static StockMiddleEntity findMaxIncrease(List<StockMain> stockMains, int begin, int end) {
+		begin = begin < 0 ? 0 : begin;
 		int minIndex = 0;
 		int maxIndex = 0;
 		float min = Float.MAX_VALUE;

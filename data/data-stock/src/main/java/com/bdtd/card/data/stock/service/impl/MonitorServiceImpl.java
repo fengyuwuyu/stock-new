@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bdtd.card.base.consts.Consts;
+import com.bdtd.card.base.model.MonitorStatus;
 import com.bdtd.card.base.model.MonitorType;
 import com.bdtd.card.common.util.HttpUtils;
 import com.bdtd.card.common.util.StringUtil;
@@ -128,14 +130,25 @@ public class MonitorServiceImpl extends ServiceImpl<MonitorMapper, Monitor> impl
 						}
 					}
 				} catch (Exception e) {
-					log.warn(str);
+					log.warn(str, e);
 				}
 			}
 		}
 		
-		String message = String.format("买入：%s; 卖出：%s", buyList, sellList);
-		log.info(message);
-		SendMail.sendDefault(message);
+		if (buyList.size() > 0 || sellList.size() > 0) {
+			String message = String.format("买入：%s; 卖出：%s", buyList, sellList);
+			log.info(message);
+			SendMail.sendDefault(message);
+			
+			List<String> symbols = new ArrayList<>(buyList.size() + sellList.size());
+			symbols.addAll(buyList);
+			symbols.addAll(sellList.stream().map(MonitorNotify::getSymbol).collect(Collectors.toList()));
+			Monitor entity = new Monitor();
+			entity.setStatus(MonitorStatus.NOTIFIED.getType());
+			QueryWrapper<Monitor> updateWrapper = new QueryWrapper<>();
+			updateWrapper.in("symbol", symbols);
+			this.baseMapper.update(entity , updateWrapper);
+		}
 	}
 	
 	

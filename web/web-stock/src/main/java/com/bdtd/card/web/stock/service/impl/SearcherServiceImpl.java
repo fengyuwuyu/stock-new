@@ -18,6 +18,7 @@ import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.web.stock.model.SearchTypeEnum;
 import com.bdtd.card.web.stock.service.SearcherServiceI;
 import com.bdtd.card.web.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
+import com.bdtd.card.web.stock.strategy.impl.HistoryIncreaseStrategy;
 import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
 import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy2;
 import com.bdtd.card.web.stock.strategy.impl.MaxIncreaseStrategy;
@@ -48,6 +49,8 @@ public class SearcherServiceImpl implements SearcherServiceI {
 	MakeMoneyStrategy makeMoneyStrategy;
 	@Autowired
 	MakeMoneyStrategy2 makeMoneyStrategy2;
+	@Autowired
+	private HistoryIncreaseStrategy historyIncreaseStrategy;
 
 	@Override
 	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
@@ -114,6 +117,9 @@ public class SearcherServiceImpl implements SearcherServiceI {
 					break;
 				case MAKE_MONEY1:
 					makeMoneyStrategy2.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case HISTORY_INCREASE:
+					historyIncreaseStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 					break;
 				default:
 					break;
