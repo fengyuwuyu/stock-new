@@ -13,7 +13,7 @@ import com.bdtd.card.web.stock.strategy.BaseAnalysisStrategy;
 import com.bdtd.card.web.stock.util.StockUtils;
 
 @Service
-public class MakeMoneyStrategy extends BaseAnalysisStrategy {
+public class HistoryIncreaseStrategy extends BaseAnalysisStrategy {
 	
 	public static int CHECK_DAY = 10;
 	public static int INCREASE_DAY = 6;
@@ -31,7 +31,7 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		
 		// 1. 计算前十天最大涨幅，若小于INCREASE则返回
-		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - CHECK_DAY, index);
+		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - 25, index);
 		if (entity.getMaxIncrease() < INCREASE) {
 			return ;
 		}

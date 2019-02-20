@@ -76,6 +76,7 @@ public class Monitor extends Model<Monitor> {
 
 	@TableField("monitor_type")
 	private Integer monitorType;
+	private Integer status;
 
 	@TableField(exist = false)
 	private Integer type;
@@ -86,6 +87,14 @@ public class Monitor extends Model<Monitor> {
 
 	public void setMonitorType(Integer monitorType) {
 		this.monitorType = monitorType;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getType() {
@@ -173,6 +182,6 @@ public class Monitor extends Model<Monitor> {
 		return "Monitor [id=" + id + ", symbol=" + symbol + ", beginDate=" + beginDate + ", endDate=" + endDate
 				+ ", buyPrice=" + buyPrice + ", sellPriceHigh=" + sellPriceHigh + ", sellPriceLow=" + sellPriceLow
 				+ ", createDate=" + createDate + ", updateDate=" + updateDate + ", monitorType=" + monitorType
-				+ ", type=" + type + "]";
+				+ ", status=" + status + ", type=" + type + "]";
 	}
 }

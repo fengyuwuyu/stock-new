@@ -27,6 +27,7 @@ Monitor.initColumn = function () {
             {title: '买入价格', field: 'buyPrice', visible: true, align: 'center', valign: 'middle'},
             {title: '最高出售价格', field: 'sellPriceHigh', visible: true, align: 'center', valign: 'middle'},
             {title: '最低出售价格', field: 'sellPriceLow', visible: true, align: 'center', valign: 'middle'},
+            {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createDate', visible: true, align: 'center', valign: 'middle'},
             {title: '更新时间', field: 'updateDate', visible: true, align: 'center', valign: 'middle'}
     ];

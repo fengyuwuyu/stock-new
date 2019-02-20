@@ -70,6 +70,7 @@ public class MonitorController extends BaseController {
     /**
      * 获取股票监控列表
      */
+    @EnumEntityList(entityList={@EnumEntity(enumName="MonitorStatus", fieldName="status")})
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(String condition, Integer offset, Integer limit) {
