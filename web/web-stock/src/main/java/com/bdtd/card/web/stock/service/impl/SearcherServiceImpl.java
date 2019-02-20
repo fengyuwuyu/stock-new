@@ -26,6 +26,7 @@ import com.bdtd.card.web.stock.strategy.impl.NearlyTenDayStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialLowVolumeStrategy;
+import com.bdtd.card.web.stock.util.StockUtils;
 
 @Service
 public class SearcherServiceImpl implements SearcherServiceI {
@@ -131,6 +132,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 		if (type == SearchTypeEnum.MAKE_MONEY) {
 //			StockUtils.statistics(result);
 		}
+		result = StockUtils.sortAndLimit(result);
 		return MapUtil.createSuccessMap("rows", result, "total", result.size());
 	}
 

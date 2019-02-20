@@ -10,6 +10,20 @@ import com.bdtd.card.data.stock.model.StockMiddleEntity;
 import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
 
 public class StockUtils {
+	
+	public static List<ResultDetail> sortAndLimit(List<ResultDetail> result) {
+		result.sort((a, b) -> {
+			if (b.getHasIncrease() == a.getHasIncrease()) {
+				return 0;
+			}
+			return b.getHasIncrease() > a.getHasIncrease() ? 1 : -1;
+		});
+		if (result == null || result.size() < 100) {
+			return result;
+		}
+		return result.subList(0, 100);
+		
+	}
 
 	/**
 	 * 
