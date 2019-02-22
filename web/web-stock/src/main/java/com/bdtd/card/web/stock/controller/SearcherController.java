@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bdtd.card.common.util.MapUtil;
-import com.bdtd.card.web.stock.model.SearchTypeEnum;
+import com.bdtd.card.web.stock.model.FutureDay;
+import com.bdtd.card.web.stock.model.SearchType;
 import com.bdtd.card.web.stock.service.SearcherServiceI;
+import com.bdtd.card.web.stock.strategy.BaseAnalysisStrategy;
 
 @Controller
 @RequestMapping("/searcher")
@@ -26,6 +28,7 @@ public class SearcherController {
 	@RequestMapping("")
 	public String index(Model model) {
 		model.addAttribute("begin", new Date(System.currentTimeMillis()));
+		model.addAttribute("futureDayItemList", FutureDay.select());
 		return PREFIX + "stockMain.html";
 	}
 	
@@ -34,13 +37,15 @@ public class SearcherController {
 
 	@RequestMapping("/findIncreaseTopn")
 	@ResponseBody
-	public Map<String, Object> findIncreaseTopn(Date begin, Float limit, Integer searchType) {
+	public Map<String, Object> findIncreaseTopn(Date begin, Float limit, Integer searchType, Integer futureDay) {
 		if (begin == null) {
 			return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0);
 		}
 		begin = begin == null ? new Date(System.currentTimeMillis()) : begin;
 		limit = limit == null ? 10F : limit;
-		searchType = searchType == null ? SearchTypeEnum.MAX_INCREASE.getType() : searchType;
+		searchType = searchType == null ? SearchType.MAX_INCREASE.getType() : searchType;
+		futureDay = futureDay == null ? FutureDay.ONE_WEEK.getType() : futureDay;
+		BaseAnalysisStrategy.futureDay = futureDay;
 		return searcherServiceI.findIncreaseTopn(begin, limit, searchType);
 	}
 	
@@ -48,7 +53,7 @@ public class SearcherController {
 	@ResponseBody
 	public List<Map<String, Object>> getSearchTypes() {
 		List<Map<String, Object>> result = new ArrayList<>();
-		for (SearchTypeEnum type : SearchTypeEnum.values()) {
+		for (SearchType type : SearchType.values()) {
 			Map<String, Object> item = new HashMap<>(2);
 			item.put("id", type.getType());
 			item.put("text", type.getDesc());

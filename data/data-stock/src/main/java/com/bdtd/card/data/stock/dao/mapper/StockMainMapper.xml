@@ -27,9 +27,38 @@
 		</collection>
 	</resultMap>
 
+	<resultMap type="com.bdtd.card.data.stock.model.StockFilterBean" id="StockFilterBean">
+		<result column="symbol" property="symbol" />
+		<collection property="dayIncreases" ofType="com.bdtd.card.data.stock.model.DayIncrease"
+			javaType="java.util.List">
+			<result column="day" property="day" />
+			<result column="increase" property="increase" />
+			<result column="open" property="open" />
+			<result column="close" property="close" />
+			<result column="max" property="max" />
+			<result column="min" property="min" />
+			<result column="volume" property="volume" />
+		</collection>
+	</resultMap>
+
 	<sql id="Base_Column_List">
 		id, symbol, day, open, close, max, min, volume, increase
 	</sql>
+	
+	<resultMap type="com.bdtd.card.data.stock.model.CacheItem" id="CacheItem">
+		<result column="symbol" property="symbol" />
+		<result column="yestClose" property="yestClose" />
+		<result column="prePrice" property="prePrice" />
+		<result column="yestVol" property="yestVol" />
+		<result column="preVol" property="preVol" />
+	</resultMap>
+
+	<select id="initPrePrices" resultMap="CacheItem">
+		select symbol,close yestClose,close prePrice,volume yestVol,volume preVol
+		from stock_main where day = (select max(day) from stock_main) and
+		increase != 0
+	</select>
+	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select 'true' as QUERYID,
@@ -37,6 +66,14 @@
 		from stock_main
 		where id = #{id,jdbcType=INTEGER}
 	</select>
+
+	<select id="selectAnalyse1" resultMap="StockFilterBean"
+		parameterType="map">
+		select symbol,increase,day,close from stock_main
+		where day BETWEEN DATE_ADD(#{begin},INTERVAL -70 day) and
+		DATE_ADD(#{begin},INTERVAL (#{remainDays}*2) day) order by symbol,day
+	</select>
+	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from stock_main
 		where id = #{id,jdbcType=INTEGER}

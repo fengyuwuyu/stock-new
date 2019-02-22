@@ -15,7 +15,7 @@ import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
-import com.bdtd.card.web.stock.model.SearchTypeEnum;
+import com.bdtd.card.web.stock.model.SearchType;
 import com.bdtd.card.web.stock.service.SearcherServiceI;
 import com.bdtd.card.web.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
 import com.bdtd.card.web.stock.strategy.impl.HistoryIncreaseStrategy;
@@ -55,7 +55,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 
 	@Override
 	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
-		SearchTypeEnum type = SearchTypeEnum.valueOf(searchType);
+		SearchType type = SearchType.valueOf(searchType);
 		if (type == null) {
 			return MapUtil.createFailedMap("msg", "illegal searchType [%s]", searchType);
 		}
@@ -129,7 +129,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
 			}
 		}
-		if (type == SearchTypeEnum.MAKE_MONEY) {
+		if (type == SearchType.MAKE_MONEY) {
 //			StockUtils.statistics(result);
 		}
 		result = StockUtils.sortAndLimit(result);

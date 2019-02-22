@@ -17,7 +17,7 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 	
 	public static int CHECK_DAY = 10;
 	public static int INCREASE_DAY = 6;
-	public static float MIN_INCREASE = -5F;
+	public static float MIN_INCREASE = -8F;
 	public static float INCREASE = 10F;
 	
 	@Override
@@ -57,7 +57,7 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 		}
 		
 		if (increaseCount < INCREASE_DAY) {
-			return;
+//			return;
 		}
 		
 		ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);

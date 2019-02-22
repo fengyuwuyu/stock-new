@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.bdtd.card.data.stock.model.CacheItem;
 import com.bdtd.card.data.stock.model.StockAnalyseResult;
+import com.bdtd.card.data.stock.model.StockFilterBean;
 import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.StockMainAnalyse;
 import com.bdtd.card.data.stock.model.StockQuery;
@@ -84,4 +86,9 @@ public interface StockMainMapper {
     List<StockMain> findAll1(Date begin);
 
 	int count();
+	
+	List<StockFilterBean> selectAnalyse1(Map<String, Object> createMap);
+	
+	List<CacheItem> initPrePrices();
+	
 }

@@ -13,7 +13,7 @@ YiYa.stockMain = function(){
 					{field : 'increase',title:'增长比',align:'center',width:80,sortable : true, hidden: false},
 					{field : 'hasIncrease',title:'过去十天增长',align:'center',width:80,sortable : true},
 					{field : 'maxIncrease',title:'最大增长',align:'center',width:80,sortable : true, hidden: true},
-					{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true, hidden: true},
+					{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true, hidden: false},
 					{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true, hidden: true},
 					/*{field : 'open',title:'开盘价',align:'center',width:80},
 					{field : 'close',title:'收盘价',align:'center',width:80},
