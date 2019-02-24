@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bdtd.card.common.util.MapUtil;
+import com.bdtd.card.common.util.StringUtil;
 import com.bdtd.card.common.util.ThreadPool;
 import com.bdtd.card.data.stock.dao.HolidayMapper;
 import com.bdtd.card.data.stock.dao.StockDetailMapper;
@@ -149,9 +150,9 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	 * day, open, close, max, min, volume, increase
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> initStockEveryDay() throws Exception {
+	public Map<String, Object> initStockEveryDay(String year) throws Exception {
 		List<String> codes = this.stockDetailMapper.selectAllCode();
-		String year = CommonsUtil.formatDateToString5(new Date());
+		year = StringUtil.isNullEmpty(year) ? CommonsUtil.formatDateToString5(new Date()) : year;
 		for (String code : codes) {
 			HttpEntity entity = HttpClientUtil
 					.get("http://img1.money.126.net/data/hs/kline/day/history/" + year + "/" + code + ".json");

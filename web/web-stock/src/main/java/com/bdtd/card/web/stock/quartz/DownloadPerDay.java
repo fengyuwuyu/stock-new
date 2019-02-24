@@ -1,6 +1,7 @@
 package com.bdtd.card.web.stock.quartz;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,7 +24,7 @@ public class DownloadPerDay {
 	
 	private InitStockServiceI initStockServiceI;
 	private HolidayMapper holidayMapper;
-	private Logger log = Logger.getLogger(DownloadPerDay.class);
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	public void setHolidayMapper(HolidayMapper holidayMapper) {
@@ -38,13 +39,13 @@ public class DownloadPerDay {
 	@Scheduled(cron = "0 0 18 * * ?")
 	public void execute(){
 		log.info("开始下载股票每天综合信息");
-//		if(CommonsUtil.checkTime(holidayMapper)){
+		if(CommonsUtil.checkTime(holidayMapper)){
 			try {
-				initStockServiceI.initStockEveryDay();
+				initStockServiceI.initStockEveryDay(null);
 			} catch (Exception e) {
-				log.info(CommonsUtil.join(e.getStackTrace(), ","));
+				log.error(e.getMessage(), e);;
 			}
-//		}
+		}
 		log.info("下载股票每天综合信息结束");
 	}
 }

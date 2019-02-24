@@ -8,7 +8,7 @@ public interface InitStockServiceI {
 	Map<String,Object> initStock();
 
 	/**下载当天股票数据*/
-	Map<String, Object> initStockEveryDay() throws Exception;
+	Map<String, Object> initStockEveryDay(String year) throws Exception;
 
 	Map<String, Object> test() throws Exception;
 	

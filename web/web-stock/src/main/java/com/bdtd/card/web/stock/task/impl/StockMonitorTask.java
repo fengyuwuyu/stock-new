@@ -22,7 +22,7 @@ public class StockMonitorTask implements ITask {
 	private IMonitorService monitorService;
 	@Autowired
 	private HolidayMapper holidayMapper;
-	private long delay = 60;
+	private long delay = 60000;
 
 	@Override
 	public void run() {
