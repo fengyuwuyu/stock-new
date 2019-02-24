@@ -8,6 +8,7 @@ $(function() {
 	});
 	var symbol = $('#symbol').val();
 	var a = $('#b').val();
+	var type = $('#type').val();
 	// var b = $('#e').val();
 	// console.log(a+'---'+b)
 	// a = '2000-01-06';
@@ -18,9 +19,10 @@ $(function() {
 	// var begin = $('#bb').datebox('getValue');
 	// var end = $('#aa').datebox('getValue');
 
-	$.getJSON(urls['msUrl'] + 'stockMain/showChart.do?symbol=' + symbol
-			+ '&begin=' + a, function(result) {
+	$.getJSON('/stock/showChart?symbol=' + symbol
+			+ '&begin=' + a + '&type=' + type, function(result) {
 		var data = result.data;
+		console.log(data)
 		var ohlc = [], volume = [], dataLength = data.length,
 		// set the allowed units for data grouping
 		groupingUnits = [ [ 'week', // unit name

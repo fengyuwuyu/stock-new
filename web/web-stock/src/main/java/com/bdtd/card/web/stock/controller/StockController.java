@@ -30,7 +30,7 @@ public class StockController {
 	}
 
 	
-	@RequestMapping("showChart")
+	@RequestMapping("/showChart")
 	@ResponseBody
 	public Map<String,Object> showChart(StockQuery query){
 		return this.stockMainServiceI.showChart(query);

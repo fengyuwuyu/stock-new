@@ -33,26 +33,11 @@ public class MakeMoneyStrategy2 extends BaseAnalysisStrategy {
 		}
 		
 		// 2.
-		int increaseCount = 0;
-		for (int i = index - CHECK_DAY + 1; i <= index; i++) {
-			if (stockMains.get(i).getIncrease() > 0) {
-				increaseCount++;
-			} else if (stockMains.get(i).getIncrease() < MIN_INCREASE) {
-				return ;
-			}
-		}
 		
-		if (increaseCount < INCREASE_DAY) {
-			return;
-		}
-		
-		if (stockMains.size() > 0) {
-			if (stockMains.get(index - 1).getIncrease() <= 0 && stockMains.get(index).getIncrease() >= 5) {
-				ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
-				result.add(analysisResult);
-			} 
-		}
-		
+		if (stockMains.get(index).getIncrease() >= 9) {
+			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
+			result.add(analysisResult);
+		} 
 	}
 
 }
