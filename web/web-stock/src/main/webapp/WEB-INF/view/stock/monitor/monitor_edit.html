@@ -16,7 +16,8 @@
                 <div class="col-sm-6">
                             <#input id="sellPriceHigh" name="最高出售价格" type="text" dataOptions="required:true" underline="true"  value="${item.sellPriceHigh}" />
                             <#input id="sellPriceLow" name="最低出售价格" type="text" dataOptions="required:true" underline="true"  value="${item.sellPriceLow}" />
-                            <#select id="monitorType" name="监控类型" type="text" dataOptions="required:true, validType:'number'"  itemList="${monitorTypeItemList}" value="${item.monitorType}" />
+                            <#select id="monitorType" name="监控类型" type="text" dataOptions="required:true, validType:'number'"  itemList="${monitorTypeItemList}" value="${item.monitorType}" underline="true" />
+                            <#select id="status" name="监控状态" type="text" dataOptions="required:true, validType:'number'"  itemList="${statusItemList}" value="${item.status}" />
                 </div>
             </div>
 

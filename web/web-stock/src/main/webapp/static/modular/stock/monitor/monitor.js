@@ -20,13 +20,14 @@ Monitor.initColumn = function () {
             align: 'center',
             formatter: Feng.getTableSerialNumberFunc(Monitor.id)
         },
-            {title: '', field: 'id', visible: true, align: 'center', valign: 'middle'},
+            {title: '', field: 'id', visible: false, align: 'center', valign: 'middle'},
             {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
             {title: '开始时间', field: 'beginDate', visible: true, align: 'center', valign: 'middle'},
             {title: '结束时间', field: 'endDate', visible: true, align: 'center', valign: 'middle'},
             {title: '买入价格', field: 'buyPrice', visible: true, align: 'center', valign: 'middle'},
             {title: '最高出售价格', field: 'sellPriceHigh', visible: true, align: 'center', valign: 'middle'},
             {title: '最低出售价格', field: 'sellPriceLow', visible: true, align: 'center', valign: 'middle'},
+            {title: '状态', field: 'monitorType', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createDate', visible: true, align: 'center', valign: 'middle'},
             {title: '更新时间', field: 'updateDate', visible: true, align: 'center', valign: 'middle'}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<title>k线图</title>
+
+	<link rel="stylesheet" type="text/css" href="${ctxPath}/static/js/jquery-easyui-1.4.0/themes/icon.css" />
+</head>
+
+<body>
+	<input type="hidden" id="b" value="${begin }" />
+	<input type="hidden" id="type" value="${type }" />
+	<!-- <input  id="bb" type="hidden" class="easyui-datebox" />
+ 	<input id="aa" type="hidden" class="easyui-datebox" />  -->
+	<input type="hidden" id="symbol" value="${symbol }" />
+	<div id="container" style="width: 100%, height:100%"></div>
+
+	<script type="text/javascript" src="${ctxPath}/static/js/commons/jquery-1.11.0-min.js"></script>
+	<script type="text/javascript" src="${ctxPath}/static/js/jquery-easyui-1.4.0/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${ctxPath}/static/js/jquery-easyui-1.4.0/locale/easyui-lang-zh_CN.js"></script>	
+	 
+ 		<!-- 
+ 		<script src="https://img.hcharts.cn/highstock/highstock.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/drag-panes.js"></script>
+        <script src="https://img.hcharts.cn/highstock/indicators/indicators.js"></script>
+        <script src="https://img.hcharts.cn/highstock/indicators/volume-by-price.js"></script> 
+        
+        -->
+
+
+	<script type="text/javascript" src="${ctxPath}/static/js/commons/highstock.js"></script>
+	<!-- 
+	
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> -->
+	<script type="text/javascript" src="${ctxPath}/static/js/commons/urls.js"></script>
+	<script type="text/javascript" src="${ctxPath}/static/static/modular/stock/stockChart.js"></script>
+
+</body>
+</html>

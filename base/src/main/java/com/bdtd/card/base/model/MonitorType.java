@@ -7,8 +7,8 @@ import java.util.Map;
 
 public enum MonitorType {
 
-	BUY(1, ""),
-	SELL(2, ""),
+	BUY(1, "买入"),
+	SELL(2, "卖出"),
 	;
 	
 	private int type;

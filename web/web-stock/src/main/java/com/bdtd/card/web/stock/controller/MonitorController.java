@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bdtd.card.base.model.MonitorStatus;
 import com.bdtd.card.common.consts.Consts;
 import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.common.web.annotation.EnumEntity;
@@ -50,7 +51,7 @@ public class MonitorController extends BaseController {
     /**
      * 跳转到添加股票监控
      */
-    @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType")})
+    @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType"), @EnumEntity(fieldName="status", enumName="MonitorStatus")})
     @RequestMapping("/monitor_add")
     public String monitorAdd(Model model) {
         return PREFIX + "monitor_add.html";
@@ -59,7 +60,7 @@ public class MonitorController extends BaseController {
     /**
      * 跳转到修改股票监控
      */
-    @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType")})
+    @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType"), @EnumEntity(fieldName="status", enumName="MonitorStatus")})
     @RequestMapping("/monitor_update/{monitorId}")
     public String monitorUpdate(@PathVariable Integer monitorId, Model model) {
         Monitor monitor = monitorService.getById(monitorId);
@@ -70,7 +71,7 @@ public class MonitorController extends BaseController {
     /**
      * 获取股票监控列表
      */
-    @EnumEntityList(entityList={@EnumEntity(enumName="MonitorStatus", fieldName="status")})
+    @EnumEntityList(entityList={@EnumEntity(enumName="MonitorStatus", fieldName="status"), @EnumEntity(enumName="MonitorType", fieldName="monitorType")})
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(String condition, Integer offset, Integer limit) {
@@ -89,7 +90,6 @@ public class MonitorController extends BaseController {
     	LocalDateTime createDate = LocalDateTime.now();
     	monitor.setCreateDate(createDate);
     	monitor.setUpdateDate(createDate);
-    	
     	QueryWrapper<Monitor> queryWrapper = new QueryWrapper<>();
     	queryWrapper.eq("symbol", monitor.getSymbol());
 		if (this.monitorService.count(queryWrapper ) > 0) {

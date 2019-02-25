@@ -36,7 +36,7 @@ public class DownloadPerDay {
 		this.initStockServiceI = initStockServiceI;
 	}
 	
-	@Scheduled(cron = "0 0 18 * * ?")
+	@Scheduled(cron = "0 0 16 * * ?")
 	public void execute(){
 		log.info("开始下载股票每天综合信息");
 		if(CommonsUtil.checkTime(holidayMapper)){
