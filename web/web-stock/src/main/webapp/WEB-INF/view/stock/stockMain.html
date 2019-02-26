@@ -5,6 +5,7 @@
 			<div class="ibox-content">
 				<div class="row row-lg">
 					<form id="searchForm" method="post">
+						<input type="hidden" id="queryType" value="${queryType}" />
 						<div class="col-sm-3">
 							<#input id="begin" name="开始日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${begin}" />
 		                </div>

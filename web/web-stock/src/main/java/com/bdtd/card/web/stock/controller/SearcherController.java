@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,10 +26,11 @@ public class SearcherController {
 	
 	private static final String PREFIX = "/stock/";
 	
-	@RequestMapping("")
-	public String index(Model model) {
+	@RequestMapping("/{queryType}")
+	public String index(Model model, @PathVariable Integer queryType) {
 		model.addAttribute("begin", new Date(System.currentTimeMillis()));
 		model.addAttribute("futureDayItemList", FutureDay.select());
+		model.addAttribute("queryType", queryType);
 		return PREFIX + "stockMain.html";
 	}
 	
