@@ -39,16 +39,17 @@ public class SearcherController {
 
 	@RequestMapping("/findIncreaseTopn")
 	@ResponseBody
-	public Map<String, Object> findIncreaseTopn(Date begin, Float limit, Integer searchType, Integer futureDay) {
+	public Map<String, Object> findIncreaseTopn(Date begin, Float limit, Float maxIncrease, Integer searchType, Integer futureDay) {
 		if (begin == null) {
 			return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0);
 		}
 		begin = begin == null ? new Date(System.currentTimeMillis()) : begin;
-		limit = limit == null ? 10F : limit;
+		limit = limit == null ? BaseAnalysisStrategy.INCREASE : limit;
+		maxIncrease = maxIncrease == null ? Float.MAX_VALUE : maxIncrease;
 		searchType = searchType == null ? SearchType.MAX_INCREASE.getType() : searchType;
 		futureDay = futureDay == null ? FutureDay.ONE_WEEK.getType() : futureDay;
 		BaseAnalysisStrategy.futureDay = futureDay;
-		return searcherServiceI.findIncreaseTopn(begin, limit, searchType);
+		return searcherServiceI.findIncreaseTopn(begin, limit, maxIncrease, searchType);
 	}
 	
 	@RequestMapping("/searchTypes")

@@ -6,16 +6,22 @@
 				<div class="row row-lg">
 					<form id="searchForm" method="post">
 						<input type="hidden" id="queryType" value="${queryType}" />
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<#input id="begin" name="开始日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${begin}" />
 		                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<#SelectCon id="futureDay" name="未来天数" class="easyui-combobox" data-options="panelHeight:'auto',editable:false,value:5" itemList="${futureDayItemList}" />
 		                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
+							<#input id="limit" name="最小涨幅" />
+		                </div>
+						<div class="col-sm-2">
+							<#input id="maxIncrease" name="最大涨幅" />
+		                </div>
+						<div class="col-sm-2">
 							<#SelectCon id="searchType" name="搜索类型" class="easyui-combobox" data-options="valueField:'id',textField:'text',panelHeight:'auto',editable:false, url:'${ctxPath}/searcher/searchTypes',value:-1" />
 		                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<a id="btn-search" href="#" class="easyui-splitbutton"
 								iconCls="icon-search" menu="#menu-reset" plain="false">查询</a>
 							<div id="menu-reset">

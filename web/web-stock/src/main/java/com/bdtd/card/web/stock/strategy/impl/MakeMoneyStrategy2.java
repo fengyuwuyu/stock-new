@@ -13,13 +13,7 @@ import com.bdtd.card.web.stock.strategy.BaseAnalysisStrategy;
 @Service
 public class MakeMoneyStrategy2 extends BaseAnalysisStrategy {
 	
-	public static int CHECK_DAY = 8;
-	public static int INCREASE_DAY = 6;
-	public static float MIN_INCREASE = -3F;
-	public static float INCREASE = 10F;
-	
 	public static float CURR_DAY_INCREASE_MIN = 9.9F;
-	
 	
 	/**
 	 * 寻找当天涨幅大于9.9

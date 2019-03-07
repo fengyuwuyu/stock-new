@@ -474,4 +474,8 @@
   <select id="count" resultType="Integer">
   	select count(distinct symbol) from stock_main
   </select>
+  
+  <select id="findByQuery" resultMap="BaseResultMap" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery">
+  	select * from stock_main where `day` between #{begin} and #{end} order by `day`
+  </select>
 </mapper>

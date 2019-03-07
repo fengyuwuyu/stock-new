@@ -2,6 +2,7 @@ package com.bdtd.card.web.stock.util;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.bdtd.card.data.stock.model.ResultCompare;
 import com.bdtd.card.data.stock.model.ResultDetail;
@@ -11,7 +12,8 @@ import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
 
 public class StockUtils {
 	
-	public static List<ResultDetail> sortAndLimit(List<ResultDetail> result) {
+	public static List<ResultDetail> sortAndLimit(List<ResultDetail> result, float limit, float maxIncrease) {
+		result = result.stream().filter((item) -> {return item.getHasIncrease() <= maxIncrease;}).collect(Collectors.toList());
 		result.sort((a, b) -> {
 			if (b.getHasIncrease() == a.getHasIncrease()) {
 				return 0;
@@ -34,6 +36,7 @@ public class StockUtils {
 	 */
 	public static StockMiddleEntity findMaxIncrease(List<StockMain> stockMains, int begin, int end) {
 		begin = begin < 0 ? 0 : begin;
+		end = end > stockMains.size() ? stockMains.size() - 1 : end;
 		int minIndex = 0;
 		int maxIndex = 0;
 		float min = Float.MAX_VALUE;
@@ -54,7 +57,7 @@ public class StockUtils {
 		
 		if (minIndex > maxIndex) {
 			max = Float.MIN_VALUE;
-			for (int i = minIndex; i < end; i++) {
+			for (int i = minIndex; i <= end; i++) {
 				close = stockMains.get(i).getClose();
 				if (close > max) {
 					max = close;

@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface SearcherServiceI {
 
-	Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType);
+	Map<String, Object> findIncreaseTopn(Date begin, float limit, float maxIncrease, Integer searchType);
 }

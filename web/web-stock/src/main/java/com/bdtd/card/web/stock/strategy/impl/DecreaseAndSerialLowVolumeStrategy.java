@@ -7,44 +7,46 @@ import org.springframework.stereotype.Service;
 
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
+import com.bdtd.card.data.stock.model.StockMiddleEntity;
 import com.bdtd.card.data.stock.util.CommonsUtil;
 import com.bdtd.card.web.stock.strategy.BaseAnalysisStrategy;
+import com.bdtd.card.web.stock.util.StockUtils;
 
 @Service
 public class DecreaseAndSerialLowVolumeStrategy extends BaseAnalysisStrategy {
 	
+	protected int decreaseDay = 3;
+	private int checkSize = 4;
+	private float percentage = 0.6f;
+	private float min_increase = -0.5f;
+	private float max_increase = 0.5f;
+	private int minMatchDay = 1;
+	
 	@Override
 	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result, int maxIndex,
 			Date begin, float limit) throws Exception {
-
-		StockMain curr = stockMains.get(index);
-		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
-		boolean found = false;
-		
-		float maxClose = Float.MIN_VALUE;
-		float minClose = Float.MAX_VALUE;
-		int maxInd = -1;
-		int minInd = -1;
-		for (int i = index - 10; i < index + 1; i++) {
-			float close = stockMains.get(i).getClose();
-			if (close > maxClose) {
-				maxClose = close;
-				maxInd = i;
-			}	else if (minClose > close) {
-				minClose = close;
-				minInd = i;
+		int start = index - checkSize;
+		if (start <= 0) {
+			return;
+		}
+		StockMain baseCompare = stockMains.get(start - 1);
+		int matchDay = 0;
+		for (int i = start; i <= index; i++) {
+			StockMain tmp = stockMains.get(start);
+			if (tmp.getIncrease() > min_increase && tmp.getIncrease() <= max_increase && tmp.getVolume() < baseCompare.getVolume() * percentage) {
+				matchDay++;
 			}
 		}
+		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - computeDay, index);
 		
-		if (maxInd > minInd && (maxClose - minClose) * 100 / minClose > 10) {
-			found = true;
-		} 
+		StockMain curr = stockMains.get(index);
+		Float maxIncrease = entity.getMaxIncrease();
 		
-		if (found) {
-			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
-			result.add(analysisResult);
+		if (matchDay >= minMatchDay) {
+			ResultDetail analysisResult = createResultDetail(curr , maxIncrease , index, stockMains);
+			if (analysisResult.getMaxIncrease() >= 20F)
+				result.add(analysisResult);
 		}
-	
 	}
 
 }

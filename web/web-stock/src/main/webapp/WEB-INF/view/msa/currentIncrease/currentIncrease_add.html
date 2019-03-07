@@ -1,0 +1,43 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form id="addForm" class="form-horizontal">
+
+            <input type="hidden" id="id" value="">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="symbol" name="股票代码" type="text" dataOptions="required:true, validType:'length[1, 7]'" underline="true" />
+                            <#input id="increase" name="当天涨幅" type="text" underline="true" />
+                            <#input id="twoIncrease" name="2天涨幅" type="text" underline="true" />
+                            <#input id="thressIncrease" name="3天涨幅" type="text" underline="true" />
+                            <#input id="fourIncrease" name="4天涨幅" type="text" underline="true" />
+                            <#input id="fiveIncrease" name="5天涨幅" type="text" underline="true" />
+                            <#input id="tenIncrease" name="10天涨幅" type="text" underline="true" />
+                            <#input id="fifteenIncrease" name="15天涨幅" type="text" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="twentyIncrease" name="20天涨幅" type="text" underline="true" />
+                            <#input id="maxIncrease" name="截止当前涨幅" type="text" underline="true" />
+                            <#input id="increases" name="近十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
+                            <#input id="volumes" name="近十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
+                            <#input id="futureFiveDayIncrease" name="未来五天涨幅" type="text" underline="true" />
+                            <#input id="futureTenDayIncrease" name="未来十天涨幅" type="text" underline="true" />
+                            <#input id="futureIncreases" name="未来十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
+                            <#input id="futureVolumes" name="未来十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CurrentIncreaseInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CurrentIncreaseInfoDlg.close()"/>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/msa/currentIncrease/currentIncrease_info.js"></script>
+@}

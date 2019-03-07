@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdtd.card.data.stock.dao.CurrentIncreaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.bdtd.card.data.stock.model.CurrentIncrease">
+        <id column="id" property="id" />
+        <result column="symbol" property="symbol" />
+        <result column="increase" property="increase" />
+        <result column="two_increase" property="twoIncrease" />
+        <result column="thress_increase" property="thressIncrease" />
+        <result column="four_increase" property="fourIncrease" />
+        <result column="five_increase" property="fiveIncrease" />
+        <result column="ten_increase" property="tenIncrease" />
+        <result column="fifteen_increase" property="fifteenIncrease" />
+        <result column="twenty_increase" property="twentyIncrease" />
+        <result column="max_increase" property="maxIncrease" />
+        <result column="increases" property="increases" />
+        <result column="volumes" property="volumes" />
+        <result column="future_five_day_increase" property="futureFiveDayIncrease" />
+        <result column="future_ten_day_increase" property="futureTenDayIncrease" />
+        <result column="future_increases" property="futureIncreases" />
+        <result column="future_volumes" property="futureVolumes" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, symbol, increase, two_increase, thress_increase, four_increase, five_increase, ten_increase, fifteen_increase, twenty_increase, max_increase, increases, volumes, future_five_day_increase, future_ten_day_increase, future_increases, future_volumes
+    </sql>
+
+</mapper>
