@@ -1,9 +1,9 @@
 package com.bdtd.card.data.stock.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -15,6 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICurrentIncreaseService extends IService<CurrentIncrease> {
 
-	Page<CurrentIncrease> findByQuery(CurrentIncreaseQuery query);
+	IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query);
 
 }

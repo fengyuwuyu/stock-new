@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.StockMiddleEntity;
+import com.bdtd.card.data.stock.util.StockUtils;
 import com.bdtd.card.web.stock.strategy.BaseAnalysisStrategy;
-import com.bdtd.card.web.stock.util.StockUtils;
 
 @Service
 public class MaxRecentIncreaseStrategy extends BaseAnalysisStrategy {

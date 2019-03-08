@@ -15,6 +15,7 @@ import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
+import com.bdtd.card.data.stock.util.StockUtils;
 import com.bdtd.card.web.stock.model.SearchType;
 import com.bdtd.card.web.stock.service.SearcherServiceI;
 import com.bdtd.card.web.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
@@ -27,7 +28,6 @@ import com.bdtd.card.web.stock.strategy.impl.PriceLowShockStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialLowVolumeStrategy;
-import com.bdtd.card.web.stock.util.StockUtils;
 
 @Service
 public class SearcherServiceImpl implements SearcherServiceI {

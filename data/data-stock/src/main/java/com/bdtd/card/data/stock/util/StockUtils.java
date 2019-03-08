@@ -1,4 +1,4 @@
-package com.bdtd.card.web.stock.util;
+package com.bdtd.card.data.stock.util;
 
 import java.sql.Date;
 import java.util.List;
@@ -8,7 +8,6 @@ import com.bdtd.card.data.stock.model.ResultCompare;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.StockMiddleEntity;
-import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
 
 public class StockUtils {
 	
@@ -74,15 +73,10 @@ public class StockUtils {
 		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
 	}
 
-	public static ResultCompare createResultCompare(List<ResultDetail> result, Date day) {
+	public static ResultCompare createResultCompare(List<ResultDetail> result, Date day, Integer checkDay, Integer increaseDay, Integer futureDay, Float minIncrease, Float minTotalIncrease) {
 		if (result == null || result.size() == 0) {
 			return null;
 		}
-		Integer checkDay = MakeMoneyStrategy.CHECK_DAY;
-		Integer increaseDay = MakeMoneyStrategy.INCREASE_DAY;
-		Integer futureDay = MakeMoneyStrategy.futureDay;
-		Float minIncrease = MakeMoneyStrategy.MIN_INCREASE;
-		Float minTotalIncrease = MakeMoneyStrategy.INCREASE;
 		
 		Integer increaseCount = 0;
 		Integer decreaseCount = 0;
@@ -112,11 +106,22 @@ public class StockUtils {
 	}
 
 	public static int getIndex(List<StockMain> stockMains, Date date) {
-		for (int i = 0; i < stockMains.size(); i++) {
-			if (date.getTime() == stockMains.get(i).getDay().getTime()) {
-				return i;
+		int index = -1;
+		for (StockMain stockMain : stockMains) {
+			if (stockMain.getDay().after(date)) {
+				return index;
+			} else {
+				index++;
 			}
 		}
 		return -1;
+	}
+
+	public static Float getVolumeAvgCompare(List<StockMain> stockMains, int index, int day) {
+		Long total = 0L;
+		for (int j = index - day; j < index; j++) {
+			total += stockMains.get(j).getVolume();
+		}
+		return stockMains.get(index).getVolume().floatValue() / (total.floatValue() / day);
 	}
 }

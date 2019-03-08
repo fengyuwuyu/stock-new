@@ -36,7 +36,13 @@ CurrentIncrease.initColumn = function () {
             {title: '未来五天涨幅', field: 'futureFiveDayIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '未来十天涨幅', field: 'futureTenDayIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '未来十天涨幅', field: 'futureIncreases', visible: true, align: 'center', valign: 'middle'},
-            {title: '未来十天成交量', field: 'futureVolumes', visible: true, align: 'center', valign: 'middle'}
+            {title: '未来十天成交量', field: 'futureVolumes', visible: true, align: 'center', valign: 'middle'},
+            {title: '当天成交量比', field: 'dayVolumeAvg', visible: true, align: 'center', valign: 'middle'},
+            {title: '两天成交量比', field: 'twoVolumeAvg', visible: true, align: 'center', valign: 'middle'},
+            {title: '三天成交量比', field: 'threeVolumeAvg', visible: true, align: 'center', valign: 'middle'},
+            {title: '四天成交量比', field: 'fourVolumeAvg', visible: true, align: 'center', valign: 'middle'},
+            {title: '五天成交量比', field: 'fiveVolumeAvg', visible: true, align: 'center', valign: 'middle'},
+            {title: '分析日期', field: 'msaDay', visible: true, align: 'center', valign: 'middle'}
     ];
 };
 
@@ -126,5 +132,5 @@ CurrentIncrease.search = function () {
 $(function () {
     var defaultColunms = CurrentIncrease.initColumn();
     var table = new BSTable(CurrentIncrease.id, "/currentIncrease/list", defaultColunms);
-    CurrentIncrease.table = table.init();
+    CurrentIncrease.table = table.init({pageSize: 100});
 });

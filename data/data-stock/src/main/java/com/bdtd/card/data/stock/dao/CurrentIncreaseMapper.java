@@ -1,7 +1,7 @@
 package com.bdtd.card.data.stock.dao;
 
-import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.bdtd.card.data.stock.model.CurrentIncrease;
 
 /**
  * <p>

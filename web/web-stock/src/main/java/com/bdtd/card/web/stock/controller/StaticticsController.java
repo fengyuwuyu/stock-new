@@ -21,22 +21,22 @@ import com.bdtd.card.data.stock.model.ResultCompare;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.util.DateUtil;
+import com.bdtd.card.data.stock.util.StockUtils;
 import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
-import com.bdtd.card.web.stock.util.StockUtils;
 
 @RequestMapping("/statistics")
 @Controller
 public class StaticticsController {
-	
+
 	private static final int MAX_INSERT_SIZE = 10000;
-	
+
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private int[] checkDays = {10};
-	private int[] increaseDays = {6};
-	private int[] futureDays = {5, 10, 15, 20};
-	private float[] minIncreases = {-5F};
-	private float[] increases = {10F};
-	
+	private int[] checkDays = { 10 };
+	private int[] increaseDays = { 6 };
+	private int[] futureDays = { 5, 10, 15, 20 };
+	private float[] minIncreases = { -5F };
+	private float[] increases = { 10F };
+
 	@Autowired
 	private StockMainMapper stockMainMapper;
 	@Autowired
@@ -45,15 +45,13 @@ public class StaticticsController {
 	private ResultDetailMapper resultDetailMapper;
 	@Autowired
 	MakeMoneyStrategy makeMoneyStrategy;
-	
-	
 
 	@RequestMapping("/create")
 	@ResponseBody
 	public Map<String, Object> create() {
 		float limit = 10F;
 		Date begin = new Date(DateUtil.getDate(2018, 0, 1).getTime());
-		
+
 		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
@@ -69,15 +67,18 @@ public class StaticticsController {
 					MakeMoneyStrategy.MIN_INCREASE = minIncreases[j2];
 					for (int k = 0; k < increases.length; k++) {
 						MakeMoneyStrategy.INCREASE = increases[k];
-						if (this.resultCompareMapper.statisticsCount(MapUtil.createMap("checkDay", MakeMoneyStrategy.CHECK_DAY, "increaseDay", 
-								MakeMoneyStrategy.INCREASE_DAY, "minIncrease", MakeMoneyStrategy.MIN_INCREASE, "minTotalIncrease", MakeMoneyStrategy.INCREASE)) > 0) {
+						if (this.resultCompareMapper.statisticsCount(
+								MapUtil.createMap("checkDay", MakeMoneyStrategy.CHECK_DAY, "increaseDay",
+										MakeMoneyStrategy.INCREASE_DAY, "minIncrease", MakeMoneyStrategy.MIN_INCREASE,
+										"minTotalIncrease", MakeMoneyStrategy.INCREASE)) > 0) {
 							continue;
 						}
 
 						for (int k2 = 0; k2 < futureDays.length; k2++) {
 							int futureDay = futureDays[k2];
 							MakeMoneyStrategy.futureDay = futureDay;
-							List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
+							List<Date> days = stockMainMap.get("300555").stream().map(StockMain::getDay)
+									.collect(Collectors.toList());
 							for (int l = 10; l < days.size() - 1; l++) {
 								Date date = days.get(l);
 								List<ResultDetail> result = new ArrayList<>(100);
@@ -89,10 +90,15 @@ public class StaticticsController {
 									try {
 										makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 									} catch (Exception e) {
-										log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+										log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",
+												stockMains.get(0).getSymbol(), maxIndex, stockMains.size(),
+												e.getMessage()));
 									}
 								}
-								ResultCompare compare = StockUtils.createResultCompare(result, date);
+								ResultCompare compare = StockUtils.createResultCompare(result, date,
+										MakeMoneyStrategy.CHECK_DAY, MakeMoneyStrategy.INCREASE_DAY,
+										MakeMoneyStrategy.futureDay, MakeMoneyStrategy.MIN_INCREASE,
+										MakeMoneyStrategy.INCREASE);
 								if (compare != null) {
 									list.add(compare);
 								}
@@ -120,19 +126,19 @@ public class StaticticsController {
 					fromIndex += MAX_INSERT_SIZE;
 					toIndex += MAX_INSERT_SIZE;
 					toIndex = toIndex > size ? size : toIndex;
-				} 
-				
+				}
+
 			}
 		}
 		return MapUtil.createSuccessMap();
 	}
-	
+
 	@RequestMapping("detail")
 	@ResponseBody
 	public Map<String, Object> detail() {
 		float limit = 10F;
 		Date begin = new Date(DateUtil.getDate(2018, 0, 1).getTime());
-		
+
 		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
@@ -140,8 +146,8 @@ public class StaticticsController {
 		int maxIndex = 0;
 		float minFutureIncrease = 15F;
 		float maxFutureIncrease = -10F;
-		
-		List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
+
+		List<Date> days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
 		List<ResultDetail> list = new ArrayList<>(MAX_INSERT_SIZE);
 		List<ResultDetail> list1 = new ArrayList<>(MAX_INSERT_SIZE);
 		for (int l = 10; l < days.size() - 5; l++) {
@@ -155,18 +161,19 @@ public class StaticticsController {
 				try {
 					makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 				} catch (Exception e) {
-					log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+					log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",
+							stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
 				}
 			}
 			result.forEach((item) -> {
 				if (item.getFutureIncrease() >= minFutureIncrease) {
-					list.add(item);	
+					list.add(item);
 				} else if (item.getFutureIncrease() <= maxFutureIncrease) {
 					list1.add(item);
 				}
 			});
 		}
-		
+
 		int size = list.size();
 		if (size > 0) {
 			if (size <= MAX_INSERT_SIZE) {
@@ -184,10 +191,10 @@ public class StaticticsController {
 					fromIndex += MAX_INSERT_SIZE;
 					toIndex += MAX_INSERT_SIZE;
 					toIndex = toIndex > size ? size : toIndex;
-				} 
+				}
 			}
 		}
-		
+
 		size = list1.size();
 		if (size > 0) {
 			if (size <= MAX_INSERT_SIZE) {
@@ -205,10 +212,10 @@ public class StaticticsController {
 					fromIndex += MAX_INSERT_SIZE;
 					toIndex += MAX_INSERT_SIZE;
 					toIndex = toIndex > size ? size : toIndex;
-				} 
+				}
 			}
 		}
 		return MapUtil.createSuccessMap();
 	}
-	
+
 }

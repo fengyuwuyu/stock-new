@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -275,5 +276,18 @@ public class CommonsUtil {
 	public static List<String> getDays(java.sql.Date begin, java.sql.Date end) {
 		return null;
 
+	}
+
+	public static <T> List<T> subList(List<T> list, int current, int size) {
+		if (list == null || list.size() == 0) {
+			return list;
+		}
+		
+		int fromIndex = current * size;
+		if (fromIndex >= list.size()) {
+			return Collections.emptyList();
+		}
+		int toIndex = (fromIndex + size) > list.size() ? list.size() : (fromIndex + size);
+		return list.subList(fromIndex, toIndex);
 	}
 }

@@ -476,6 +476,6 @@
   </select>
   
   <select id="findByQuery" resultMap="BaseResultMap" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery">
-  	select * from stock_main where `day` between #{begin} and #{end} order by `day`
+  	select * from stock_main where `day` &gt;= #{begin} and symbol = '603859' order by `day`
   </select>
 </mapper>

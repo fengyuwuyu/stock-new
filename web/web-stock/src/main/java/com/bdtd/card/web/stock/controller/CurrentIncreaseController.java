@@ -1,5 +1,8 @@
 package com.bdtd.card.web.stock.controller;
 
+import java.sql.Date;
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bdtd.card.common.model.OriginMask;
 import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.common.web.base.BaseController;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
+import com.bdtd.card.data.stock.util.DateUtil;
 import com.bdtd.card.web.admin.log.LogObjectHolder;
+import com.bdtd.card.web.stock.model.MsaSortField;
 
 /**
  * 最近最大涨幅分析控制器
@@ -38,7 +44,12 @@ public class CurrentIncreaseController extends BaseController {
      * 跳转到最近最大涨幅分析首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+    	model.addAttribute("begin", DateUtil.getDate(2019, 1, 11));
+    	model.addAttribute("end", new Date(System.currentTimeMillis()));
+    	model.addAttribute("fieldItemList", MsaSortField.select());
+    	model.addAttribute("ascItemList", OriginMask.select());
+    	
         return PREFIX + "currentIncrease.html";
     }
 
@@ -66,7 +77,10 @@ public class CurrentIncreaseController extends BaseController {
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(CurrentIncreaseQuery query) {
-    	Page<CurrentIncrease> page = this.currentIncreaseService.findByQuery(query);
+    	if (query.getBegin() == null || query.getEnd() == null) {
+    		return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0L);
+    	}
+    	IPage<CurrentIncrease> page = this.currentIncreaseService.findByQuery(query);
 		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
     }
 

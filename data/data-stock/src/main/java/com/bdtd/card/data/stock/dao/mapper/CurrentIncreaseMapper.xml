@@ -19,12 +19,24 @@
         <result column="volumes" property="volumes" />
         <result column="future_five_day_increase" property="futureFiveDayIncrease" />
         <result column="future_ten_day_increase" property="futureTenDayIncrease" />
+        <result column="future_fifteen_day_increase" property="futureFifteenDayIncrease" />
+        <result column="future_twenty_day_increase" property="futureTwentyDayIncrease" />
         <result column="future_increases" property="futureIncreases" />
         <result column="future_volumes" property="futureVolumes" />
+        <result column="day_volume_avg" property="dayVolumeAvg" />
+        <result column="two_volume_avg" property="twoVolumeAvg" />
+        <result column="three_volume_avg" property="threeVolumeAvg" />
+        <result column="four_volume_avg" property="fourVolumeAvg" />
+        <result column="five_volume_avg" property="fiveVolumeAvg" />
+        <result column="msa_day" property="msaDay" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, symbol, increase, two_increase, thress_increase, four_increase, five_increase, ten_increase, fifteen_increase, twenty_increase, max_increase, increases, volumes, future_five_day_increase, future_ten_day_increase, future_increases, future_volumes
+        id, symbol, increase, two_increase twoIncrease, thress_increase thressIncrease, four_increase fourIncrease, five_increase fiveIncrease, ten_increase tenIncrease, fifteen_increase fifteenIncrease, twenty_increase twentyIncrease, max_increase maxIncrease, increases, volumes, future_five_day_increase futureFiveDayIncrease, future_ten_day_increase futureTenDayIncrease, future_fifteen_day_increase futureFifteenDayIncrease, future_twenty_day_increase futureTwentyDayIncrease, future_increases futureIncreases, future_volumes futureVolumes, day_volume_avg dayVolumeAvg, two_volume_avg twoVolumeAvg, three_volume_avg threeVolumeAvg, four_volume_avg fourVolumeAvg, five_volume_avg fiveVolumeAvg, msa_day msaDay
     </sql>
 
+	<!-- 关联查询结果列 -->
+    <sql id="Base_Column_List_Prefix">
+        a.id, a.symbol, a.increase, a.two_increase twoIncrease, a.thress_increase thressIncrease, a.four_increase fourIncrease, a.five_increase fiveIncrease, a.ten_increase tenIncrease, a.fifteen_increase fifteenIncrease, a.twenty_increase twentyIncrease, a.max_increase maxIncrease, a.increases, a.volumes, a.future_five_day_increase futureFiveDayIncrease, a.future_ten_day_increase futureTenDayIncrease, a.future_fifteen_day_increase futureFifteenDayIncrease, a.future_twenty_day_increase futureTwentyDayIncrease, a.future_increases futureIncreases, a.future_volumes futureVolumes, a.day_volume_avg dayVolumeAvg, a.two_volume_avg twoVolumeAvg, a.three_volume_avg threeVolumeAvg, a.four_volume_avg fourVolumeAvg, a.five_volume_avg fiveVolumeAvg, a.msa_day msaDay
+    </sql>
 </mapper>

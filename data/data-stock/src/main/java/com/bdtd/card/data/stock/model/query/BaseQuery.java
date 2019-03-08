@@ -7,7 +7,7 @@ public class BaseQuery {
 	protected Integer offset;
 	protected Integer limit;
 	protected String sortField;
-	protected Boolean desc;
+	protected Boolean asc;
 	protected Date begin;
 	protected Date end;
 
@@ -35,12 +35,12 @@ public class BaseQuery {
 		this.sortField = sortField;
 	}
 
-	public Boolean getDesc() {
-		return desc;
+	public Boolean getAsc() {
+		return asc;
 	}
 
-	public void setDesc(Boolean desc) {
-		this.desc = desc;
+	public void setAsc(Boolean desc) {
+		this.asc = desc;
 	}
 
 	public Date getBegin() {
@@ -61,7 +61,7 @@ public class BaseQuery {
 
 	@Override
 	public String toString() {
-		return "BaseQuery [offset=" + offset + ", limit=" + limit + ", sortField=" + sortField + ", desc=" + desc
+		return "BaseQuery [offset=" + offset + ", limit=" + limit + ", sortField=" + sortField + ", asc=" + asc
 				+ ", begin=" + begin + ", end=" + end + "]";
 	}
 
