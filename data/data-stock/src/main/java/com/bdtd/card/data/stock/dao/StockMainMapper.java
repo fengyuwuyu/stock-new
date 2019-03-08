@@ -11,6 +11,7 @@ import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.StockMainAnalyse;
 import com.bdtd.card.data.stock.model.StockQuery;
 import com.bdtd.card.data.stock.model.StockTop100;
+import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 
 public interface StockMainMapper {
     int deleteByPrimaryKey(Integer id);
@@ -90,5 +91,7 @@ public interface StockMainMapper {
 	List<StockFilterBean> selectAnalyse1(Map<String, Object> createMap);
 	
 	List<CacheItem> initPrePrices();
+
+	List<StockMain> findByQuery(CurrentIncreaseQuery query);
 	
 }

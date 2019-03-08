@@ -11,8 +11,12 @@ import com.bdtd.card.web.stock.util.StockUtils;
 public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 	
 	private int count = 10;
-	protected int computeDay = 10;
+	public static int CHECK_DAY = 20;
+	public static int INCREASE_DAY = 6;
 	public static int futureDay = 5;
+	public static float MIN_INCREASE = -8F;
+	public static float INCREASE = 20F;
+	protected int computeDay = 10;
 	
 	public ResultDetail createResultDetail(StockMain curr, Float maxIncrease, int index, List<StockMain> stockMains) {
 		StringBuilder increases = new StringBuilder();
@@ -30,7 +34,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		}
 
 		if (index + 1 < stockMains.size()) {
-			int a = index + 5 >= stockMains.size() ? stockMains.size() - 1 : index + 5;
+			int a = index + futureDay >= stockMains.size() ? stockMains.size() - 1 : index + futureDay;
 			for (int i = index + 1; i <= a; i++) {
 				StockMain main = stockMains.get(i);
 				futureIncreases.append(main.getIncrease() + ", ");
@@ -52,12 +56,12 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 			futureIncrease = (max - curr.getClose()) * 100 / curr.getClose();
 		}
 
-		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - computeDay, index);
+		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - CHECK_DAY, index);
 		float hasIncrease = entity.getMaxIncrease();
 		
 //		if (max > curr.getClose()) {
 //		}
-		return new ResultDetail(curr, maxIncrease, increases.toString(),
+		return new ResultDetail(curr, hasIncrease, increases.toString(),
 				volumes.toString(), closes.toString(), volumeRatio, futureIncrease, hasIncrease, futureIncreases.toString(), futureVolumes.toString());
 	}
 }

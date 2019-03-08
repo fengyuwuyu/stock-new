@@ -24,7 +24,7 @@ spring:
     active: dev
   devtools:
     restart:
-      enabled: true #是否开启开发者工具（true/false）
+      enabled: false #是否开启开发者工具（true/false）
       additional-paths: src/main/java
       exclude: static/**,WEB-INF/view/**
   aop:
@@ -96,7 +96,7 @@ spring:
 logging:
 #  config: classpath:log4j2.xml
   level:
-    root: warn
+    root: info
 #  level.com.bdtd.card: debug
 #  level.com.bdtd.card.data.admin.dao: debug
 #  level.com.stylefeng.guns.core.aop.FileLogAop: debug

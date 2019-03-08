@@ -15,11 +15,6 @@ import com.bdtd.card.web.stock.util.StockUtils;
 @Service
 public class HistoryIncreaseStrategy extends BaseAnalysisStrategy {
 	
-	public static int CHECK_DAY = 10;
-	public static int INCREASE_DAY = 6;
-	public static float MIN_INCREASE = -5F;
-	public static float INCREASE = 10F;
-	
 	@Override
 	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result,
 			int maxIndex, Date begin, float limit) throws Exception {

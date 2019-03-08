@@ -18,15 +18,12 @@ public class NearlyTenDayStrategy extends BaseAnalysisStrategy {
 	@Override
 	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result, int maxIndex,
 			Date begin, float limit) throws Exception {
-		if (stockMains.get(0).getSymbol().equals("000055")) {
-			System.out.println();
-		}
 		float minValue = 10;
 		float maxValue = 30;
 		StockMain curr = stockMains.get(index);
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		
-		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - computeDay, index);
+		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - CHECK_DAY, index);
 		float hasIncrease = entity.getMaxIncrease();
 		
 		

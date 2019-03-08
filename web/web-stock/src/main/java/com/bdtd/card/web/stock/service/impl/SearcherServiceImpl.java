@@ -23,6 +23,7 @@ import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy;
 import com.bdtd.card.web.stock.strategy.impl.MakeMoneyStrategy2;
 import com.bdtd.card.web.stock.strategy.impl.MaxIncreaseStrategy;
 import com.bdtd.card.web.stock.strategy.impl.NearlyTenDayStrategy;
+import com.bdtd.card.web.stock.strategy.impl.PriceLowShockStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialIncreaseStrategy;
 import com.bdtd.card.web.stock.strategy.impl.SerialLowVolumeStrategy;
@@ -52,9 +53,11 @@ public class SearcherServiceImpl implements SearcherServiceI {
 	MakeMoneyStrategy2 makeMoneyStrategy2;
 	@Autowired
 	private HistoryIncreaseStrategy historyIncreaseStrategy;
+	@Autowired
+	private PriceLowShockStrategy priceLowShockStrategy;
 
 	@Override
-	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
+	public Map<String, Object> findIncreaseTopn(Date begin, float limit, float maxIncrease, Integer searchType) {
 		SearchType type = SearchType.valueOf(searchType);
 		if (type == null) {
 			return MapUtil.createFailedMap("msg", "illegal searchType [%s]", searchType);
@@ -62,7 +65,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 		List<StockMain> stockMainList = stockMainMapper.findAll1(begin);
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
-		List<ResultDetail> result = new ArrayList<>(50);
+		List<ResultDetail> result = new ArrayList<>(300);
 //		List<ResultDetail> list = new ArrayList<>();
 		for (List<StockMain> stockMains : stockMainMap.values()) {
 			float max = 0;
@@ -90,7 +93,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 			}
 			
 			if (index == -1) {
-				index = maxIndex;
+				continue ;
 			}
 			
 			try {
@@ -122,17 +125,22 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				case HISTORY_INCREASE:
 					historyIncreaseStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 					break;
+				case PRICE_LOW_SHOCK:
+					priceLowShockStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+				case MAX_RECENT_INCREASE:
+					priceLowShockStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
 				default:
 					break;
 				}
 			} catch (Exception e) {
-				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()), e);;
 			}
 		}
 		if (type == SearchType.MAKE_MONEY) {
 //			StockUtils.statistics(result);
 		}
-		result = StockUtils.sortAndLimit(result);
+//		result = StockUtils.sortAndLimit(result, limit, maxIncrease);
 		return MapUtil.createSuccessMap("rows", result, "total", result.size());
 	}
 

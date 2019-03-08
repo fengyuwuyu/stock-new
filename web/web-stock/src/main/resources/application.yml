@@ -14,7 +14,7 @@ spring:
       max-file-size: 5MB #最大文件大小
   devtools:
     restart:
-      enabled: true
+      enabled: false
       additional-paths: src/main/java
       exclude: static/**,WEB-INF/view/**
 bdtd:
