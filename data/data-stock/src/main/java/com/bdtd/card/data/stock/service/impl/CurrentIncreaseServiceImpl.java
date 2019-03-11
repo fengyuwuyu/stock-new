@@ -48,6 +48,10 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		if (page.getTotal() == 0) {
 			return initAnalysis(query);
 		}
+		if (DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
+			this.baseMapper.delete(null);
+			return initAnalysis(query);
+		}
 		return new Page<>(query.getOffset(), query.getLimit(), 0L);
 	}
 	
@@ -58,6 +62,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		List<CurrentIncrease> result = new ArrayList<CurrentIncrease>(stockMainMap.size());
 		for (List<StockMain> stockMains : stockMainMap.values()) {
 			int index = StockUtils.getIndex(stockMains, query.getEnd());
+			if (index == -1) {
+				continue;
+			}
 			StockMain curr = stockMains.get(index);
 			String symbol = stockMains.get(0).getSymbol();
 			Float increase = stockMains.get(index).getIncrease();
@@ -108,19 +115,24 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 
 			CurrentIncrease currentIncrease = new CurrentIncrease(symbol, increase, twoIncrease, thressIncrease,
 					fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease,
-					increases.substring(0, increases.length() - 2), volumes.substring(0, volumes.length() - 2), futureFiveDayIncrease, futureTenDayIncrease,
-					futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.substring(0, futureIncreases.length() - 2),
-					futureVolumes.substring(0, futureVolumes.length() - 2), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg,
+					increases.toString(), volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease,
+					futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(),
+					futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg,
 					msaDay);
 			result.add(currentIncrease);
 		}
 		
-		this.saveBatch(result);
+		this.baseMapper.insertAll(result);
 		
 		Page<CurrentIncrease> page = new Page<>(query.getOffset(), query.getLimit());
 		page.setTotal(result.size());
 		page.setRecords(CommonsUtil.subList(result, query.getOffset(), query.getLimit()));
 		return page;
+	}
+	
+	public void insertAll(List<CurrentIncrease> list) {
+		
+		this.baseMapper.insertAll(list);
 	}
 
 }

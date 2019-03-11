@@ -36,6 +36,10 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(getDate(2019, 1, 11));
+	}
+	
 	/**
 	 * 
 	 * 描述：将毫秒数的时间转为字符串时间：yyyy-mm-dd hh:mm:ss

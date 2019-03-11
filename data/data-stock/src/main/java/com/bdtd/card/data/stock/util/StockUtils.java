@@ -112,6 +112,9 @@ public class StockUtils {
 				return index;
 			} else {
 				index++;
+				if (stockMain.getDay().getTime() == date.getTime()) {
+					return index;
+				}
 			}
 		}
 		return -1;

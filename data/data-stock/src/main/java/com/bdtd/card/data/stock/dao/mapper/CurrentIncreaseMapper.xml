@@ -39,4 +39,12 @@
     <sql id="Base_Column_List_Prefix">
         a.id, a.symbol, a.increase, a.two_increase twoIncrease, a.thress_increase thressIncrease, a.four_increase fourIncrease, a.five_increase fiveIncrease, a.ten_increase tenIncrease, a.fifteen_increase fifteenIncrease, a.twenty_increase twentyIncrease, a.max_increase maxIncrease, a.increases, a.volumes, a.future_five_day_increase futureFiveDayIncrease, a.future_ten_day_increase futureTenDayIncrease, a.future_fifteen_day_increase futureFifteenDayIncrease, a.future_twenty_day_increase futureTwentyDayIncrease, a.future_increases futureIncreases, a.future_volumes futureVolumes, a.day_volume_avg dayVolumeAvg, a.two_volume_avg twoVolumeAvg, a.three_volume_avg threeVolumeAvg, a.four_volume_avg fourVolumeAvg, a.five_volume_avg fiveVolumeAvg, a.msa_day msaDay
     </sql>
+
+	<insert id="insertAll" parameterType="java.util.List">
+		insert into msa_current_increase(id, symbol, increase, two_increase, thress_increase, four_increase, five_increase, ten_increase, fifteen_increase, twenty_increase, max_increase, increases, volumes, future_five_day_increase, future_ten_day_increase, future_fifteen_day_increase, future_twenty_day_increase, future_increases, future_volumes, day_volume_avg, two_volume_avg, three_volume_avg, four_volume_avg, five_volume_avg, msa_day) 
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.id}, #{item.symbol}, #{item.increase}, #{item.twoIncrease}, #{item.thressIncrease}, #{item.fourIncrease}, #{item.fiveIncrease}, #{item.tenIncrease}, #{item.fifteenIncrease}, #{item.twentyIncrease}, #{item.maxIncrease}, #{item.increases}, #{item.volumes}, #{item.futureFiveDayIncrease}, #{item.futureTenDayIncrease}, #{item.futureFifteenDayIncrease}, #{item.futureTwentyDayIncrease}, #{item.futureIncreases}, #{item.futureVolumes}, #{item.dayVolumeAvg}, #{item.twoVolumeAvg}, #{item.threeVolumeAvg}, #{item.fourVolumeAvg}, #{item.fiveVolumeAvg}, #{item.msaDay})
+		</foreach>
+	</insert>
 </mapper>

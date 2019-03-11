@@ -1,10 +1,10 @@
 package com.bdtd.card.data.stock.model;
-import java.time.LocalDate;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDate;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 /**
  * <p>
@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
  * </p>
  *
  * @author
- * @since 2019-03-08
+ * @since 2019-03-09
  */
 @TableName("msa_current_increase")
 public class CurrentIncrease extends Model<CurrentIncrease> {
