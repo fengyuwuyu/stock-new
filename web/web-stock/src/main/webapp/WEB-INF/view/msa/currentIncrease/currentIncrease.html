@@ -16,7 +16,7 @@
 							<#select id="sortField" name="排序字段" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${fieldItemList}" />
 		                </div>
 						<div class="col-sm-2">
-							<#select id="asc" name="排序规则" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${ascItemList}" />
+							<#select id="asc" name="排序规则" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${ascItemList}" value="${0}" />
 		                </div>
                             <div class="col-sm-3">
                                 <#button name="搜索" icon="fa-search" clickFun="CurrentIncrease.search()"/>

@@ -25,6 +25,28 @@ public class StockUtils {
 		return result.subList(0, 100);
 		
 	}
+	
+	public static StockMiddleEntity findFutureMaxIncrease(List<StockMain> stockMains, int begin, int end) {
+		begin = begin < 0 ? 0 : begin;
+		end = end >= stockMains.size() ? stockMains.size() - 1 : end;
+		int minIndex = 0;
+		int maxIndex = 0;
+		float min = stockMains.get(begin).getClose();
+		float max = Float.MIN_VALUE;
+		float maxIncrease = 0;
+		
+		float close = 0;
+		for (int i = begin + 1; i <= end; i++) {
+			close = stockMains.get(i).getClose();
+			if (close > max) {
+				max = close;
+				maxIndex = i;
+			}
+		}
+		
+		maxIncrease = (max - min) * 100 / min;
+		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
+	}
 
 	/**
 	 * 
@@ -120,11 +142,11 @@ public class StockUtils {
 		return -1;
 	}
 
-	public static Float getVolumeAvgCompare(List<StockMain> stockMains, int index, int day) {
-		Long total = 0L;
+	public static float getVolumeAvgCompare(List<StockMain> stockMains, int index, int day) {
+		float total = 0f;
 		for (int j = index - day; j < index; j++) {
-			total += stockMains.get(j).getVolume();
+			total += stockMains.get(j).getVolume().floatValue();
 		}
-		return stockMains.get(index).getVolume().floatValue() / (total.floatValue() / day);
+		return stockMains.get(index).getVolume().floatValue() / (total / day);
 	}
 }

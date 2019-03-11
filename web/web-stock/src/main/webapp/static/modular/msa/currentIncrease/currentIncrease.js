@@ -21,7 +21,7 @@ CurrentIncrease.initColumn = function () {
             formatter: Feng.getTableSerialNumberFunc(CurrentIncrease.id)
         },
             {title: '主键', field: 'id', visible: true, align: 'center', valign: 'middle'},
-            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
+            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle', sortable: true},
             {title: '当天涨幅', field: 'increase', visible: true, align: 'center', valign: 'middle'},
             {title: '2天涨幅', field: 'twoIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '3天涨幅', field: 'thressIncrease', visible: true, align: 'center', valign: 'middle'},

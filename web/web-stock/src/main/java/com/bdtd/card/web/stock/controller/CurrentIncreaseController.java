@@ -45,7 +45,7 @@ public class CurrentIncreaseController extends BaseController {
      */
     @RequestMapping("")
     public String index(Model model) {
-    	model.addAttribute("begin", DateUtil.getDate(2019, 1, 11));
+    	model.addAttribute("begin", new Date(DateUtil.getDate(2019, 1, 11).getTime()));
     	model.addAttribute("end", new Date(System.currentTimeMillis()));
     	model.addAttribute("fieldItemList", MsaSortField.select());
     	model.addAttribute("ascItemList", OriginMask.select());

@@ -49,10 +49,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			return initAnalysis(query);
 		}
 		if (DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
-			this.baseMapper.delete(null);
 			return initAnalysis(query);
 		}
-		return new Page<>(query.getOffset(), query.getLimit(), 0L);
+		return page;
 	}
 	
 	private IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query) {
@@ -80,11 +79,11 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
 			StringBuilder increases = new StringBuilder();
 			StringBuilder volumes = new StringBuilder();
-			Float futureFiveDayIncrease = StockUtils.findMaxIncrease(stockMains, index - 1, index + 4).getMaxIncrease();
-			Float futureTenDayIncrease = StockUtils.findMaxIncrease(stockMains, index - 1, index + 10).getMaxIncrease();
-			Float futureFifteenDayIncrease = StockUtils.findMaxIncrease(stockMains, index - 1, index + 10)
+			Float futureFiveDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index - 1, index + 4).getMaxIncrease();
+			Float futureTenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index - 1, index + 10).getMaxIncrease();
+			Float futureFifteenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index - 1, index + 10)
 					.getMaxIncrease();
-			Float futureTwentyDayIncrease = StockUtils.findMaxIncrease(stockMains, index - 1, index + 10)
+			Float futureTwentyDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index - 1, index + 10)
 					.getMaxIncrease();
 			StringBuilder futureIncreases = new StringBuilder();
 			StringBuilder futureVolumes = new StringBuilder();

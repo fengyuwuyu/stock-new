@@ -63,7 +63,7 @@ mybatis-plus:
 spring:
   profiles: dev
   datasource:
-    url:  jdbc:p6spy:mysql://127.0.0.1:3306/stock1?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    url:  jdbc:p6spy:mysql://47.96.90.230:3306/stock1?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: root
     db-name: stock1
