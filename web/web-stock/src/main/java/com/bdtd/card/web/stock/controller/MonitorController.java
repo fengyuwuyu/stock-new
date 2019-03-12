@@ -26,7 +26,6 @@ import com.bdtd.card.data.stock.service.IMonitorService;
 import com.bdtd.card.web.admin.log.LogObjectHolder;
 
 /**
- * 股票监控控制器
  *
  * @author 
  * @Date 2019-01-29 22:29:28
@@ -41,7 +40,6 @@ public class MonitorController extends BaseController {
     private IMonitorService monitorService;
 
     /**
-     * 跳转到股票监控首页
      */
     @RequestMapping("")
     public String index() {
@@ -49,7 +47,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 跳转到添加股票监控
      */
     @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType"), @EnumEntity(fieldName="status", enumName="MonitorStatus")})
     @RequestMapping("/monitor_add")
@@ -58,7 +55,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 跳转到修改股票监控
      */
     @EnumEntityList(entityList= {@EnumEntity(fieldName="monitorType", enumName="MonitorType"), @EnumEntity(fieldName="status", enumName="MonitorStatus")})
     @RequestMapping("/monitor_update/{monitorId}")
@@ -69,7 +65,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 获取股票监控列表
      */
     @EnumEntityList(entityList={@EnumEntity(enumName="MonitorStatus", fieldName="status"), @EnumEntity(enumName="MonitorType", fieldName="monitorType")})
     @RequestMapping(value = "/list")
@@ -82,7 +77,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 新增股票监控
      */
     @RequestMapping(value = "/add")
     @ResponseBody
@@ -101,7 +95,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 删除股票监控
      */
     @RequestMapping(value = "/delete")
     @ResponseBody
@@ -111,7 +104,6 @@ public class MonitorController extends BaseController {
     }
 
     /**
-     * 修改股票监控
      */
     @RequestMapping(value = "/update")
     @ResponseBody

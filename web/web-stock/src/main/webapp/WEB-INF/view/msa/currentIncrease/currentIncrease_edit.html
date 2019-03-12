@@ -6,21 +6,9 @@
             <input type="hidden" id="id" name="id" value="${item.id}">
 
             <div class="row">
-                <div class="col-sm-6 b-r">
-                           <#input id="symbol" name="股票代码" type="text" dataOptions="required:true, validType:'length[1, 7]'" underline="true"  value="${item.symbol}" />
-                           <#input id="increase" name="当天涨幅" type="text" underline="true"  value="${item.increase}" />
-                           <#input id="fiveIncrease" name="5天涨幅" type="text" underline="true"  value="${item.fiveIncrease}" />
-                           <#input id="tenIncrease" name="10天涨幅" type="text" underline="true"  value="${item.tenIncrease}" />
-                           <#input id="fifteenIncrease" name="15天涨幅" type="text" underline="true"  value="${item.fifteenIncrease}" />
-                            <#input id="twentyIncrease" name="20天涨幅" type="text"  value="${item.twentyIncrease}" />
-                </div>
-
-                <div class="col-sm-6">
-                            <#input id="maxIncrease" name="截止当前涨幅" type="text" underline="true"  value="${item.maxIncrease}" />
+                <div class="col-sm-12">
                             <#input id="increases" name="近十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true"  value="${item.increases}" />
                             <#input id="volumes" name="近十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" underline="true"  value="${item.volumes}" />
-                            <#input id="futureFiveDayIncrease" name="未来五天涨幅" type="text" underline="true"  value="${item.futureFiveDayIncrease}" />
-                            <#input id="futureTenDayIncrease" name="未来十天涨幅" type="text" underline="true"  value="${item.futureTenDayIncrease}" />
                             <#input id="futureIncreases" name="未来十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true"  value="${item.futureIncreases}" />
                             <#input id="futureVolumes" name="未来十天成交量" type="text" dataOptions="validType:'length[0, 1024]'"  value="${item.futureVolumes}" />
                 </div>

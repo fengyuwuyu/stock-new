@@ -6,10 +6,22 @@ public class BaseQuery {
 
 	protected Integer offset;
 	protected Integer limit;
+	protected Integer page;
 	protected String sortField;
 	protected Boolean asc;
 	protected Date begin;
 	protected Date end;
+
+	public Integer getPage() {
+		if (page == null) {
+			return offset == 0 ? 0 : offset / limit; 
+		}
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
 
 	public Integer getOffset() {
 		return offset;

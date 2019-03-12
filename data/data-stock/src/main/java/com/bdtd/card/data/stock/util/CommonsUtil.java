@@ -28,6 +28,10 @@ public class CommonsUtil {
 	public static String formatDecimal(double num) {
 		return decimalFormat.format(num);
 	}
+	
+	public static float formatNumberToFloat(double num) {
+		return Float.valueOf(decimalFormat.format(num));
+	}
 
 	public static void intersaction(List<ResultDetail> list1, List<ResultDetail> list2) {
 		Iterator<ResultDetail> it = list1.iterator();

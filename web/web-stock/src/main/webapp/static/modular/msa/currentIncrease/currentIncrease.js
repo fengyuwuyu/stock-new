@@ -20,8 +20,8 @@ CurrentIncrease.initColumn = function () {
             align: 'center',
             formatter: Feng.getTableSerialNumberFunc(CurrentIncrease.id)
         },
-            {title: '主键', field: 'id', visible: true, align: 'center', valign: 'middle'},
-            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle', sortable: true},
+            {title: '主键', field: 'id', visible: false, align: 'center', valign: 'middle'},
+            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
             {title: '当天涨幅', field: 'increase', visible: true, align: 'center', valign: 'middle'},
             {title: '2天涨幅', field: 'twoIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '3天涨幅', field: 'thressIncrease', visible: true, align: 'center', valign: 'middle'},
@@ -31,18 +31,20 @@ CurrentIncrease.initColumn = function () {
             {title: '15天涨幅', field: 'fifteenIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '20天涨幅', field: 'twentyIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '截止当前涨幅', field: 'maxIncrease', visible: true, align: 'center', valign: 'middle'},
-            {title: '近十天涨幅', field: 'increases', visible: true, align: 'center', valign: 'middle'},
-            {title: '近十天成交量', field: 'volumes', visible: true, align: 'center', valign: 'middle'},
+            {title: '近十天涨幅', field: 'increases', visible: false, align: 'center', valign: 'middle'},
+            {title: '近十天成交量', field: 'volumes', visible: false, align: 'center', valign: 'middle'},
             {title: '未来五天涨幅', field: 'futureFiveDayIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '未来十天涨幅', field: 'futureTenDayIncrease', visible: true, align: 'center', valign: 'middle'},
-            {title: '未来十天涨幅', field: 'futureIncreases', visible: true, align: 'center', valign: 'middle'},
-            {title: '未来十天成交量', field: 'futureVolumes', visible: true, align: 'center', valign: 'middle'},
+            {title: '未来十五天涨幅', field: 'futureFifteenDayIncrease', visible: true, align: 'center', valign: 'middle'},
+            {title: '未来二十天涨幅', field: 'futureTwentyDayIncrease', visible: true, align: 'center', valign: 'middle'},
+            {title: '未来十天涨幅', field: 'futureIncreases', visible: false, align: 'center', valign: 'middle'},
+            {title: '未来十天成交量', field: 'futureVolumes', visible: false, align: 'center', valign: 'middle'},
             {title: '当天成交量比', field: 'dayVolumeAvg', visible: true, align: 'center', valign: 'middle'},
             {title: '两天成交量比', field: 'twoVolumeAvg', visible: true, align: 'center', valign: 'middle'},
             {title: '三天成交量比', field: 'threeVolumeAvg', visible: true, align: 'center', valign: 'middle'},
             {title: '四天成交量比', field: 'fourVolumeAvg', visible: true, align: 'center', valign: 'middle'},
             {title: '五天成交量比', field: 'fiveVolumeAvg', visible: true, align: 'center', valign: 'middle'},
-            {title: '分析日期', field: 'msaDay', visible: true, align: 'center', valign: 'middle'}
+            {title: '分析日期', field: 'msaDay', visible: false, align: 'center', valign: 'middle'}
     ];
 };
 
@@ -132,5 +134,5 @@ CurrentIncrease.search = function () {
 $(function () {
     var defaultColunms = CurrentIncrease.initColumn();
     var table = new BSTable(CurrentIncrease.id, "/currentIncrease/list", defaultColunms);
-    CurrentIncrease.table = table.init({pageSize: 100});
+    CurrentIncrease.table = table.init();
 });

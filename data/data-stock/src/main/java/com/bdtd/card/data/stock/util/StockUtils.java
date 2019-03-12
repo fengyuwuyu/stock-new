@@ -130,23 +130,43 @@ public class StockUtils {
 	public static int getIndex(List<StockMain> stockMains, Date date) {
 		int index = -1;
 		for (StockMain stockMain : stockMains) {
-			if (stockMain.getDay().after(date)) {
+			index++;
+			if (stockMain.getDay().getTime() == date.getTime()) {
 				return index;
-			} else {
-				index++;
-				if (stockMain.getDay().getTime() == date.getTime()) {
-					return index;
-				}
+			} else if (stockMain.getDay().after(date)) {
+				return index;
 			}
 		}
 		return -1;
 	}
 
 	public static float getVolumeAvgCompare(List<StockMain> stockMains, int index, int day) {
-		float total = 0f;
+		double total = 0f;
 		for (int j = index - day; j < index; j++) {
-			total += stockMains.get(j).getVolume().floatValue();
+			total += stockMains.get(j).getVolume().doubleValue();
 		}
-		return stockMains.get(index).getVolume().floatValue() / (total / day);
+		return (float)(stockMains.get(index).getVolume().doubleValue() / (total / day));
+	}
+
+	public static StockMiddleEntity findRecentMaxIncrease(List<StockMain> stockMains, int begin, int end) {
+		begin = begin < 0 ? 0 : begin;
+		end = end >= stockMains.size() ? stockMains.size() - 1 : end;
+		int minIndex = begin;
+		int maxIndex = 0;
+		float min = stockMains.get(begin).getClose();
+		float max = Float.MIN_VALUE;
+		float maxIncrease = 0;
+		
+		float close = 0;
+		for (int i = begin + 1; i <= end; i++) {
+			close = stockMains.get(i).getClose();
+			if (close > max) {
+				max = close;
+				maxIndex = i;
+			}
+		}
+		
+		maxIncrease = (max - min) * 100 / min;
+		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
 	}
 }
