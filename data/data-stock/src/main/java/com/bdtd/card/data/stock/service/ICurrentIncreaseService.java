@@ -1,8 +1,11 @@
 package com.bdtd.card.data.stock.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
+import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 
 /**
@@ -16,5 +19,7 @@ import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 public interface ICurrentIncreaseService extends IService<CurrentIncrease> {
 
 	IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query);
+	
+	IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query, List<StockMain> stockMainList) ;
 
 }

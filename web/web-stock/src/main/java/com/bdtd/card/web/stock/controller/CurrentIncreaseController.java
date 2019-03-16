@@ -1,7 +1,14 @@
 package com.bdtd.card.web.stock.controller;
 
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +24,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bdtd.card.common.model.OriginMask;
 import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.common.web.base.BaseController;
+import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
+import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
 import com.bdtd.card.data.stock.util.DateUtil;
@@ -39,6 +48,31 @@ public class CurrentIncreaseController extends BaseController {
 
     @Autowired
     private ICurrentIncreaseService currentIncreaseService;
+	@Autowired
+	private StockMainMapper stockMainMapper;
+    
+    @RequestMapping("/test")
+    @ResponseBody
+    public Map<String, Object> test() {
+    	CurrentIncreaseQuery query = new CurrentIncreaseQuery();
+    	query.setAsc(false);
+    	query.setSortField("increase");
+    	query.setOffset(0);
+    	query.setLimit(1);
+    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.JANUARY, 1)));
+    	LocalDate end = LocalDate.of(2018, Month.MARCH, 1);
+    	int dayDiff = LocalDate.of(2019, Month.MARCH, 15).getDayOfYear() - end.getDayOfYear();
+		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
+    	for (int i = 1; i <= dayDiff; i++) {
+    		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));
+    		if (query.getEnd().toLocalDate().getDayOfWeek() == DayOfWeek.SATURDAY || query.getEnd().toLocalDate().getDayOfWeek() == DayOfWeek.SUNDAY) {
+    			continue;
+    		}
+
+    		this.currentIncreaseService.initAnalysis(query, stockMainList);
+    	}
+    	return MapUtil.createSuccessMap();
+    }
 
     /**
      * 跳转到最近最大涨幅分析首页

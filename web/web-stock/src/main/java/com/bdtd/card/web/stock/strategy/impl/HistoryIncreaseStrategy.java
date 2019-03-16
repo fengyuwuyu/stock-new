@@ -23,10 +23,9 @@ public class HistoryIncreaseStrategy extends BaseAnalysisStrategy {
 		}
 		
 		StockMain curr = stockMains.get(index);
-		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		
 		// 1. 计算前十天最大涨幅，若小于INCREASE则返回
-		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - 25, index);
+		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, 0, index);
 		if (entity.getMaxIncrease() < INCREASE) {
 			return ;
 		}
@@ -54,7 +53,7 @@ public class HistoryIncreaseStrategy extends BaseAnalysisStrategy {
 		if (increaseCount < INCREASE_DAY) {
 			return;
 		}
-		
+		float maxIncrease = entity.getMaxIncrease();
 		ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
 		result.add(analysisResult);
 	}

@@ -170,24 +170,24 @@ public class InitStockServiceImpl implements InitStockServiceI {
 					List<List<Object>> list = (List<List<Object>>) detail.get("data");
 					if (list != null && list.size() > 0) {
 						String symbol = code.substring(1);
-//						String lastDay = this.stockDetailMapper.selectLastDay(symbol);
-//						if (lastDay != null) {
-//							lastDay = lastDay.replaceAll("-", "");
-//							List<List<Object>> inserts = new ArrayList<List<Object>>();
-//							for (int i = list.size() - 1; i >= 0; i--) {
-//								if (lastDay.equals(list.get(i).get(0))) {
-//									break;
-//								}
-//								inserts.add(list.get(i));
-//							}
-//							if (inserts.size() > 0) {
-//								this.stockMainMapper.insert(MapUtil.createMap("list", inserts, "symbol", symbol));
-//								 log.info("更新数据成功！插入的数据时 ： " + inserts.size());
-//							}
-//						} else {
-							// log.info("发现新的股票数据，开始插入， " + list.size());
+						String lastDay = this.stockDetailMapper.selectLastDay(symbol);
+						if (lastDay != null) {
+							lastDay = lastDay.replaceAll("-", "");
+							List<List<Object>> inserts = new ArrayList<List<Object>>();
+							for (int i = list.size() - 1; i >= 0; i--) {
+								if (lastDay.equals(list.get(i).get(0))) {
+									break;
+								}
+								inserts.add(list.get(i));
+							}
+							if (inserts.size() > 0) {
+								this.stockMainMapper.insert(MapUtil.createMap("list", inserts, "symbol", symbol));
+								 log.info("更新数据成功！插入的数据时 ： " + inserts.size());
+							}
+						} else {
+							 log.info("发现新的股票数据，开始插入， " + list.size());
 							this.stockMainMapper.insert(MapUtil.createMap("list", list, "symbol", symbol));
-//						}
+						}
 					}
 				}
 			}

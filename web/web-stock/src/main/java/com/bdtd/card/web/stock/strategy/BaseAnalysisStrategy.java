@@ -14,7 +14,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 	public static int CHECK_DAY = 20;
 	public static int INCREASE_DAY = 6;
 	public static int futureDay = 5;
-	public static float MIN_INCREASE = -8F;
+	public static float MIN_INCREASE = -10F;
 	public static float INCREASE = 20F;
 	protected int computeDay = 10;
 	

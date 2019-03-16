@@ -44,9 +44,11 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	public IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query) {
 		IPage<CurrentIncrease> page = findDb(query);
 		if (page.getTotal() == 0 || DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
-			initAnalysis(query);
+			List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
+			initAnalysis(query, stockMainList);
+			return findDb(query);
 		}
-		return findDb(query);
+		return page;
 	}
 	
 	private IPage<CurrentIncrease> findDb(CurrentIncreaseQuery query) {
@@ -56,12 +58,15 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		return this.page(new Page<>(query.getPage(), query.getLimit()), queryWrapper);
 	}
 	
-	private IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query) {
-		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
+	@Override
+	public IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query, List<StockMain> stockMainList) {
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
 		List<CurrentIncrease> result = new ArrayList<CurrentIncrease>(stockMainMap.size());
 		for (List<StockMain> stockMains : stockMainMap.values()) {
+			if (stockMains == null || stockMains.size() == 0) {
+				continue;
+			}
 			int index = StockUtils.getIndex(stockMains, query.getEnd());
 			if (index == -1) {
 				continue;
@@ -71,13 +76,13 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Float increase = stockMains.get(index).getIncrease();
 			LocalDate msaDay = DateUtil.long2LocalDate(curr.getDay().getTime());
 
-			Float twoIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 2, index).getMaxIncrease();
-			Float thressIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
-			Float fourIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
-			Float fiveIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
-			Float tenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 10, index).getMaxIncrease();
-			Float fifteenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 15, index).getMaxIncrease();
-			Float twentyIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 20, index).getMaxIncrease();
+			Float twoIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
+			Float thressIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
+			Float fourIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
+			Float fiveIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 6, index).getMaxIncrease();
+			Float tenIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 11, index).getMaxIncrease();
+			Float fifteenIncrease = StockUtils.findMaxIncrease(stockMains, index - 16, index).getMaxIncrease();
+			Float twentyIncrease = StockUtils.findMaxIncrease(stockMains, index - 21, index).getMaxIncrease();
 			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
 			StringBuilder increases = new StringBuilder();
 			StringBuilder volumes = new StringBuilder();
@@ -108,9 +113,7 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 				for (int i = index + 1; i <= a; i++) {
 					StockMain main = stockMains.get(i);
 					futureIncreases.append(main.getIncrease() + ", ");
-					futureVolumes.append(
-							CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue())
-									+ ", ");
+					futureVolumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
 				}
 			}
 

@@ -39,13 +39,13 @@ public class DownloadPerDay {
 	@Scheduled(cron = "0 0 16 * * ?")
 	public void execute(){
 		log.info("开始下载股票每天综合信息");
-		if(CommonsUtil.checkTime(holidayMapper)){
+//		if(CommonsUtil.checkTime(holidayMapper)){
 			try {
 				initStockServiceI.initStockEveryDay(null);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);;
 			}
-		}
+//		}
 		log.info("下载股票每天综合信息结束");
 	}
 }
