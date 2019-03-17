@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bdtd.card.common.util.DateUtil;
+import com.bdtd.card.data.stock.base.MidStockLevel;
+import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.dao.CurrentIncreaseMapper;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
@@ -34,6 +38,8 @@ import com.bdtd.card.data.stock.util.StockUtils;
 public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMapper, CurrentIncrease>
 		implements ICurrentIncreaseService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	private int historyDay = 10;
 	private int futureDay = 10;
 
@@ -54,6 +60,16 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	private IPage<CurrentIncrease> findDb(CurrentIncreaseQuery query) {
 		QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("msa_day", query.getEnd());
+		if (query.getStockType() != null && query.getStockType() != StockType.All.getType()) {
+			queryWrapper.eq("stock_type", query.getStockType());
+		}
+		if (query.getMax() != null && query.getMin() != null) {
+			queryWrapper.between(query.getSortField(), query.getMin(), query.getMax());
+		} else if (query.getMax() != null) {
+			queryWrapper.ge(query.getSortField(), query.getMax());
+		}else if (query.getMax() != null && query.getMin() != null) {
+			queryWrapper.le(query.getSortField(), query.getMin());
+		}
 		queryWrapper.orderBy(true, query.getAsc(), query.getSortField());
 		return this.page(new Page<>(query.getPage(), query.getLimit()), queryWrapper);
 	}
@@ -74,13 +90,17 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			StockMain curr = stockMains.get(index);
 			String symbol = stockMains.get(0).getSymbol();
 			Float increase = stockMains.get(index).getIncrease();
+			String name = null;
+			String code = null;
+			Float max = stockMains.get(index).getMax();
+			Float min = stockMains.get(index).getMin();
 			LocalDate msaDay = DateUtil.long2LocalDate(curr.getDay().getTime());
 
-			Float twoIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
-			Float thressIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
-			Float fourIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
-			Float fiveIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 6, index).getMaxIncrease();
-			Float tenIncrease = StockUtils.findCurrentMaxIncrease(stockMains, index - 11, index).getMaxIncrease();
+			Float twoIncrease = StockUtils.findMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
+			Float thressIncrease = StockUtils.findMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
+			Float fourIncrease = StockUtils.findMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
+			Float fiveIncrease = StockUtils.findMaxIncrease(stockMains, index - 6, index).getMaxIncrease();
+			Float tenIncrease = StockUtils.findMaxIncrease(stockMains, index - 11, index).getMaxIncrease();
 			Float fifteenIncrease = StockUtils.findMaxIncrease(stockMains, index - 16, index).getMaxIncrease();
 			Float twentyIncrease = StockUtils.findMaxIncrease(stockMains, index - 21, index).getMaxIncrease();
 			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
@@ -116,17 +136,36 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 					futureVolumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
 				}
 			}
-
-			CurrentIncrease currentIncrease = new CurrentIncrease(symbol, increase, twoIncrease, thressIncrease,
-					fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease,
-					increases.toString(), volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease,
-					futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(),
-					futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg,
-					msaDay);
-			result.add(currentIncrease);
+			
+			MidStockLevel midStockLevel = StockUtils.getStockLevel(stockMains, index - 30, index);
+			Integer firstLevelDay = midStockLevel.getFirstLevelDay();
+			Float firstLevelIncrease = midStockLevel.getFirstLevelIncrease();
+			Integer secondLevelDay = midStockLevel.getSecondLevelDay();
+			Float secondLevelIncrease = midStockLevel.getSecondLevelIncrease();
+			Integer thirdLevelDay = midStockLevel.getThirdLevelDay();
+			Float thirdLevelIncrease = midStockLevel.getThirdLevelIncrease();
+			Integer fourLevelDay = midStockLevel.getFourLevelDay();
+			Float fourLevelIncrease = midStockLevel.getFourLevelIncrease();
+			Integer fiveLevelDay = midStockLevel.getFiveLevelDay();
+			Float fiveLevelIncrease = midStockLevel.getFiveLevelIncrease();
+			Integer stockType = midStockLevel.getStockType();
+			try {
+				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, increases.toString(), 
+						volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg, 
+						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay);
+				result.add(currentIncrease);
+			} catch (Exception e) {
+				log.error(String.format("创建对象失败，day = %s", query.getEnd()), e);
+			}
 		}
 		
-		this.baseMapper.insertAll(result);
+		try {
+			if (result.size() > 0) {
+				this.baseMapper.insertAll(result);
+			}
+		} catch (Exception e) {
+			log.error(String.format("插入失败，day = %s, records = %s", query.getEnd(), result), e);
+		}
 		
 		Page<CurrentIncrease> page = new Page<>(query.getOffset(), query.getLimit());
 		page.setTotal(result.size());

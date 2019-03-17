@@ -4,12 +4,50 @@ import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.bdtd.card.data.stock.base.MidStockLevel;
+import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.model.ResultCompare;
 import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.data.stock.model.StockMain;
 import com.bdtd.card.data.stock.model.StockMiddleEntity;
 
 public class StockUtils {
+	
+	public static int getMinIndex(List<StockMain> stockMains, int begin, int end) {
+		begin = begin < 0 ? 0 : begin;
+		end = end >= stockMains.size() ? stockMains.size() - 1 : end;
+		
+		float min = stockMains.get(begin).getClose();
+		int minIndex = begin;
+		
+		for (int i = begin; i <= end; i++) {
+			float close = stockMains.get(i).getClose();
+			if (close < min) {
+				min = close;
+				minIndex = i;
+			}
+		}
+		
+		return minIndex;
+	}
+	
+	public static int getMaxIndex(List<StockMain> stockMains, int begin, int end) {
+		begin = begin < 0 ? 0 : begin;
+		end = end >= stockMains.size() ? stockMains.size() - 1 : end;
+		
+		float max = stockMains.get(begin).getClose();
+		int maxIndex = begin;
+		
+		for (int i = begin; i <= end; i++) {
+			float close = stockMains.get(i).getClose();
+			if (close > max) {
+				max = close;
+				maxIndex = i;
+			}
+		}
+		
+		return maxIndex;
+	}
 	
 	public static List<ResultDetail> sortAndLimit(List<ResultDetail> result, float limit, float maxIncrease) {
 		result = result.stream().filter((item) -> {return item.getHasIncrease() <= maxIncrease;}).collect(Collectors.toList());
@@ -121,13 +159,13 @@ public class StockUtils {
 			}
 		}
 		
-		if (minIndex > maxIndex) {
-			max = Float.MIN_VALUE;
-			for (int i = minIndex; i <= end; i++) {
+		if (maxIndex != end) {
+			min = Float.MAX_VALUE;
+			for (int i = maxIndex + 1; i <= end; i++) {
 				close = stockMains.get(i).getClose();
-				if (close > max) {
-					max = close;
-					maxIndex = i;
+				if (close < min) {
+					min = close;
+					minIndex = i;
 				}
 			}
 		}
@@ -136,8 +174,6 @@ public class StockUtils {
 		} else {
 			maxIncrease = (max - min) * 100 / min;
 		}
-//		if (minIndex < maxIndex) {
-//		}
 		
 		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
 	}
@@ -187,10 +223,16 @@ public class StockUtils {
 
 	public static float getVolumeAvgCompare(List<StockMain> stockMains, int index, int day) {
 		double total = 0f;
-		for (int j = index - day; j < index; j++) {
+		int begin = index - day;
+		begin = begin < 0 ? 0 : begin;
+		for (int j = begin; j < index; j++) {
 			total += stockMains.get(j).getVolume().doubleValue();
 		}
-		return Float.valueOf(CommonsUtil.formatDecimal(stockMains.get(index).getVolume().doubleValue() / (total / day)));
+		try {
+			return Float.valueOf(CommonsUtil.formatDecimal(stockMains.get(index).getVolume().doubleValue() / (total / day)));
+		} catch (Exception e) {
+			return 1000F;
+		}
 	}
 
 	public static StockMiddleEntity findRecentMaxIncrease(List<StockMain> stockMains, int begin, int end) {
@@ -213,5 +255,41 @@ public class StockUtils {
 		
 		maxIncrease = (max - min) * 100 / min;
 		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
+	}
+
+	public static MidStockLevel getStockLevel(List<StockMain> stockMains, int begin, int end) {
+		Integer firstLevelDay = null;
+		Float firstLevelIncrease = null;
+		Integer secondLevelDay = null;
+		Float secondLevelIncrease = null;
+		Integer thirdLevelDay = null;
+		Float thirdLevelIncrease = null;
+		Integer stockType = null;
+		
+		
+		int maxIndex = getMaxIndex(stockMains, begin, end);
+		int minIndex = getMinIndex(stockMains, begin, maxIndex);
+		// 2.若顶部是当天
+		firstLevelDay = maxIndex - minIndex;
+		firstLevelIncrease = (stockMains.get(maxIndex).getClose() - stockMains.get(minIndex).getClose()) * 100 / stockMains.get(minIndex).getClose();
+		stockType = StockType.INCREASE.getType();
+		if (maxIndex == end) {
+			return new MidStockLevel(firstLevelDay, firstLevelIncrease, stockType);
+		}
+		
+		int secondMinIndex = getMinIndex(stockMains, maxIndex + 1, end);
+		// 3.若第二底部是当天
+		secondLevelDay = secondMinIndex - maxIndex;
+		secondLevelIncrease = (stockMains.get(secondMinIndex).getClose() - stockMains.get(maxIndex).getClose()) * 100 / stockMains.get(maxIndex).getClose();
+		stockType = StockType.DECREASE.getType();
+		if (secondMinIndex == end) {
+			return new MidStockLevel(firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, stockType);
+		}
+		
+		int thirdMaxIndex = getMaxIndex(stockMains, secondMinIndex + 1, end);
+		thirdLevelDay = thirdMaxIndex - secondMinIndex;
+		thirdLevelIncrease = (stockMains.get(thirdMaxIndex).getClose() - stockMains.get(secondMinIndex).getClose()) * 100 / stockMains.get(secondMinIndex).getClose();
+		stockType = StockType.REBOUND.getType();
+		return new MidStockLevel(firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, stockType);
 	}
 }

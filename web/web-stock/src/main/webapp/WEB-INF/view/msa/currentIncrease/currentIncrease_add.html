@@ -8,24 +8,47 @@
             <div class="row">
                 <div class="col-sm-6 b-r">
                             <#input id="symbol" name="股票代码" type="text" dataOptions="required:true, validType:'length[1, 7]'" underline="true" />
+                            <#input id="name" name="名称" type="text" dataOptions="validType:'length[0, 4]'" underline="true" />
+                            <#input id="code" name="代码" type="text" dataOptions="validType:'length[0, 7]'" underline="true" />
+                            <#input id="max" name="最高价" type="text" underline="true" />
+                            <#input id="min" name="最低价" type="text" underline="true" />
                             <#input id="increase" name="当天涨幅" type="text" underline="true" />
                             <#input id="twoIncrease" name="2天涨幅" type="text" underline="true" />
                             <#input id="thressIncrease" name="3天涨幅" type="text" underline="true" />
                             <#input id="fourIncrease" name="4天涨幅" type="text" underline="true" />
                             <#input id="fiveIncrease" name="5天涨幅" type="text" underline="true" />
                             <#input id="tenIncrease" name="10天涨幅" type="text" underline="true" />
-                            <#input id="fifteenIncrease" name="15天涨幅" type="text" />
-                </div>
-
-                <div class="col-sm-6">
+                            <#input id="fifteenIncrease" name="15天涨幅" type="text" underline="true" />
                             <#input id="twentyIncrease" name="20天涨幅" type="text" underline="true" />
                             <#input id="maxIncrease" name="截止当前涨幅" type="text" underline="true" />
                             <#input id="increases" name="近十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
                             <#input id="volumes" name="近十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
                             <#input id="futureFiveDayIncrease" name="未来五天涨幅" type="text" underline="true" />
                             <#input id="futureTenDayIncrease" name="未来十天涨幅" type="text" underline="true" />
+                            <#input id="futureFifteenDayIncrease" name="未来十五天涨幅" type="text" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="futureTwentyDayIncrease" name="未来二十天涨幅" type="text" underline="true" />
                             <#input id="futureIncreases" name="未来十天涨幅" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
-                            <#input id="futureVolumes" name="未来十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" />
+                            <#input id="futureVolumes" name="未来十天成交量" type="text" dataOptions="validType:'length[0, 1024]'" underline="true" />
+                            <#input id="dayVolumeAvg" name="当天成交量比" type="text" underline="true" />
+                            <#input id="twoVolumeAvg" name="两天成交量比" type="text" underline="true" />
+                            <#input id="threeVolumeAvg" name="三天成交量比" type="text" underline="true" />
+                            <#input id="fourVolumeAvg" name="四天成交量比" type="text" underline="true" />
+                            <#input id="fiveVolumeAvg" name="五天成交量比" type="text" underline="true" />
+                            <#input id="firstLevelDay" name="第一阶段天" type="text" dataOptions="validType:'number'" underline="true" />
+                            <#input id="firstLevelIncrease" name="第一阶段涨幅" type="text" underline="true" />
+                            <#input id="secondLevelDay" name="第二阶段天" type="text" dataOptions="validType:'number'" underline="true" />
+                            <#input id="secondLevelIncrease" name="第二阶段涨幅" type="text" underline="true" />
+                            <#input id="thirdLevelDay" name="第三阶段天" type="text" dataOptions="validType:'number'" underline="true" />
+                            <#input id="thirdLevelIncrease" name="第三阶段涨幅" type="text" underline="true" />
+                            <#input id="fourLevelDay" name="第四阶段天" type="text" dataOptions="validType:'number'" underline="true" />
+                            <#input id="fourLevelIncrease" name="第四阶段涨幅" type="text" underline="true" />
+                            <#input id="fiveLevelDay" name="第五阶段天" type="text" dataOptions="validType:'number'" underline="true" />
+                            <#input id="fiveLevelIncrease" name="第五阶段涨幅" type="text" underline="true" />
+                            <#input id="stockType" name="股票类型" type="text" dataOptions="required:true, validType:'number'" underline="true" />
+                            <#input id="msaDay" name="分析日期" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" dataOptions="required:true" />
                 </div>
             </div>
 

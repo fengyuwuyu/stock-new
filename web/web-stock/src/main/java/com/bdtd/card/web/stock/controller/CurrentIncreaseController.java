@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
 import java.time.temporal.TemporalUnit;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bdtd.card.common.model.OriginMask;
 import com.bdtd.card.common.util.MapUtil;
+import com.bdtd.card.common.web.annotation.EnumEntity;
+import com.bdtd.card.common.web.annotation.EnumEntityList;
 import com.bdtd.card.common.web.base.BaseController;
+import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.data.stock.model.StockMain;
@@ -59,9 +64,9 @@ public class CurrentIncreaseController extends BaseController {
     	query.setSortField("increase");
     	query.setOffset(0);
     	query.setLimit(1);
-    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.JANUARY, 1)));
-    	LocalDate end = LocalDate.of(2018, Month.MARCH, 1);
-    	int dayDiff = LocalDate.of(2019, Month.MARCH, 15).getDayOfYear() - end.getDayOfYear();
+    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.DECEMBER, 1)));
+    	LocalDate end = LocalDate.of(2019, Month.FEBRUARY, 28);
+    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 14).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));
@@ -73,6 +78,13 @@ public class CurrentIncreaseController extends BaseController {
     	}
     	return MapUtil.createSuccessMap();
     }
+    
+    public static void main(String[] args) {
+    	long begin = LocalDate.of(2018, Month.MARCH, 1).getLong(ChronoField.EPOCH_DAY);
+    	long end = LocalDate.of(2019, Month.FEBRUARY, 28).getLong(ChronoField.EPOCH_DAY);
+    	long dayDiff = end - begin;
+    	System.out.println(dayDiff);
+	}
 
     /**
      * 跳转到最近最大涨幅分析首页
@@ -80,9 +92,14 @@ public class CurrentIncreaseController extends BaseController {
     @RequestMapping("")
     public String index(Model model) {
     	model.addAttribute("begin", new Date(DateUtil.getDate(2019, 1, 11).getTime()));
-    	model.addAttribute("end", new Date(System.currentTimeMillis()));
+    	LocalDate now = LocalDate.now();
+    	while (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		now = now.plus(-1, ChronoUnit.DAYS);
+    	}
+    	model.addAttribute("end", new Date(com.bdtd.card.common.util.DateUtil.localDate2Long(now)));
     	model.addAttribute("fieldItemList", MsaSortField.select());
     	model.addAttribute("ascItemList", OriginMask.select());
+    	model.addAttribute("stockTypeItemList", StockType.select());
     	
         return PREFIX + "currentIncrease.html";
     }
@@ -108,6 +125,7 @@ public class CurrentIncreaseController extends BaseController {
     /**
      * 获取最近最大涨幅分析列表
      */
+//    @EnumEntityList(entityList={@EnumEntity(enumName="StockType", fieldName="stockType")})
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(CurrentIncreaseQuery query) {

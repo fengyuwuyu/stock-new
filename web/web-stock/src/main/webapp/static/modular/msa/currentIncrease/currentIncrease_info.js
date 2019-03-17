@@ -1,5 +1,5 @@
 /**
- * 初始化最近最大涨幅分析详情对话框
+ * 初始化每日股票汇总详情对话框
  */
 var CurrentIncreaseInfoDlg = {
 

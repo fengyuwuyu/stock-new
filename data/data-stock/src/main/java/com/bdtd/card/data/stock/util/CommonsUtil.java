@@ -26,7 +26,11 @@ public class CommonsUtil {
 	private static DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 	public static String formatDecimal(double num) {
-		return decimalFormat.format(num);
+		try {
+			return decimalFormat.format(num);
+		} catch (Exception e) {
+		}
+		return "10000";
 	}
 	
 	public static float formatNumberToFloat(double num) {
