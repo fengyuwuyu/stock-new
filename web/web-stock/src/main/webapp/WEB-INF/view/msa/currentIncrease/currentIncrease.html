@@ -6,28 +6,34 @@
                 <div class="row row-lg">
                     <div class="col-sm-12">
                         <form id="searchForm" class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
+								<#input id="symbol" name="代码" />
+			                </div>
+                            <div class="col-sm-2">
 								<#input id="begin" name="开始日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${begin}" />
 			                </div>
-			                <div class="col-sm-3">
+			                <div class="col-sm-2">
 								<#input id="end" name="结束日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${end}" />
 			                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<#select id="stockType" name="股票类型" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${stockTypeItemList}" />
 		                </div>
-		                <div class="col-sm-3">
+		                <div class="col-sm-2">
 							<#input id="max" name="最大" />
 		                </div>
-		                <div class="col-sm-3">
+		                <div class="col-sm-2">
 							<#input id="min" name="最小" />
 		                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<#select id="sortField" name="排序字段" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${fieldItemList}" />
 		                </div>
-						<div class="col-sm-3">
+						<div class="col-sm-2">
 							<#select id="asc" name="排序规则" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${ascItemList}" value="${0}" />
 		                </div>
-                            <div class="col-sm-3">
+						<div class="col-sm-2">
+							<#select id="generate" name="重新生成" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${ascItemList}" value="${0}" />
+		                </div>
+                            <div class="col-sm-2">
                                 <#button name="搜索" icon="fa-search" clickFun="CurrentIncrease.search()"/>
                                 <#button name="重置" icon="fa-refresh" clickFun="CurrentIncrease.resetSearchForm()"/>
                             </div>

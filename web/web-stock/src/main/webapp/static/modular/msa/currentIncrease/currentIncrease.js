@@ -22,6 +22,14 @@ CurrentIncrease.initColumn = function () {
         },
             {title: '主键', field: 'id', visible: false, align: 'center', valign: 'middle'},
             {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
+            {title: '当前涨幅', field: 'currIncrease', visible: true, align: 'center', valign: 'middle'},
+            {title: '当前委比', field: 'totalBuyVolume', visible: true, align: 'center', valign: 'middle', formatter: function(value, item) {
+            	return Feng.formatNum((value - item.totalSellVolume) * 100 / (value + item.totalSellVolume));
+            }},
+            {title: '成交比', field: 'volume', visible: true, align: 'center', valign: 'middle', formatter: function(value, item) {
+            	return Feng.formatNum(item.currVolume * 100 / value);
+            }},
+            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
             {title: '第一阶段天', field: 'firstLevelDay', visible: false, align: 'center', valign: 'middle'},
             {title: '第一阶段涨幅', field: 'firstLevelIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '第二阶段天', field: 'secondLevelDay', visible: false, align: 'center', valign: 'middle'},

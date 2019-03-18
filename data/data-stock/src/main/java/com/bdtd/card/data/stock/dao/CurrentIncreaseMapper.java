@@ -3,8 +3,10 @@ package com.bdtd.card.data.stock.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import com.bdtd.card.data.stock.model.CurrentIncrease;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.bdtd.card.data.stock.model.CurrentIncrease;
+import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 
 /**
  * <p>
@@ -17,5 +19,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface CurrentIncreaseMapper extends BaseMapper<CurrentIncrease> {
 
 	int insertAll(@Param("list") List<CurrentIncrease> list);
+
+	long countByQuery(CurrentIncreaseQuery query);
+
+	List<CurrentIncrease> findByQuery(CurrentIncreaseQuery query);
 	
 }

@@ -2,6 +2,7 @@ package com.bdtd.card.data.stock.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,9 +16,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bdtd.card.base.consts.Consts;
+import com.bdtd.card.common.model.OriginMask;
 import com.bdtd.card.common.util.DateUtil;
 import com.bdtd.card.data.stock.base.MidStockLevel;
-import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.dao.CurrentIncreaseMapper;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
@@ -26,6 +28,7 @@ import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
 import com.bdtd.card.data.stock.util.CommonsUtil;
 import com.bdtd.card.data.stock.util.StockUtils;
+import com.bdtd.card.data.stock.util.model.CurrentStockData;
 
 /**
  * <p>
@@ -49,31 +52,70 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	@Override
 	public IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query) {
 		IPage<CurrentIncrease> page = findDb(query);
-		if (page.getTotal() == 0 || DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
-			List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
-			initAnalysis(query, stockMainList);
-			return findDb(query);
-		}
+//		if (page.getTotal() == 0 || DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
+//			List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
+//			initAnalysis(query, stockMainList);
+//			return findDb(query);
+//		}
 		return page;
 	}
 	
 	private IPage<CurrentIncrease> findDb(CurrentIncreaseQuery query) {
-		QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("msa_day", query.getEnd());
-		if (query.getStockType() != null && query.getStockType() != StockType.All.getType()) {
-			queryWrapper.eq("stock_type", query.getStockType());
+		if (query.getGenerate() == OriginMask.YES.getType()) {
+			QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
+			queryWrapper.eq("msa_day", query.getEnd());
+			this.remove(queryWrapper );
+			List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
+			initAnalysis(query, stockMainList);
 		}
-		if (query.getMax() != null && query.getMin() != null) {
-			queryWrapper.between(query.getSortField(), query.getMin(), query.getMax());
-		} else if (query.getMax() != null) {
-			queryWrapper.ge(query.getSortField(), query.getMax());
-		}else if (query.getMax() != null && query.getMin() != null) {
-			queryWrapper.le(query.getSortField(), query.getMin());
+		long total = this.baseMapper.countByQuery(query);
+		IPage<CurrentIncrease> page = null;
+		if (total == 0) {
+			page = new Page<>(query.getPage(), query.getLimit(), total);
+			page.setRecords(Collections.emptyList());
+			return page;
 		}
-		queryWrapper.orderBy(true, query.getAsc(), query.getSortField());
-		return this.page(new Page<>(query.getPage(), query.getLimit()), queryWrapper);
+		List<CurrentIncrease> list = this.baseMapper.findByQuery(query);
+		getCurrentData(list);
+		page = new Page<>(query.getPage(), query.getLimit(), total);
+		getCurrentData(list);
+		page.setRecords(list);
+		return page;
+		
 	}
 	
+//	private IPage<CurrentIncrease> findDb(CurrentIncreaseQuery query) {
+//		QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
+//		queryWrapper.eq("msa_day", query.getEnd());
+//		if (query.getStockType() != null && query.getStockType() != StockType.All.getType()) {
+//			queryWrapper.eq("stock_type", query.getStockType());
+//		}
+//		if (query.getMax() != null && query.getMin() != null) {
+//			queryWrapper.between(query.getSortField(), query.getMin(), query.getMax());
+//		} else if (query.getMax() != null) {
+//			queryWrapper.ge(query.getSortField(), query.getMax());
+//		}else if (query.getMax() != null && query.getMin() != null) {
+//			queryWrapper.le(query.getSortField(), query.getMin());
+//		}
+//		queryWrapper.orderBy(true, query.getAsc(), query.getSortField());
+//		return this.page(new Page<>(query.getPage(), query.getLimit()), queryWrapper);
+//	}
+	
+	private void getCurrentData(List<CurrentIncrease> list) {
+		List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
+		List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
+		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(Consts.STOCK_CURR_DATA_URL, symbols, types);
+		list.forEach((item) -> {
+			CurrentStockData data = map.get(item.getSymbol());
+			if (data != null) {
+				item.setCurrIncrease(CommonsUtil.formatNumberToFloat((data.getCurrIncrease() - item.getClose()) * 100 / item.getClose()));
+				item.setTotalBuyVolume(data.getTotalBuyVolume());
+				item.setTotalSellVolume(data.getTotalSellVolume());
+				item.setCurrVolume(data.getCurrVolume());
+			}
+		});
+	}
+
 	@Override
 	public IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query, List<StockMain> stockMainList) {
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
@@ -94,6 +136,8 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			String code = null;
 			Float max = stockMains.get(index).getMax();
 			Float min = stockMains.get(index).getMin();
+			Long volume = stockMains.get(index).getVolume();
+			Float close = stockMains.get(index).getClose();
 			LocalDate msaDay = DateUtil.long2LocalDate(curr.getDay().getTime());
 
 			Float twoIncrease = StockUtils.findMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
@@ -150,9 +194,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Float fiveLevelIncrease = midStockLevel.getFiveLevelIncrease();
 			Integer stockType = midStockLevel.getStockType();
 			try {
-				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, increases.toString(), 
+				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, volume, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, increases.toString(), 
 						volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg, 
-						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay);
+						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay, close);
 				result.add(currentIncrease);
 			} catch (Exception e) {
 				log.error(String.format("创建对象失败，day = %s", query.getEnd()), e);
