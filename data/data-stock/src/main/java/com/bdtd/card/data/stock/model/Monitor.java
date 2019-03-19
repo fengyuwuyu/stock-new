@@ -1,13 +1,13 @@
 package com.bdtd.card.data.stock.model;
 
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
-import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 /**
@@ -79,7 +79,28 @@ public class Monitor extends Model<Monitor> {
 	private Integer status;
 
 	@TableField(exist = false)
+	private Float increase;
+	@TableField(exist = false)
+	private Float volumeCompare;
+
+	@TableField(exist = false)
 	private Integer type;
+
+	public Float getIncrease() {
+		return increase;
+	}
+
+	public void setIncrease(Float increase) {
+		this.increase = increase;
+	}
+
+	public Float getVolumeCompare() {
+		return volumeCompare;
+	}
+
+	public void setVolumeCompare(Float volumeCompare) {
+		this.volumeCompare = volumeCompare;
+	}
 
 	public Integer getMonitorType() {
 		return monitorType;
@@ -182,6 +203,7 @@ public class Monitor extends Model<Monitor> {
 		return "Monitor [id=" + id + ", symbol=" + symbol + ", beginDate=" + beginDate + ", endDate=" + endDate
 				+ ", buyPrice=" + buyPrice + ", sellPriceHigh=" + sellPriceHigh + ", sellPriceLow=" + sellPriceLow
 				+ ", createDate=" + createDate + ", updateDate=" + updateDate + ", monitorType=" + monitorType
-				+ ", status=" + status + ", type=" + type + "]";
+				+ ", status=" + status + ", increase=" + increase + ", volumeCompare=" + volumeCompare + ", type="
+				+ type + "]";
 	}
 }

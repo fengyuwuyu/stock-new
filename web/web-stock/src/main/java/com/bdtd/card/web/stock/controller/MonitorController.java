@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bdtd.card.base.consts.StockConsts;
 import com.bdtd.card.base.model.MonitorStatus;
 import com.bdtd.card.base.model.MonitorType;
 import com.bdtd.card.common.consts.Consts;
@@ -26,10 +28,14 @@ import com.bdtd.card.common.web.annotation.EnumEntity;
 import com.bdtd.card.common.web.annotation.EnumEntityList;
 import com.bdtd.card.common.web.base.BaseController;
 import com.bdtd.card.common.web.base.Tip;
+import com.bdtd.card.data.stock.dao.MonitorMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.data.stock.model.Monitor;
 import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
 import com.bdtd.card.data.stock.service.IMonitorService;
+import com.bdtd.card.data.stock.util.CommonsUtil;
+import com.bdtd.card.data.stock.util.StockUtils;
+import com.bdtd.card.data.stock.util.model.CurrentStockData;
 import com.bdtd.card.web.admin.log.LogObjectHolder;
 
 /**
@@ -47,6 +53,8 @@ public class MonitorController extends BaseController {
 	private IMonitorService monitorService;
 	@Autowired
 	private ICurrentIncreaseService currentIncreaseService;
+	@Autowired
+	private MonitorMapper monitorMapper;
 
 	/**
 	 */
@@ -77,15 +85,26 @@ public class MonitorController extends BaseController {
 
 	/**
 	 */
-	@EnumEntityList(entityList = { @EnumEntity(enumName = "MonitorStatus", fieldName = "status"),
-			@EnumEntity(enumName = "MonitorType", fieldName = "monitorType") })
+//	@EnumEntityList(entityList = { @EnumEntity(enumName = "MonitorStatus", fieldName = "status"),
+//			@EnumEntity(enumName = "MonitorType", fieldName = "monitorType") })
 	@RequestMapping(value = "/list")
 	@ResponseBody
 	public Object list(String condition, Integer offset, Integer limit) {
-		QueryWrapper<Monitor> wrapper = new QueryWrapper<>();
-		wrapper.orderByDesc(Consts.DEFAULT_SORT_FIELD);
-		IPage<Map<String, Object>> page = monitorService.pageMaps(new Page<>(offset, limit), wrapper);
-		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
+//		QueryWrapper<Monitor> wrapper = new QueryWrapper<>();
+//		wrapper.orderByDesc(Consts.DEFAULT_SORT_FIELD);
+//		IPage<Map<String, Object>> page = monitorService.pageMaps(new Page<>(offset, limit), wrapper);
+		
+		List<Monitor> list = this.monitorMapper.findAll1();
+		List<String> symbols = list.stream().map(Monitor::getSymbol).collect(Collectors.toList());
+		List<Integer> types = list.stream().map(Monitor::getType).collect(Collectors.toList());
+		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
+		list.forEach((item) -> {
+			CurrentStockData data = map.get(item.getSymbol());
+			item.setIncrease(data.getCurrIncrease());
+			item.setVolumeCompare(CommonsUtil.formatNumberToFloat((data.getTotalBuyVolume().floatValue() - data.getTotalSellVolume().floatValue()) * 100 / (data.getTotalBuyVolume().floatValue() + data.getTotalSellVolume().floatValue())));
+		});
+		
+		return MapUtil.createSuccessMap("rows", list, "total", list.size());
 	}
 
 	/**

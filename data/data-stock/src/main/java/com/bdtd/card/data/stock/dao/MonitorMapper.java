@@ -17,5 +17,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface MonitorMapper extends BaseMapper<Monitor> {
 
 	List<Monitor> findAll();
+	
+	List<Monitor> findAll1();
 
 }

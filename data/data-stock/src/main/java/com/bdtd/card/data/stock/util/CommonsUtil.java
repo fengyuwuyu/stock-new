@@ -256,6 +256,15 @@ public class CommonsUtil {
 		System.out.println(hour);
 		System.out.println(minute);
 	}
+	
+	public static boolean checkTime1(LocalDateTime now) {
+		int hour = now.get(ChronoField.HOUR_OF_DAY);
+		
+		if (hour >= 9 && hour < 15) {
+			return true;
+		}
+		return false;
+	}
 
 	public static boolean checkTime(LocalDateTime now) {
 		int hour = now.get(ChronoField.HOUR_OF_DAY);

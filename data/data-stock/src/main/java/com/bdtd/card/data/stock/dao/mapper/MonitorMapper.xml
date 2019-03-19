@@ -18,16 +18,21 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, symbol, begin_date beginDate, end_date endDate, buy_price buyPrice, sell_price_high sellPriceHigh, sell_price_low sellPriceLow, monitorType, status, create_date createDate, update_date updateDate
+        id, symbol, begin_date beginDate, end_date endDate, buy_price buyPrice, sell_price_high sellPriceHigh, sell_price_low sellPriceLow, monitor_type monitorType, status, create_date createDate, update_date updateDate
     </sql>
     
     <sql id="Base_Column_List_Prefix">
-        a.id, a.symbol, a.begin_date beginDate, a.end_date endDate, a.buy_price buyPrice, a.sell_price_high sellPriceHigh, a.sell_price_low sellPriceLow, a.monitorType, a.status, a.create_date createDate, a.update_date updateDate
+        a.id, a.symbol, a.begin_date beginDate, a.end_date endDate, a.buy_price buyPrice, a.sell_price_high sellPriceHigh, a.sell_price_low sellPriceLow, a.monitor_type monitorType, a.status, a.create_date createDate, a.update_date updateDate
     </sql>
     
     <select id="findAll" resultType="com.bdtd.card.data.stock.model.Monitor">
     	select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) type from stock_monitor a 
     	left join stock b on a.symbol=b.symbol where a.status = 1
+    </select>
+    
+    <select id="findAll1" resultType="com.bdtd.card.data.stock.model.Monitor">
+    	select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) type from stock_monitor a 
+    	left join stock b on a.symbol=b.symbol where a.status != 3
     </select>
 
 </mapper>

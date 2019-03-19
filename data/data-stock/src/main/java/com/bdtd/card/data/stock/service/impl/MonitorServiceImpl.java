@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bdtd.card.base.consts.Consts;
+import com.bdtd.card.base.consts.StockConsts;
 import com.bdtd.card.base.model.MonitorStatus;
 import com.bdtd.card.base.model.MonitorType;
 import com.bdtd.card.common.util.HttpUtils;
@@ -41,7 +41,7 @@ public class MonitorServiceImpl extends ServiceImpl<MonitorMapper, Monitor> impl
 	public void doMonitor() {
 		List<Monitor> list = this.baseMapper.findAll();
 		if (list.size() > 0) {
-			String url = getUrl(Consts.STOCK_CURR_DATA_URL, list);
+			String url = getUrl(StockConsts.STOCK_CURR_DATA_URL, list);
 			String result = HttpUtils.sendGet(url, null, "GB2312");
 			dealResult(result, list);
 		}
