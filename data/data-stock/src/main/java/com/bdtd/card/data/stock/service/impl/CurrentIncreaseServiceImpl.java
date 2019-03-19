@@ -1,6 +1,7 @@
 package com.bdtd.card.data.stock.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -78,7 +79,6 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		List<CurrentIncrease> list = this.baseMapper.findByQuery(query);
 		getCurrentData(list);
 		page = new Page<>(query.getPage(), query.getLimit(), total);
-		getCurrentData(list);
 		page.setRecords(list);
 		return page;
 		
@@ -102,6 +102,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 //	}
 	
 	private void getCurrentData(List<CurrentIncrease> list) {
+		if (!CommonsUtil.checkTime(LocalDateTime.now())) {
+			return;
+		}
 		List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
 		List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
 		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(Consts.STOCK_CURR_DATA_URL, symbols, types);

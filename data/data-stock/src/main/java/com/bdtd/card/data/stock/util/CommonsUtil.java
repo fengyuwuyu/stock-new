@@ -4,11 +4,14 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bdtd.card.common.util.DateUtil;
 import com.bdtd.card.data.stock.dao.HolidayMapper;
 import com.bdtd.card.data.stock.model.ResultDetail;
 
@@ -83,10 +86,6 @@ public class CommonsUtil {
 			return;
 		}
 
-	}
-
-	public static void main(String[] args) {
-		deleteEmptyDir("F:/");
 	}
 
 	/**
@@ -241,15 +240,26 @@ public class CommonsUtil {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean checkTime(HolidayMapper holidayMapper) {
-		Date now = new Date();
+		LocalDateTime now = LocalDateTime.now();
 		// 如果是节假日，则直接返回false
 		if (isHoliday(now, holidayMapper)) {
 			return false;
 		}
-		int hour = now.getHours();
-		int minute = now.getMinutes();
+		return checkTime(now);
+	}
+	
+	public static void main(String[] args) {
+		LocalDateTime now = LocalDateTime.now();
+		long hour = now.getLong(ChronoField.HOUR_OF_DAY);
+		long minute = now.getLong(ChronoField.MINUTE_OF_HOUR);
+		System.out.println(hour);
+		System.out.println(minute);
+	}
+
+	public static boolean checkTime(LocalDateTime now) {
+		int hour = now.get(ChronoField.HOUR_OF_DAY);
+		int minute = now.get(ChronoField.MINUTE_OF_HOUR);
 		
 		if (hour >= 9 && hour < 12) {
 			if (hour == 9) {
@@ -268,8 +278,8 @@ public class CommonsUtil {
 		return false;
 	}
 
-	public static boolean isHoliday(Date now, HolidayMapper holidayMapper) {
-		String day = holidayMapper.queryByDay(new java.sql.Date(now.getTime()));
+	public static boolean isHoliday(LocalDateTime now, HolidayMapper holidayMapper) {
+		String day = holidayMapper.queryByDay(new java.sql.Date(DateUtil.localDateTime2Long(now)));
 		if (day == null || "".equals(day)) {
 			return false;
 		}

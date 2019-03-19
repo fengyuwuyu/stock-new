@@ -29,7 +29,6 @@ CurrentIncrease.initColumn = function () {
             {title: '成交比', field: 'volume', visible: true, align: 'center', valign: 'middle', formatter: function(value, item) {
             	return Feng.formatNum(item.currVolume * 100 / value);
             }},
-            {title: '股票代码', field: 'symbol', visible: true, align: 'center', valign: 'middle'},
             {title: '第一阶段天', field: 'firstLevelDay', visible: false, align: 'center', valign: 'middle'},
             {title: '第一阶段涨幅', field: 'firstLevelIncrease', visible: true, align: 'center', valign: 'middle'},
             {title: '第二阶段天', field: 'secondLevelDay', visible: false, align: 'center', valign: 'middle'},
@@ -135,6 +134,18 @@ CurrentIncrease.openCurrentIncreaseDetail = function () {
     }
 };
 
+CurrentIncrease.addMonitor = function () {
+	if (this.check()) {
+		var symbol = this.seItem['symbol'];
+		Feng.ajaxJson(Feng.ctxPath + '/monitor/addMonitor', {symbol: symbol, beginDate: this.seItem['msaDay']}, function(data) {
+			if (data.code == 200) {
+				Feng.msg('添加成功')
+			} else {
+				Feng.msg(data.message);
+			}
+		});
+	}
+}
 /**
  * 删除每日股票汇总
  */
@@ -167,4 +178,9 @@ $(function () {
     var defaultColunms = CurrentIncrease.initColumn();
     var table = new BSTable(CurrentIncrease.id, "/currentIncrease/list", defaultColunms, {pageSize: 50});
     CurrentIncrease.table = table.init();
+    $('#CurrentIncreaseTable').on('dbl-click-row.bs.table', function (row, $element, field) {
+        console.log($element)
+        var begin = $('#end').val();
+		window.open(Feng.ctxPath+'/stock/showChartIndex?symbol='+$element.symbol+'&begin='+begin + '&type=1');
+    });
 });

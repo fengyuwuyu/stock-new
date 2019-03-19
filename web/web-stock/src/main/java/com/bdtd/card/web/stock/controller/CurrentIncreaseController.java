@@ -128,6 +128,9 @@ public class CurrentIncreaseController extends BaseController {
     	if (query.getBegin() == null || query.getEnd() == null) {
     		return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0L);
     	}
+    	if (query.getStockType() == StockType.All.getType()) {
+    		query.setStockType(null);
+    	}
     	IPage<CurrentIncrease> page = this.currentIncreaseService.findByQuery(query);
 		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
     }
