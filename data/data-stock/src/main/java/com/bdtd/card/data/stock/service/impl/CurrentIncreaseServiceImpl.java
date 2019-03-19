@@ -79,6 +79,7 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		List<CurrentIncrease> list = this.baseMapper.findByQuery(query);
 		getCurrentData(list);
 		page = new Page<>(query.getPage(), query.getLimit(), total);
+		getCurrentData(list);
 		page.setRecords(list);
 		return page;
 		
@@ -105,6 +106,7 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		if (!CommonsUtil.checkTime(LocalDateTime.now())) {
 			return;
 		}
+		
 		List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
 		List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
 		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(Consts.STOCK_CURR_DATA_URL, symbols, types);
@@ -142,6 +144,14 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Long volume = stockMains.get(index).getVolume();
 			Float close = stockMains.get(index).getClose();
 			LocalDate msaDay = DateUtil.long2LocalDate(curr.getDay().getTime());
+			
+			Float preIncrease = null;
+			Long preVolume = null;
+			try {
+				preIncrease = stockMains.get(index - 1).getIncrease();
+				preVolume = stockMains.get(index - 1).getVolume();
+			} catch (Exception e) {
+			}
 
 			Float twoIncrease = StockUtils.findMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
 			Float thressIncrease = StockUtils.findMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
@@ -199,7 +209,8 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			try {
 				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, volume, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, increases.toString(), 
 						volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg, 
-						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay, close);
+						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay, 
+						close, preIncrease, preVolume);
 				result.add(currentIncrease);
 			} catch (Exception e) {
 				log.error(String.format("创建对象失败，day = %s", query.getEnd()), e);

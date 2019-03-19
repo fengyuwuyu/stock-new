@@ -257,6 +257,12 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 	 */
 	@TableField("five_level_increase")
 	private Float fiveLevelIncrease;
+	
+	@TableField("pre_increase")
+	private Float preIncrease;
+	
+	@TableField("pre_volume")
+	private Long preVolume;
 
 	/**
 	 * 股票类型
@@ -293,7 +299,7 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 			Float twoVolumeAvg, Float threeVolumeAvg, Float fourVolumeAvg, Float fiveVolumeAvg, Integer firstLevelDay,
 			Float firstLevelIncrease, Integer secondLevelDay, Float secondLevelIncrease, Integer thirdLevelDay,
 			Float thirdLevelIncrease, Integer fourLevelDay, Float fourLevelIncrease, Integer fiveLevelDay,
-			Float fiveLevelIncrease, Integer stockType, LocalDate msaDay, Float close) {
+			Float fiveLevelIncrease, Integer stockType, LocalDate msaDay, Float close, Float preIncrease, Long preVolume) {
 		super();
 		this.symbol = symbol;
 		this.name = name;
@@ -336,6 +342,24 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 		this.stockType = stockType;
 		this.msaDay = msaDay;
 		this.close = close;
+		this.preIncrease = preIncrease;
+		this.preVolume = preVolume;
+	}
+
+	public Float getPreIncrease() {
+		return preIncrease;
+	}
+
+	public void setPreIncrease(Float preIncrease) {
+		this.preIncrease = preIncrease;
+	}
+
+	public Long getPreVolume() {
+		return preVolume;
+	}
+
+	public void setPreVolume(Long preVolume) {
+		this.preVolume = preVolume;
 	}
 
 	public Float getClose() {
