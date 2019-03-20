@@ -170,13 +170,13 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			} catch (Exception e) {
 			}
 
-			Float twoIncrease = StockUtils.findMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
-			Float thressIncrease = StockUtils.findMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
-			Float fourIncrease = StockUtils.findMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
-			Float fiveIncrease = StockUtils.findMaxIncrease(stockMains, index - 6, index).getMaxIncrease();
-			Float tenIncrease = StockUtils.findMaxIncrease(stockMains, index - 11, index).getMaxIncrease();
-			Float fifteenIncrease = StockUtils.findMaxIncrease(stockMains, index - 16, index).getMaxIncrease();
-			Float twentyIncrease = StockUtils.findMaxIncrease(stockMains, index - 21, index).getMaxIncrease();
+			Float twoIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 2, index).getMaxIncrease();
+			Float thressIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
+			Float fourIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
+			Float fiveIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
+			Float tenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 10, index).getMaxIncrease();
+			Float fifteenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 15, index).getMaxIncrease();
+			Float twentyIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 20, index).getMaxIncrease();
 			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
 			StringBuilder increases = new StringBuilder();
 			StringBuilder volumes = new StringBuilder();

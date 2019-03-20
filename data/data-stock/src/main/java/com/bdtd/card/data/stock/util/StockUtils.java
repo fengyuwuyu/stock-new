@@ -225,9 +225,6 @@ public class StockUtils {
 	}
 
 	public static StockMiddleEntity findCurrentMaxIncrease(List<StockMain> stockMains, int begin, int end) {
-		if ("002356".equals(stockMains.get(0).getSymbol())) {
-			System.out.println();
-		}
 		begin = begin < 0 ? 0 : begin;
 		end = end > stockMains.size() ? stockMains.size() - 1 : end;
 		int minIndex = begin + 1;

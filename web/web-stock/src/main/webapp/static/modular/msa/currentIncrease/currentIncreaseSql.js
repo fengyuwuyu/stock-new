@@ -27,7 +27,7 @@ CurrentIncrease.initColumn = function () {
             	return Feng.formatNum((value - item.totalSellVolume) * 100 / (value + item.totalSellVolume));
             }},
             {title: '成交量比', field: 'volume', visible: true, align: 'center', valign: 'middle',sortable : true, formatter: function(value, item) {
-            	return Feng.formatNum(item.currVolume * 100 / value);
+            	return Feng.formatNum(item.currVolume / value);
             }},
             {title: '第一阶段天', field: 'firstLevelDay', visible: false, align: 'center', valign: 'middle'},
             {title: '第一阶段涨幅', field: 'firstLevelIncrease', visible: true, align: 'center', valign: 'middle',sortable : true},

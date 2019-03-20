@@ -137,7 +137,7 @@
 		select count(1) from msa_current_increase a
 		<where>
 			<trim suffixOverrides="and">
-				a.pre_increase &gt; -3 and a.pre_increase &lt; 5 and a.pre_volume &lt; a.volume and a.first_level_increase &gt; 30 and
+				a.pre_increase &gt; 6 and a.pre_volume &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 5 and a.increase &gt; -5 and
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
@@ -166,7 +166,7 @@
 		left join stock b on a.symbol = b.symbol
 		<where>
 			<trim suffixOverrides="and">
-				a.pre_increase &gt; -3 and a.pre_increase &lt; 5 and a.pre_volume &lt; a.volume and a.first_level_increase &gt; 30 and
+				a.pre_increase &gt; 6 and a.pre_volume &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 5 and a.increase &gt; -5 and
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
