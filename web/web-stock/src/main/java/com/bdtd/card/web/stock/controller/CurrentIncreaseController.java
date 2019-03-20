@@ -87,7 +87,7 @@ public class CurrentIncreaseController extends BaseController {
      */
     @RequestMapping("")
     public String index(Model model) {
-    	model.addAttribute("begin", new Date(DateUtil.getDate(2019, 1, 11).getTime()));
+    	model.addAttribute("begin", new Date(DateUtil.getDate(2018, 12, 3).getTime()));
     	LocalDate now = LocalDate.now();
     	while (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
     		now = now.plus(-1, ChronoUnit.DAYS);
