@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bdtd.card.base.consts.StockConsts;
 import com.bdtd.card.base.model.MonitorStatus;
 import com.bdtd.card.base.model.MonitorType;
-import com.bdtd.card.common.consts.Consts;
 import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.common.web.annotation.EnumEntity;
 import com.bdtd.card.common.web.annotation.EnumEntityList;
@@ -95,14 +92,16 @@ public class MonitorController extends BaseController {
 //		IPage<Map<String, Object>> page = monitorService.pageMaps(new Page<>(offset, limit), wrapper);
 		
 		List<Monitor> list = this.monitorMapper.findAll1();
-		List<String> symbols = list.stream().map(Monitor::getSymbol).collect(Collectors.toList());
-		List<Integer> types = list.stream().map(Monitor::getType).collect(Collectors.toList());
-		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
-		list.forEach((item) -> {
-			CurrentStockData data = map.get(item.getSymbol());
-			item.setIncrease(data.getCurrIncrease());
-			item.setVolumeCompare(CommonsUtil.formatNumberToFloat((data.getTotalBuyVolume().floatValue() - data.getTotalSellVolume().floatValue()) * 100 / (data.getTotalBuyVolume().floatValue() + data.getTotalSellVolume().floatValue())));
-		});
+		if (list.size() > 0) {
+			List<String> symbols = list.stream().map(Monitor::getSymbol).collect(Collectors.toList());
+			List<Integer> types = list.stream().map(Monitor::getType).collect(Collectors.toList());
+			Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
+			list.forEach((item) -> {
+				CurrentStockData data = map.get(item.getSymbol());
+				item.setIncrease(data.getCurrIncrease());
+				item.setVolumeCompare(CommonsUtil.formatNumberToFloat((data.getTotalBuyVolume().floatValue() - data.getTotalSellVolume().floatValue()) * 100 / (data.getTotalBuyVolume().floatValue() + data.getTotalSellVolume().floatValue())));
+			});
+		}
 		
 		return MapUtil.createSuccessMap("rows", list, "total", list.size());
 	}

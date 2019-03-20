@@ -124,18 +124,20 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			return;
 		}
 		
-		List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
-		List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
-		Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
-		list.forEach((item) -> {
-			CurrentStockData data = map.get(item.getSymbol());
-			if (data != null) {
-				item.setCurrIncrease(CommonsUtil.formatNumberToFloat((data.getCurrIncrease() - item.getClose()) * 100 / item.getClose()));
-				item.setTotalBuyVolume(data.getTotalBuyVolume());
-				item.setTotalSellVolume(data.getTotalSellVolume());
-				item.setCurrVolume(data.getCurrVolume());
-			}
-		});
+		if (list.size() > 0) {
+			List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
+			List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
+			Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
+			list.forEach((item) -> {
+				CurrentStockData data = map.get(item.getSymbol());
+				if (data != null) {
+					item.setCurrIncrease(CommonsUtil.formatNumberToFloat((data.getCurrIncrease() - item.getClose()) * 100 / item.getClose()));
+					item.setTotalBuyVolume(data.getTotalBuyVolume());
+					item.setTotalSellVolume(data.getTotalSellVolume());
+					item.setCurrVolume(data.getCurrVolume());
+				}
+			});
+		}
 	}
 
 	@Override
