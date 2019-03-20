@@ -22,4 +22,6 @@ public interface ICurrentIncreaseService extends IService<CurrentIncrease> {
 	
 	IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query, List<StockMain> stockMainList) ;
 
+	IPage<CurrentIncrease> findBySql(CurrentIncreaseQuery query);
+
 }

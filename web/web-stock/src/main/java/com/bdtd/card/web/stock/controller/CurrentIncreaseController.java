@@ -60,9 +60,9 @@ public class CurrentIncreaseController extends BaseController {
     	query.setSortField("increase");
     	query.setOffset(0);
     	query.setLimit(1);
-    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.DECEMBER, 1)));
-    	LocalDate end = LocalDate.of(2019, Month.FEBRUARY, 28);
-    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 14).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
+    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.OCTOBER, 1)));
+    	LocalDate end = LocalDate.of(2019, Month.JANUARY, 1);
+    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 19).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));
@@ -99,6 +99,24 @@ public class CurrentIncreaseController extends BaseController {
     	
         return PREFIX + "currentIncrease.html";
     }
+    
+    /**
+     * 跳转到最近最大涨幅分析首页
+     */
+    @RequestMapping("/sql")
+    public String indexBySql(Model model) {
+    	model.addAttribute("begin", new Date(DateUtil.getDate(2019, 1, 11).getTime()));
+    	LocalDate now = LocalDate.now();
+    	while (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		now = now.plus(-1, ChronoUnit.DAYS);
+    	}
+    	model.addAttribute("end", new Date(com.bdtd.card.common.util.DateUtil.localDate2Long(now)));
+    	model.addAttribute("fieldItemList", MsaSortField.select());
+    	model.addAttribute("ascItemList", OriginMask.select());
+    	model.addAttribute("stockTypeItemList", StockType.select());
+    	
+    	return PREFIX + "currentIncreaseSql.html";
+    }
 
     /**
      * 跳转到添加最近最大涨幅分析
@@ -132,6 +150,19 @@ public class CurrentIncreaseController extends BaseController {
     		query.setStockType(null);
     	}
     	IPage<CurrentIncrease> page = this.currentIncreaseService.findByQuery(query);
+		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
+    }
+    
+    @RequestMapping(value = "/listSql")
+    @ResponseBody
+    public Object listSql(CurrentIncreaseQuery query) {
+    	if (query.getBegin() == null || query.getEnd() == null) {
+    		return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0L);
+    	}
+    	if (query.getStockType() == StockType.All.getType()) {
+    		query.setStockType(null);
+    	}
+    	IPage<CurrentIncrease> page = this.currentIncreaseService.findBySql(query);
 		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
     }
 

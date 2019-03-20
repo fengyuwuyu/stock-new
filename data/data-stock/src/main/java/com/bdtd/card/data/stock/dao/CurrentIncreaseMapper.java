@@ -23,5 +23,9 @@ public interface CurrentIncreaseMapper extends BaseMapper<CurrentIncrease> {
 	long countByQuery(CurrentIncreaseQuery query);
 
 	List<CurrentIncrease> findByQuery(CurrentIncreaseQuery query);
+
+	long countBySql(CurrentIncreaseQuery query);
+
+	List<CurrentIncrease> findBySql(CurrentIncreaseQuery query);
 	
 }

@@ -132,4 +132,63 @@
 		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
 		limit #{offset}, #{limit}
 	</select>
+	
+	<select id="countBySql" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery" resultType="long">
+		select count(1) from msa_current_increase a
+		<where>
+			<trim suffixOverrides="and">
+				a.pre_increase &gt; -3 and a.pre_increase &lt; 5 and a.pre_volume &lt; a.volume and a.first_level_increase &gt; 30 and
+				<if test="symbol != null">
+					symbol = #{symbol} and
+				</if>
+				<if test="stockType != null">
+					stock_type = #{stockType} and
+				</if>
+				<if test="min != null and max != null">
+					${sortField} between #{min} and #{max} and
+				</if>
+				<if test="min != null and max == null">
+					${sortField} &gt;= #{min} and
+				</if>
+				<if test="min == null and max != null">
+					${sortField} &lt;= #{max} and
+				</if>
+				<if test="end != null">
+					msa_day = #{end}
+				</if>
+			</trim>
+		</where>	
+	</select>
+	
+	<select id="findBySql" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery" resultType="com.bdtd.card.data.stock.model.CurrentIncrease">
+		select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) stockCategory
+		from msa_current_increase a
+		left join stock b on a.symbol = b.symbol
+		<where>
+			<trim suffixOverrides="and">
+				a.pre_increase &gt; -3 and a.pre_increase &lt; 5 and a.pre_volume &lt; a.volume and a.first_level_increase &gt; 30 and
+				<if test="symbol != null">
+					symbol = #{symbol} and
+				</if>
+				<if test="stockType != null">
+					stock_type = #{stockType} and
+				</if>
+				<if test="min != null and max != null">
+					${sortField} between #{min} and #{max} and
+				</if>
+				<if test="min != null and max == null">
+					${sortField} &gt;= #{min} and
+				</if>
+				<if test="min == null and max != null">
+					${sortField} &lt;= #{max} and
+				</if>
+				<if test="end != null">
+					msa_day = #{end}
+				</if>
+			</trim>
+		</where>	
+		 order by future_five_day_increase desc
+		limit #{offset}, #{limit}
+	</select>
+	
 </mapper>

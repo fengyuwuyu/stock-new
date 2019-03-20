@@ -51,6 +51,23 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	private StockMainMapper stockMainMapper;
 
 	@Override
+	public IPage<CurrentIncrease> findBySql(CurrentIncreaseQuery query) {
+		long total = this.baseMapper.countBySql(query);
+		IPage<CurrentIncrease> page = null;
+		if (total == 0) {
+			page = new Page<>(query.getPage(), query.getLimit(), total);
+			page.setRecords(Collections.emptyList());
+			return page;
+		}
+		List<CurrentIncrease> list = this.baseMapper.findBySql(query);
+		getCurrentData(list);
+		page = new Page<>(query.getPage(), query.getLimit(), total);
+		getCurrentData(list);
+		page.setRecords(list);
+		return page;
+	}
+
+	@Override
 	public IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query) {
 		IPage<CurrentIncrease> page = findDb(query);
 //		if (page.getTotal() == 0 || DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
@@ -103,9 +120,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 //	}
 	
 	private void getCurrentData(List<CurrentIncrease> list) {
-//		if (!CommonsUtil.checkTime1(LocalDateTime.now())) {
-//			return;
-//		}
+		if (!CommonsUtil.checkTime1(LocalDateTime.now())) {
+			return;
+		}
 		
 		List<String> symbols = list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList());
 		List<Integer> types = list.stream().map(CurrentIncrease::getStockCategory).collect(Collectors.toList());
