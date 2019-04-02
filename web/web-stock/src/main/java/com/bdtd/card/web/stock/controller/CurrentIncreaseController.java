@@ -89,7 +89,6 @@ public class CurrentIncreaseController extends BaseController {
 	}
 
     /**
-     * 跳转到最近最大涨幅分析首页
      */
     @RequestMapping("")
     public String index(Model model) {
@@ -107,7 +106,6 @@ public class CurrentIncreaseController extends BaseController {
     }
     
     /**
-     * 跳转到最近最大涨幅分析首页
      */
     @RequestMapping("/sql")
     public String indexBySql(Model model) {
@@ -125,7 +123,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 跳转到添加最近最大涨幅分析
      */
     @RequestMapping("/currentIncrease_add")
     public String currentIncreaseAdd() {
@@ -133,7 +130,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 跳转到修改最近最大涨幅分析
      */
     @RequestMapping("/currentIncrease_update/{currentIncreaseId}")
     public String currentIncreaseUpdate(@PathVariable Integer currentIncreaseId, Model model) {
@@ -143,7 +139,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 获取最近最大涨幅分析列表
      */
 //    @EnumEntityList(entityList={@EnumEntity(enumName="StockType", fieldName="stockType")})
     @RequestMapping(value = "/list")
@@ -197,7 +192,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 新增最近最大涨幅分析
      */
     @RequestMapping(value = "/add")
     @ResponseBody
@@ -207,7 +201,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 删除最近最大涨幅分析
      */
     @RequestMapping(value = "/delete")
     @ResponseBody
@@ -217,7 +210,6 @@ public class CurrentIncreaseController extends BaseController {
     }
 
     /**
-     * 修改最近最大涨幅分析
      */
     @RequestMapping(value = "/update")
     @ResponseBody
@@ -227,9 +219,6 @@ public class CurrentIncreaseController extends BaseController {
         return SUCCESS_TIP;
     }
 
-    /**
-     * 最近最大涨幅分析详情
-     */
     @RequestMapping(value = "/detail/{currentIncreaseId}")
     @ResponseBody
     public Object detail(@PathVariable("currentIncreaseId") Integer currentIncreaseId) {

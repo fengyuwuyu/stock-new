@@ -102,3 +102,10 @@ logging:
 #  level.com.stylefeng.guns.core.aop.FileLogAop: debug
   path: logs/
   file: stock.log
+
+stock:
+  analyse:
+    max-mid-increase: 2
+    min-mid-increase: 2
+    min-increase: 5
+    
