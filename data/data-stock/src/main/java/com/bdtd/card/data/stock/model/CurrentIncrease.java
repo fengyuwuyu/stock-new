@@ -56,7 +56,7 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 	 */
 	@TableField("min")
 	private Float min;
-	
+
 	@TableField("close")
 	private Float close;
 
@@ -257,12 +257,21 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 	 */
 	@TableField("five_level_increase")
 	private Float fiveLevelIncrease;
-	
+
 	@TableField("pre_increase")
 	private Float preIncrease;
-	
+
 	@TableField("pre_volume")
 	private Long preVolume;
+
+	@TableField("pre_close")
+	private Float preClose;
+	@TableField("future_one_day_increase")
+	private Float futureOneDayIncrease;
+	@TableField("future_two_day_increase")
+	private Float futureTwoDayIncrease;
+	@TableField("future_three_day_increase")
+	private Float futureThreeDayIncrease;
 
 	/**
 	 * 股票类型
@@ -299,9 +308,13 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 			Float twoVolumeAvg, Float threeVolumeAvg, Float fourVolumeAvg, Float fiveVolumeAvg, Integer firstLevelDay,
 			Float firstLevelIncrease, Integer secondLevelDay, Float secondLevelIncrease, Integer thirdLevelDay,
 			Float thirdLevelIncrease, Integer fourLevelDay, Float fourLevelIncrease, Integer fiveLevelDay,
-			Float fiveLevelIncrease, Integer stockType, LocalDate msaDay, Float close, Float preIncrease, Long preVolume) {
+			Float fiveLevelIncrease, Integer stockType, LocalDate msaDay, Float close, Float preIncrease,
+			Long preVolume, Float preClose, Float futureOneDayIncrease, Float futureTwoDayIncrease, Float futureThreeDayIncrease) {
 		super();
 		this.symbol = symbol;
+		this.futureOneDayIncrease = futureOneDayIncrease;
+		this.futureTwoDayIncrease = futureTwoDayIncrease;
+		this.futureThreeDayIncrease = futureThreeDayIncrease;
 		this.name = name;
 		this.code = code;
 		this.max = max;
@@ -344,6 +357,39 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 		this.close = close;
 		this.preIncrease = preIncrease;
 		this.preVolume = preVolume;
+		this.preClose = preClose;
+	}
+
+	public Float getFutureOneDayIncrease() {
+		return futureOneDayIncrease;
+	}
+
+	public void setFutureOneDayIncrease(Float futureOneDayIncrease) {
+		this.futureOneDayIncrease = futureOneDayIncrease;
+	}
+
+	public Float getFutureTwoDayIncrease() {
+		return futureTwoDayIncrease;
+	}
+
+	public void setFutureTwoDayIncrease(Float futureTwoDayIncrease) {
+		this.futureTwoDayIncrease = futureTwoDayIncrease;
+	}
+
+	public Float getFutureThreeDayIncrease() {
+		return futureThreeDayIncrease;
+	}
+
+	public void setFutureThreeDayIncrease(Float futureThreeDayIncrease) {
+		this.futureThreeDayIncrease = futureThreeDayIncrease;
+	}
+
+	public Float getPreClose() {
+		return preClose;
+	}
+
+	public void setPreClose(Float preClose) {
+		this.preClose = preClose;
 	}
 
 	public Float getPreIncrease() {
@@ -755,8 +801,11 @@ public class CurrentIncrease extends Model<CurrentIncrease> {
 				+ ", secondLevelDay=" + secondLevelDay + ", secondLevelIncrease=" + secondLevelIncrease
 				+ ", thirdLevelDay=" + thirdLevelDay + ", thirdLevelIncrease=" + thirdLevelIncrease + ", fourLevelDay="
 				+ fourLevelDay + ", fourLevelIncrease=" + fourLevelIncrease + ", fiveLevelDay=" + fiveLevelDay
-				+ ", fiveLevelIncrease=" + fiveLevelIncrease + ", stockType=" + stockType + ", stockCategory="
-				+ stockCategory + ", currIncrease=" + currIncrease + ", currVolume=" + currVolume + ", totalSellVolume="
+				+ ", fiveLevelIncrease=" + fiveLevelIncrease + ", preIncrease=" + preIncrease + ", preVolume="
+				+ preVolume + ", preClose=" + preClose + ", futureOneDayIncrease=" + futureOneDayIncrease
+				+ ", futureTwoDayIncrease=" + futureTwoDayIncrease + ", futureThreeDayIncrease="
+				+ futureThreeDayIncrease + ", stockType=" + stockType + ", stockCategory=" + stockCategory
+				+ ", currIncrease=" + currIncrease + ", currVolume=" + currVolume + ", totalSellVolume="
 				+ totalSellVolume + ", totalBuyVolume=" + totalBuyVolume + ", msaDay=" + msaDay + "]";
 	}
 }

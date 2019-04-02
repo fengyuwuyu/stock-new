@@ -61,6 +61,9 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 		}
 		List<CurrentIncrease> list = this.baseMapper.findBySql(query);
 		getCurrentData(list);
+//		list = list.stream().filter((item) -> {
+//			return item.getCurrVolume() < item.getVolume() * 0.9 && item.getCurrIncrease() > -3 && item.getCurrIncrease() < 6;
+//		}).collect(Collectors.toList());
 		page = new Page<>(query.getPage(), query.getLimit(), total);
 		getCurrentData(list);
 		page.setRecords(list);
@@ -166,9 +169,11 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			
 			Float preIncrease = null;
 			Long preVolume = null;
+			Float preClose = null;
 			try {
 				preIncrease = stockMains.get(index - 1).getIncrease();
 				preVolume = stockMains.get(index - 1).getVolume();
+				preClose = stockMains.get(index - 1).getClose();
 			} catch (Exception e) {
 			}
 
@@ -182,12 +187,13 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
 			StringBuilder increases = new StringBuilder();
 			StringBuilder volumes = new StringBuilder();
+			Float futureOneDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 1).getMaxIncrease();
+			Float futureTwoDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 2).getMaxIncrease();
+			Float futureThreeDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 3).getMaxIncrease();
 			Float futureFiveDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 5).getMaxIncrease();
 			Float futureTenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 10).getMaxIncrease();
-			Float futureFifteenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 15)
-					.getMaxIncrease();
-			Float futureTwentyDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 20)
-					.getMaxIncrease();
+			Float futureFifteenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 15).getMaxIncrease();
+			Float futureTwentyDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 20).getMaxIncrease();
 			StringBuilder futureIncreases = new StringBuilder();
 			StringBuilder futureVolumes = new StringBuilder();
 			float dayVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 1);
@@ -226,10 +232,10 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			Float fiveLevelIncrease = midStockLevel.getFiveLevelIncrease();
 			Integer stockType = midStockLevel.getStockType();
 			try {
-				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, volume, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, increases.toString(), 
-						volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, fiveVolumeAvg, 
-						firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType , msaDay, 
-						close, preIncrease, preVolume);
+				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, volume, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, 
+						increases.toString(), volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, 
+						fiveVolumeAvg, firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType, msaDay, close, 
+						preIncrease, preVolume, preClose, futureOneDayIncrease, futureTwoDayIncrease, futureThreeDayIncrease);
 				result.add(currentIncrease);
 			} catch (Exception e) {
 				log.error(String.format("创建对象失败，day = %s", query.getEnd()), e);

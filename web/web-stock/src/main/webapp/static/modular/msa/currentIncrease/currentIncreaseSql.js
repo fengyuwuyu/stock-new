@@ -102,6 +102,17 @@ CurrentIncrease.resetSearchForm = function () {
     });
 };
 
+CurrentIncrease.createStockFile = function() {
+	var queryData = $('#searchForm').serializeObject();
+	Feng.ajaxJson(Feng.ctxPath + '/currentIncrease/createStockFileSql', queryData, function(data) {
+		if (data.code == 200) {
+			Feng.msg('创建成功')
+		} else {
+			Feng.msg(data.message || "操作失败！");
+		}
+	});
+}
+
 /**
  * 点击添加每日股票汇总
  */

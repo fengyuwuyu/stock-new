@@ -1,5 +1,16 @@
 $package("YiYa.stockMain");
 
+YiYa.stockMain.createStockFile = function() {
+	var queryData = $('#searchForm').serializeObject();
+	Feng.ajaxJson(Feng.ctxPath + '/searcher/createStockFile', queryData, function(data) {
+		if (data.code == 200) {
+			Feng.msg('创建成功')
+		} else {
+			Feng.msg(data.message || "操作失败！");
+		}
+	});
+}
+
 YiYa.stockMain = function(){
 	var queryType = $('#queryType').val();
 	_box = null;

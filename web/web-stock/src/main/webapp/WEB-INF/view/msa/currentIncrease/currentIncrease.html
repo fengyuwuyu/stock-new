@@ -13,10 +13,13 @@
 								<#input id="begin" name="开始日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${begin}" />
 			                </div>
 			                <div class="col-sm-2">
-								<#input id="end" name="结束日期" type="date" dataOptions="editable:false" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${end}" />
+								<!--  dataOptions="editable:false" --><#input id="end" name="结束日期" type="date" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" value="${end}" />
 			                </div>
 						<div class="col-sm-2">
 							<#select id="stockType" name="股票类型" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${stockTypeItemList}" />
+		                </div>
+						<div class="col-sm-2">
+							<#select id="limitField" name="限制区间" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${fieldItemList}" value="${0}" />
 		                </div>
 		                <div class="col-sm-2">
 							<#input id="max" name="最大" />
@@ -49,6 +52,8 @@
                                 <#button name="删除" icon="fa-remove" clickFun="CurrentIncrease.delete()" space="true"/>
                             @}
                                 <#button name="添加监控" icon="fa-remove" clickFun="CurrentIncrease.addMonitor()" space="true"/>
+                                <#button name="生成" icon="fa-export" clickFun="CurrentIncrease.createStockFile()" space="true"/>
+                                <#button name="导出" icon="fa-export" clickFun="CurrentIncrease.exportStockFile()" space="true"/>
                         </div>
                         <#table id="CurrentIncreaseTable"/>
                     </div>

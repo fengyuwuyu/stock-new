@@ -174,6 +174,22 @@ CurrentIncrease.search = function () {
     CurrentIncrease.table.refresh({query: queryData});
 };
 
+CurrentIncrease.createStockFile = function() {
+	var queryData = $('#searchForm').serializeObject();
+	Feng.ajaxJson(Feng.ctxPath + '/currentIncrease/createStockFile', queryData, function(data) {
+		if (data.code == 200) {
+			Feng.msg('创建成功')
+		} else {
+			Feng.msg(data.message || "操作失败！");
+		}
+	});
+}
+
+CurrentIncrease.exportStockFile = function() {
+	var queryData = $('#searchForm').serializeObject();
+	Feng.ajaxJson(Feng.ctxPath + '/currentIncrease/exportStockFile', queryData);
+}
+
 $(function () {
     var defaultColunms = CurrentIncrease.initColumn();
     var table = new BSTable(CurrentIncrease.id, "/currentIncrease/list", defaultColunms, {pageSize: 50});

@@ -1,6 +1,7 @@
 package com.bdtd.card.data.stock.dao;
 
 import com.bdtd.card.data.stock.model.Monitor;
+import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface MonitorMapper extends BaseMapper<Monitor> {
 
 	List<Monitor> findAll();
 	
-	List<Monitor> findAll1();
+	List<Monitor> findAll1(CurrentIncreaseQuery query);
 
 }

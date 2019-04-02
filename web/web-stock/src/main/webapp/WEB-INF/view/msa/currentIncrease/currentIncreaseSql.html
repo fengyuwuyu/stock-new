@@ -18,6 +18,9 @@
 						<div class="col-sm-2">
 							<#select id="stockType" name="股票类型" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${stockTypeItemList}" />
 		                </div>
+						<div class="col-sm-2">
+							<#select id="limitField" name="限制区间" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${fieldItemList}" value="${0}" />
+		                </div>
 		                <div class="col-sm-2">
 							<#input id="max" name="最大" />
 		                </div>
@@ -49,6 +52,7 @@
                                 <#button name="删除" icon="fa-remove" clickFun="CurrentIncrease.delete()" space="true"/>
                             @}
                                 <#button name="添加监控" icon="fa-remove" clickFun="CurrentIncrease.addMonitor()" space="true"/>
+                                <#button name="生成" icon="fa-export" clickFun="CurrentIncrease.createStockFile()" space="true"/>
                         </div>
                         <#table id="CurrentIncreaseTable"/>
                     </div>

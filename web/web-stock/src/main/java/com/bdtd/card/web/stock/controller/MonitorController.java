@@ -1,6 +1,7 @@
 package com.bdtd.card.web.stock.controller;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,6 +29,7 @@ import com.bdtd.card.common.web.base.Tip;
 import com.bdtd.card.data.stock.dao.MonitorMapper;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.data.stock.model.Monitor;
+import com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery;
 import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
 import com.bdtd.card.data.stock.service.IMonitorService;
 import com.bdtd.card.data.stock.util.CommonsUtil;
@@ -56,7 +58,12 @@ public class MonitorController extends BaseController {
 	/**
 	 */
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
+		LocalDate now = LocalDate.now();
+    	while (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		now = now.plus(-1, ChronoUnit.DAYS);
+    	}
+    	model.addAttribute("begin", now);
 		return PREFIX + "monitor.html";
 	}
 
@@ -86,20 +93,21 @@ public class MonitorController extends BaseController {
 //			@EnumEntity(enumName = "MonitorType", fieldName = "monitorType") })
 	@RequestMapping(value = "/list")
 	@ResponseBody
-	public Object list(String condition, Integer offset, Integer limit) {
-//		QueryWrapper<Monitor> wrapper = new QueryWrapper<>();
+	public Object list(CurrentIncreaseQuery query, Integer offset, Integer limit) {
 //		wrapper.orderByDesc(Consts.DEFAULT_SORT_FIELD);
 //		IPage<Map<String, Object>> page = monitorService.pageMaps(new Page<>(offset, limit), wrapper);
 		
-		List<Monitor> list = this.monitorMapper.findAll1();
+		List<Monitor> list = this.monitorMapper.findAll1(query);
 		if (list.size() > 0) {
 			List<String> symbols = list.stream().map(Monitor::getSymbol).collect(Collectors.toList());
 			List<Integer> types = list.stream().map(Monitor::getType).collect(Collectors.toList());
 			Map<String, CurrentStockData> map = StockUtils.getCurrentStockData(StockConsts.STOCK_CURR_DATA_URL, symbols, types);
 			list.forEach((item) -> {
 				CurrentStockData data = map.get(item.getSymbol());
-				item.setIncrease(data.getCurrIncrease());
-				item.setVolumeCompare(CommonsUtil.formatNumberToFloat((data.getTotalBuyVolume().floatValue() - data.getTotalSellVolume().floatValue()) * 100 / (data.getTotalBuyVolume().floatValue() + data.getTotalSellVolume().floatValue())));
+				if (data != null) {
+					item.setIncrease(data.getCurrIncrease());
+					item.setVolumeCompare(CommonsUtil.formatNumberToFloat((data.getTotalBuyVolume().floatValue() - data.getTotalSellVolume().floatValue()) * 100 / (data.getTotalBuyVolume().floatValue() + data.getTotalSellVolume().floatValue())));
+				}
 			});
 		}
 		

@@ -1,5 +1,6 @@
 package com.bdtd.card.web.stock.controller;
 
+import java.io.File;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,10 +10,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +36,7 @@ import com.bdtd.card.data.stock.service.ICurrentIncreaseService;
 import com.bdtd.card.data.stock.util.DateUtil;
 import com.bdtd.card.web.admin.log.LogObjectHolder;
 import com.bdtd.card.web.stock.model.MsaSortField;
+import com.bdtd.card.web.stock.util.StockUtil;
 
 /**
  * 最近最大涨幅分析控制器
@@ -51,6 +55,8 @@ public class CurrentIncreaseController extends BaseController {
     private ICurrentIncreaseService currentIncreaseService;
 	@Autowired
 	private StockMainMapper stockMainMapper;
+	@Value("${bdtd.file-upload-path}")
+	private String tmpDir;
     
     @RequestMapping("/test")
     @ResponseBody
@@ -61,8 +67,8 @@ public class CurrentIncreaseController extends BaseController {
     	query.setOffset(0);
     	query.setLimit(1);
     	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.OCTOBER, 1)));
-    	LocalDate end = LocalDate.of(2019, Month.MARCH, 1);
-    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 20).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
+    	LocalDate end = LocalDate.of(2018, Month.DECEMBER, 1);
+    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 26).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));
@@ -142,7 +148,7 @@ public class CurrentIncreaseController extends BaseController {
 //    @EnumEntityList(entityList={@EnumEntity(enumName="StockType", fieldName="stockType")})
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(CurrentIncreaseQuery query) {
+    public Map<String, Object> list(CurrentIncreaseQuery query) {
     	if (query.getBegin() == null || query.getEnd() == null) {
     		return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0L);
     	}
@@ -153,9 +159,33 @@ public class CurrentIncreaseController extends BaseController {
 		return MapUtil.createSuccessMap("rows", page.getRecords(), "total", page.getTotal());
     }
     
+    @SuppressWarnings("unchecked")
+	@RequestMapping(value = "/createStockFile")
+    @ResponseBody
+    public Object createStockFile(CurrentIncreaseQuery query) {
+    	query.setOffset(0);
+    	query.setLimit(500);
+    	List<CurrentIncrease> list = (List<CurrentIncrease>) this.list(query).get("rows");
+    	list = list.stream().filter((item) -> {return !item.getSymbol().substring(0, 1).equals("3");}).collect(Collectors.toList());
+    	StockUtil.exportStock(list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
+    	return SUCCESS_TIP;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/createStockFileSql")
+    @ResponseBody
+    public Object createStockFileSql(CurrentIncreaseQuery query) {
+    	query.setOffset(0);
+    	query.setLimit(500);
+    	List<CurrentIncrease> list = (List<CurrentIncrease>) this.listSql(query).get("rows");
+    	list = list.stream().filter((item) -> {return !item.getSymbol().substring(0, 1).equals("3");}).collect(Collectors.toList());
+    	StockUtil.exportStock(list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
+    	return SUCCESS_TIP;
+    }
+    
     @RequestMapping(value = "/listSql")
     @ResponseBody
-    public Object listSql(CurrentIncreaseQuery query) {
+    public Map<String, Object> listSql(CurrentIncreaseQuery query) {
     	if (query.getBegin() == null || query.getEnd() == null) {
     		return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0L);
     	}

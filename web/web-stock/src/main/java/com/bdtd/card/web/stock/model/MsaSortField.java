@@ -11,7 +11,8 @@ public enum MsaSortField {
 
 	FIRST_LEVEL_INCREASE("first_level_increase", "firstLevelIncrease"), 
 	SECOND_LEVEL_INCREASE("second_level_increase", "secondLevelIncrease"), 
-	THIRD_LEVEL_INCREASE("third_level_increase", "third_level_increase"), 
+	THIRD_LEVEL_INCREASE("third_level_increase", "thirdLevelIncrease"), 
+	PRE_INCREASE("pre_increase", "preIncrease"), 
 	INCREASE("increase", "increase"), 
 	TWO_INCREASE("two_increase", "twoIncrease"), 
 	THREE_INCREASE("thress_increase", "threeIncrease"), 

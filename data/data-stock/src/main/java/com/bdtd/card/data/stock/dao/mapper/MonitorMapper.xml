@@ -30,9 +30,15 @@
     	left join stock b on a.symbol=b.symbol where a.status = 1
     </select>
     
-    <select id="findAll1" resultType="com.bdtd.card.data.stock.model.Monitor">
+    <select id="findAll1" resultType="com.bdtd.card.data.stock.model.Monitor" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery">
     	select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) type from stock_monitor a 
     	left join stock b on a.symbol=b.symbol where a.status != 3
+    	<if test="symbol != null">
+    		and a.symbol = #{symbol}
+    	</if>
+    	<if test="begin != null">
+    		and a.begin_date = #{begin}
+    	</if>
     </select>
 
 </mapper>

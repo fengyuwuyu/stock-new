@@ -7,8 +7,17 @@ public class CurrentIncreaseQuery extends BaseQuery {
 	private Integer stockType;
 	private Float min;
 	private Float max;
+	private String limitField;
 	private Integer generate;
 	private String symbol;
+
+	public String getLimitField() {
+		return limitField;
+	}
+
+	public void setLimitField(String limitField) {
+		this.limitField = limitField;
+	}
 
 	public String getSymbol() {
 		return symbol;

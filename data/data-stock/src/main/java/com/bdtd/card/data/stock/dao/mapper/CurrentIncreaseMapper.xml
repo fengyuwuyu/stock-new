@@ -48,15 +48,31 @@
         <result column="close" property="close" />
         <result column="pre_increase" property="preIncrease" />
         <result column="pre_volume" property="preVolume" />
+        <result column="pre_close" property="preClose" />
+        <result column="future_one_day_increase" property="futureOneDayIncrease" />
+        <result column="future_two_day_increase" property="futureTwoDayIncrease" />
+        <result column="future_three_day_increase" property="futureThreeDayIncrease" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, symbol, pre_increase preIncrease, pre_volume preVolume, name, code, max, min, increase, two_increase twoIncrease, thress_increase thressIncrease, four_increase fourIncrease, five_increase fiveIncrease, ten_increase tenIncrease, fifteen_increase fifteenIncrease, twenty_increase twentyIncrease, max_increase maxIncrease, increases, volumes, future_five_day_increase futureFiveDayIncrease, future_ten_day_increase futureTenDayIncrease, future_fifteen_day_increase futureFifteenDayIncrease, future_twenty_day_increase futureTwentyDayIncrease, future_increases futureIncreases, future_volumes futureVolumes, day_volume_avg dayVolumeAvg, two_volume_avg twoVolumeAvg, three_volume_avg threeVolumeAvg, four_volume_avg fourVolumeAvg, five_volume_avg fiveVolumeAvg, first_level_day firstLevelDay, first_level_increase firstLevelIncrease, second_level_day secondLevelDay, second_level_increase secondLevelIncrease, third_level_day thirdLevelDay, third_level_increase thirdLevelIncrease, four_level_day fourLevelDay, four_level_increase fourLevelIncrease, five_level_day fiveLevelDay, five_level_increase fiveLevelIncrease, stock_type stockType, msa_day msaDay, volume, close
+        id, symbol, pre_increase preIncrease, pre_volume preVolume, name, code, max, min, increase, two_increase twoIncrease, thress_increase thressIncrease, four_increase fourIncrease, five_increase fiveIncrease, ten_increase tenIncrease, 
+        fifteen_increase fifteenIncrease, twenty_increase twentyIncrease, max_increase maxIncrease, increases, volumes, future_five_day_increase futureFiveDayIncrease, future_ten_day_increase futureTenDayIncrease, 
+        future_fifteen_day_increase futureFifteenDayIncrease, future_twenty_day_increase futureTwentyDayIncrease, future_increases futureIncreases, future_volumes futureVolumes, day_volume_avg dayVolumeAvg, two_volume_avg twoVolumeAvg, 
+        three_volume_avg threeVolumeAvg, four_volume_avg fourVolumeAvg, five_volume_avg fiveVolumeAvg, first_level_day firstLevelDay, first_level_increase firstLevelIncrease, second_level_day secondLevelDay, 
+        second_level_increase secondLevelIncrease, third_level_day thirdLevelDay, third_level_increase thirdLevelIncrease, four_level_day fourLevelDay, four_level_increase fourLevelIncrease, five_level_day fiveLevelDay, 
+        five_level_increase fiveLevelIncrease, stock_type stockType, msa_day msaDay, volume, close, pre_close preClose, future_one_day_increase futureOneDayIncrease, future_two_day_increase futureTwoDayIncrease, 
+        future_three_day_increase futureThreeDayIncrease
     </sql>
 
 	<!-- 关联查询结果列 -->
     <sql id="Base_Column_List_Prefix">
-        a.id, a.symbol, pre_increase preIncrease, pre_volume preVolume, a.name, a.code, a.max, a.min, a.increase, a.two_increase twoIncrease, a.thress_increase thressIncrease, a.four_increase fourIncrease, a.five_increase fiveIncrease, a.ten_increase tenIncrease, a.fifteen_increase fifteenIncrease, a.twenty_increase twentyIncrease, a.max_increase maxIncrease, a.increases, a.volumes, a.future_five_day_increase futureFiveDayIncrease, a.future_ten_day_increase futureTenDayIncrease, a.future_fifteen_day_increase futureFifteenDayIncrease, a.future_twenty_day_increase futureTwentyDayIncrease, a.future_increases futureIncreases, a.future_volumes futureVolumes, a.day_volume_avg dayVolumeAvg, a.two_volume_avg twoVolumeAvg, a.three_volume_avg threeVolumeAvg, a.four_volume_avg fourVolumeAvg, a.five_volume_avg fiveVolumeAvg, a.first_level_day firstLevelDay, a.first_level_increase firstLevelIncrease, a.second_level_day secondLevelDay, a.second_level_increase secondLevelIncrease, a.third_level_day thirdLevelDay, a.third_level_increase thirdLevelIncrease, a.four_level_day fourLevelDay, a.four_level_increase fourLevelIncrease, a.five_level_day fiveLevelDay, a.five_level_increase fiveLevelIncrease, a.stock_type stockType, a.msa_day msaDay,a.volume, a.close
+        a.id, a.symbol, pre_increase preIncrease, pre_volume preVolume, a.name, a.code, a.max, a.min, a.increase, a.two_increase twoIncrease, a.thress_increase thressIncrease, a.four_increase fourIncrease, a.five_increase fiveIncrease, 
+        a.ten_increase tenIncrease, a.fifteen_increase fifteenIncrease, a.twenty_increase twentyIncrease, a.max_increase maxIncrease, a.increases, a.volumes, a.future_five_day_increase futureFiveDayIncrease, 
+        a.future_ten_day_increase futureTenDayIncrease, a.future_fifteen_day_increase futureFifteenDayIncrease, a.future_twenty_day_increase futureTwentyDayIncrease, a.future_increases futureIncreases, a.future_volumes futureVolumes, 
+        a.day_volume_avg dayVolumeAvg, a.two_volume_avg twoVolumeAvg, a.three_volume_avg threeVolumeAvg, a.four_volume_avg fourVolumeAvg, a.five_volume_avg fiveVolumeAvg, a.first_level_day firstLevelDay, 
+        a.first_level_increase firstLevelIncrease, a.second_level_day secondLevelDay, a.second_level_increase secondLevelIncrease, a.third_level_day thirdLevelDay, a.third_level_increase thirdLevelIncrease, a.four_level_day fourLevelDay, 
+        a.four_level_increase fourLevelIncrease, a.five_level_day fiveLevelDay, a.five_level_increase fiveLevelIncrease, a.stock_type stockType, a.msa_day msaDay,a.volume, a.close, a.pre_close preClose, 
+        a.future_one_day_increase futureOneDayIncrease, a.future_two_day_increase futureTwoDayIncrease,  a.future_three_day_increase futureThreeDayIncrease
     </sql>
 
 	<insert id="insertAll" parameterType="java.util.List">
@@ -64,7 +80,7 @@
 		fifteen_increase, twenty_increase, max_increase, increases, volumes, future_five_day_increase, future_ten_day_increase, future_fifteen_day_increase, 
 		future_twenty_day_increase, future_increases, future_volumes, day_volume_avg, two_volume_avg, three_volume_avg, four_volume_avg, five_volume_avg, first_level_day, 
 		first_level_increase, second_level_day, second_level_increase, third_level_day, third_level_increase, four_level_day, four_level_increase, five_level_day, 
-		five_level_increase, stock_type, msa_day, volume, close, pre_increase, pre_volume) 
+		five_level_increase, stock_type, msa_day, volume, close, pre_increase, pre_volume, pre_close, future_one_day_increase, future_two_day_increase, future_three_day_increase) 
 		values
 		<foreach collection="list" item="item" separator=",">
 			(#{item.id}, #{item.symbol}, #{item.name}, #{item.code}, #{item.max}, #{item.min}, #{item.increase}, #{item.twoIncrease}, #{item.thressIncrease}, 
@@ -73,7 +89,7 @@
 			#{item.futureIncreases}, #{item.futureVolumes}, #{item.dayVolumeAvg}, #{item.twoVolumeAvg}, #{item.threeVolumeAvg}, #{item.fourVolumeAvg}, #{item.fiveVolumeAvg}, 
 			#{item.firstLevelDay}, #{item.firstLevelIncrease}, #{item.secondLevelDay}, #{item.secondLevelIncrease}, #{item.thirdLevelDay}, #{item.thirdLevelIncrease},
 			 #{item.fourLevelDay}, #{item.fourLevelIncrease}, #{item.fiveLevelDay}, #{item.fiveLevelIncrease}, #{item.stockType}, #{item.msaDay}, 
-			 #{item.volume}, #{item.close}, #{item.preIncrease}, #{item.preVolume})
+			 #{item.volume}, #{item.close}, #{item.preIncrease}, #{item.preVolume}, #{item.preClose}, #{item.futureOneDayIncrease}, #{item.futureTwoDayIncrease}, #{item.futureThreeDayIncrease})
 		</foreach>
 	</insert>
 	
@@ -88,13 +104,13 @@
 					stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${sortField} between #{min} and #{max} and
+					${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${sortField} &gt;= #{min} and
+					${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${sortField} &lt;= #{max} and
+					${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
 					msa_day = #{end}
@@ -116,13 +132,13 @@
 					stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${sortField} between #{min} and #{max} and
+					${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${sortField} &gt;= #{min} and
+					${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${sortField} &lt;= #{max} and
+					${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
 					msa_day = #{end}
@@ -137,7 +153,8 @@
 		select count(1) from msa_current_increase a
 		<where>
 			<trim suffixOverrides="and">
-				a.pre_increase &gt; 6 and a.pre_volume &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 5 and a.increase &gt; -5 and
+				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
+				((a.min - a.pre_close) * 100 / a.pre_close) &lt; -9 and
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
@@ -145,13 +162,13 @@
 					stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${sortField} between #{min} and #{max} and
+					${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${sortField} &gt;= #{min} and
+					${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${sortField} &lt;= #{max} and
+					${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
 					msa_day = #{end}
@@ -166,7 +183,9 @@
 		left join stock b on a.symbol = b.symbol
 		<where>
 			<trim suffixOverrides="and">
-				a.pre_increase &gt; 6 and a.pre_volume &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 5 and a.increase &gt; -5 and
+				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
+				((a.min - a.pre_close) * 100 / a.pre_close) &lt; -9 and
+				<!-- a.increase > 5 and  -->
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
@@ -174,20 +193,20 @@
 					stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${sortField} between #{min} and #{max} and
+					${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${sortField} &gt;= #{min} and
+					${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${sortField} &lt;= #{max} and
+					${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
 					msa_day = #{end}
 				</if>
 			</trim>
 		</where>	
-		 order by future_five_day_increase desc
+		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
 		limit #{offset}, #{limit}
 	</select>
 	
