@@ -94,9 +94,10 @@
 	</insert>
 	
 	<select id="countByQuery" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery" resultType="long">
-		select count(1) from msa_current_increase 
-		<where>
+		select count(1) from msa_current_increase a
+		<where> 
 			<trim suffixOverrides="and">
+				left(a.symbol, 1) !='3' and
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
@@ -123,8 +124,9 @@
 		select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) stockCategory
 		from msa_current_increase a
 		left join stock b on a.symbol = b.symbol
-		<where>
+		<where> 
 			<trim suffixOverrides="and">
+				left(a.symbol, 1) !='3' and
 				<if test="symbol != null">
 					symbol = #{symbol} and
 				</if>
@@ -154,24 +156,28 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				((a.min - a.pre_close) * 100 / a.pre_close) &lt; -9 and
+				<!-- (a.increase &gt;= 9.9 or a.pre_increase &gt;= 9.9) and -->
+				a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and
 				<if test="symbol != null">
-					symbol = #{symbol} and
+					a.symbol = #{symbol} and
 				</if>
 				<if test="stockType != null">
-					stock_type = #{stockType} and
+					a.stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${limitField} between #{min} and #{max} and
+					a.${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${limitField} &gt;= #{min} and
+					a.${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${limitField} &lt;= #{max} and
+					a.${limitField} &lt;= #{max} and
 				</if>
+				<!-- <if test="begin != null">
+					a.msa_day &gt;= #{begin} and
+				</if> -->
 				<if test="end != null">
-					msa_day = #{end}
+					a.msa_day = #{end} and
 				</if>
 			</trim>
 		</where>	
@@ -184,30 +190,35 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				((a.min - a.pre_close) * 100 / a.pre_close) &lt; -9 and
-				<!-- a.increase > 5 and  -->
+				<!-- (a.increase &gt;= 9.9 or a.pre_increase &gt;= 9.9) and -->
+				a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and
 				<if test="symbol != null">
-					symbol = #{symbol} and
+					a.symbol = #{symbol} and
 				</if>
 				<if test="stockType != null">
-					stock_type = #{stockType} and
+					a.stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${limitField} between #{min} and #{max} and
+					a.${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${limitField} &gt;= #{min} and
+					a.${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${limitField} &lt;= #{max} and
+					a.${limitField} &lt;= #{max} and
 				</if>
+				<!-- <if test="begin != null">
+					a.msa_day &gt;= #{begin} and
+				</if> -->
 				<if test="end != null">
-					msa_day = #{end}
+					a.msa_day = #{end} and
 				</if>
 			</trim>
 		</where>	
 		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
-		limit #{offset}, #{limit}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
 	</select>
 	
 </mapper>

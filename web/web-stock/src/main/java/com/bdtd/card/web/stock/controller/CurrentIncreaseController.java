@@ -7,7 +7,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -159,7 +161,7 @@ public class CurrentIncreaseController extends BaseController {
     @ResponseBody
     public Object createStockFile(CurrentIncreaseQuery query) {
     	query.setOffset(0);
-    	query.setLimit(500);
+    	query.setLimit(600);
     	List<CurrentIncrease> list = (List<CurrentIncrease>) this.list(query).get("rows");
     	list = list.stream().filter((item) -> {return !item.getSymbol().substring(0, 1).equals("3");}).collect(Collectors.toList());
     	StockUtil.exportStock(list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
@@ -171,9 +173,11 @@ public class CurrentIncreaseController extends BaseController {
     @ResponseBody
     public Object createStockFileSql(CurrentIncreaseQuery query) {
     	query.setOffset(0);
-    	query.setLimit(500);
+    	query.setLimit(10000);
     	List<CurrentIncrease> list = (List<CurrentIncrease>) this.listSql(query).get("rows");
     	list = list.stream().filter((item) -> {return !item.getSymbol().substring(0, 1).equals("3");}).collect(Collectors.toList());
+    	list = new ArrayList<>(new HashSet<>(list));
+    	list = list.subList(0, list.size() > 600 ? 600 : list.size());
     	StockUtil.exportStock(list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
     	return SUCCESS_TIP;
     }
