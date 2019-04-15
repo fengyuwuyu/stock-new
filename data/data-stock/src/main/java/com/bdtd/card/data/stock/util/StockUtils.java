@@ -325,9 +325,10 @@ public class StockUtils {
 		begin = begin < 0 ? 0 : begin;
 		end = end >= stockMains.size() ? stockMains.size() - 1 : end;
 		int minIndex = begin;
-		int maxIndex = 0;
-		float min = stockMains.get(begin).getClose();
+		int maxIndex = begin;
+		float base = stockMains.get(begin).getClose();
 		float max = Float.MIN_VALUE;
+		float min = Float.MAX_VALUE;
 		float maxIncrease = 0;
 		
 		float close = 0;
@@ -336,11 +337,18 @@ public class StockUtils {
 			if (close > max) {
 				max = close;
 				maxIndex = i;
+			} else if (close < min) {
+				min = close;
+				minIndex = i;
 			}
 		}
 		
-		maxIncrease = (max - min) * 100 / min;
-		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
+		if (max >= base) {
+			maxIncrease = (max - base) * 100 / base;
+		} else {
+			maxIncrease = (min - base) * 100 / base;
+		}
+		return new StockMiddleEntity(minIndex, maxIndex, max, base, maxIncrease);
 	}
 
 	public static MidStockLevel getStockLevel(List<StockMain> stockMains, int begin, int end) {
