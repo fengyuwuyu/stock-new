@@ -73,11 +73,6 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	@Override
 	public IPage<CurrentIncrease> findByQuery(CurrentIncreaseQuery query) {
 		IPage<CurrentIncrease> page = findDb(query);
-//		if (page.getTotal() == 0 || DateUtil.localDate2Long(page.getRecords().get(0).getMsaDay()) != query.getEnd().getTime()) {
-//			List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
-//			initAnalysis(query, stockMainList);
-//			return findDb(query);
-//		}
 		return page;
 	}
 	
@@ -247,7 +242,7 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 				this.baseMapper.insertAll(result);
 			}
 		} catch (Exception e) {
-			log.error(String.format("插入失败，day = %s, records = %s", query.getEnd(), result), e);
+			log.error(String.format("插入失败，day = %s", query.getEnd()), e);
 		}
 		
 		Page<CurrentIncrease> page = new Page<>(query.getOffset(), query.getLimit());
