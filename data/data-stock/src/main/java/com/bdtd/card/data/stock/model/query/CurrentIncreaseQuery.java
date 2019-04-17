@@ -10,6 +10,15 @@ public class CurrentIncreaseQuery extends BaseQuery {
 	private String limitField;
 	private Integer generate;
 	private String symbol;
+	private Integer bizLimit;
+
+	public Integer getBizLimit() {
+		return bizLimit;
+	}
+
+	public void setBizLimit(Integer bizLimit) {
+		this.bizLimit = bizLimit;
+	}
 
 	public String getLimitField() {
 		return limitField;
@@ -63,8 +72,10 @@ public class CurrentIncreaseQuery extends BaseQuery {
 
 	@Override
 	public String toString() {
-		return "CurrentIncreaseQuery [stockType=" + stockType + ", min=" + min + ", max=" + max + ", generate="
-				+ generate + ", symbol=" + symbol + "]";
+		return "CurrentIncreaseQuery [stockType=" + stockType + ", min=" + min + ", max=" + max + ", limitField="
+				+ limitField + ", generate=" + generate + ", symbol=" + symbol + ", bizLimit=" + bizLimit + ", offset="
+				+ offset + ", limit=" + limit + ", page=" + page + ", sortField=" + sortField + ", asc=" + asc
+				+ ", begin=" + begin + ", end=" + end + "]";
 	}
 
 }

@@ -36,6 +36,9 @@
 						<div class="col-sm-2">
 							<#select id="generate" name="重新生成" class="easyui-combobox" data-options="panelHeight:'auto',editable:false" itemList="${ascItemList}" value="${0}" />
 		                </div>
+						<div class="col-sm-2">
+							<#input id="bizLimit" name="记录数" />
+		                </div>
                             <div class="col-sm-2">
                                 <#button name="搜索" icon="fa-search" clickFun="CurrentIncrease.search()"/>
                                 <#button name="重置" icon="fa-refresh" clickFun="CurrentIncrease.resetSearchForm()"/>

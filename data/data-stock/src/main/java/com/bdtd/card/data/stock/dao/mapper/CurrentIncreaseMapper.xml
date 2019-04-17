@@ -148,7 +148,12 @@
 			</trim>
 		</where>	
 		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
-		limit #{offset}, #{limit}
+		<if test="bizLimit != null">
+			limit 0, #{bizLimit}
+		</if>
+		<if test="bizLimit == null">
+			limit #{offset}, #{limit}
+		</if>
 	</select>
 	
 	<select id="countBySql" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery" resultType="long">
@@ -216,8 +221,13 @@
 			</trim>
 		</where>	
 		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
+		<if test="bizLimit != null">
+			limit 0, #{bizLimit}
+		</if>
+		<if test="bizLimit == null">
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
 		</if>
 	</select>
 	

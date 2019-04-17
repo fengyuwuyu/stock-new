@@ -69,8 +69,8 @@ public class CurrentIncreaseController extends BaseController {
     	query.setOffset(0);
     	query.setLimit(1);
     	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.OCTOBER, 1)));
-    	LocalDate end = LocalDate.of(2018, Month.DECEMBER, 1);
-    	int dayDiff = (int) (LocalDate.of(2019, Month.MARCH, 26).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
+    	LocalDate end = LocalDate.of(2019, Month.APRIL, 7);
+    	int dayDiff = (int) (LocalDate.of(2019, Month.APRIL, 15).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));

@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bdtd.card.common.util.HttpUtils;
 import com.bdtd.card.common.util.StringUtil;
 import com.bdtd.card.data.stock.base.MidStockLevel;
@@ -18,6 +21,8 @@ import com.bdtd.card.data.stock.model.StockMiddleEntity;
 import com.bdtd.card.data.stock.util.model.CurrentStockData;
 
 public class StockUtils {
+	
+	private static Logger log = LoggerFactory.getLogger(StockUtils.class);
 	
 	public static Map<String, CurrentStockData> getCurrentStockData(String stockCurrDataUrl, List<String> symbols, List<Integer> types) {
 		StringBuilder sb = new StringBuilder();
@@ -327,14 +332,14 @@ public class StockUtils {
 		int minIndex = begin;
 		int maxIndex = begin;
 		float base = stockMains.get(begin).getClose();
-		float max = Float.MIN_VALUE;
-		float min = Float.MAX_VALUE;
+		float max = base;
+		float min = base;
 		float maxIncrease = 0;
 		
 		float close = 0;
 		for (int i = begin + 1; i <= end; i++) {
 			close = stockMains.get(i).getClose();
-			if (close > max) {
+			if (close >= max) {
 				max = close;
 				maxIndex = i;
 			} else if (close < min) {
