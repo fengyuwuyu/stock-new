@@ -214,7 +214,7 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 				}
 			}
 			
-			MidStockLevel midStockLevel = StockUtils.getStockLevel(stockMains, index - 30, index);
+			MidStockLevel midStockLevel = StockUtils.getStockLevel(stockMains, index - 10, index);
 			Integer firstLevelDay = midStockLevel.getFirstLevelDay();
 			Float firstLevelIncrease = midStockLevel.getFirstLevelIncrease();
 			Integer secondLevelDay = midStockLevel.getSecondLevelDay();
