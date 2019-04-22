@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bdtd.card.common.model.OriginMask;
 import com.bdtd.card.common.util.MapUtil;
@@ -69,8 +71,12 @@ public class CurrentIncreaseController extends BaseController {
     	query.setOffset(0);
     	query.setLimit(1);
     	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.OCTOBER, 1)));
-    	LocalDate end = LocalDate.of(2019, Month.APRIL, 7);
-    	int dayDiff = (int) (LocalDate.of(2019, Month.APRIL, 15).getLong(ChronoField.EPOCH_DAY) - end.getLong(ChronoField.EPOCH_DAY));
+    	LocalDate last = LocalDate.now();
+    	long dayDiff = 8;
+    	LocalDate end = last.minusDays(dayDiff);
+    	QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
+    	queryWrapper.gt("msa_day", end);
+		this.currentIncreaseService.remove(queryWrapper);
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));
@@ -84,10 +90,11 @@ public class CurrentIncreaseController extends BaseController {
     }
     
     public static void main(String[] args) {
-    	long begin = LocalDate.of(2018, Month.MARCH, 1).getLong(ChronoField.EPOCH_DAY);
-    	long end = LocalDate.of(2019, Month.FEBRUARY, 28).getLong(ChronoField.EPOCH_DAY);
-    	long dayDiff = end - begin;
-    	System.out.println(dayDiff);
+    	LocalDate last = LocalDate.now();
+    	long dayDiff = 7;
+    	LocalDate end = last.minusDays(dayDiff);
+    	System.out.println(end);
+    	System.out.println(last);
 	}
 
     /**

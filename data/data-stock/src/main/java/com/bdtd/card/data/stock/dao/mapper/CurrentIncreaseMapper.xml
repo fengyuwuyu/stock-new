@@ -97,24 +97,26 @@
 		select count(1) from msa_current_increase a
 		<where> 
 			<trim suffixOverrides="and">
-				left(a.symbol, 1) !='3' and
 				<if test="symbol != null">
-					symbol = #{symbol} and
+					a.symbol = #{symbol} and
+				</if>
+				<if test="symbol == null">
+					left(a.symbol, 1) !='3' and
 				</if>
 				<if test="stockType != null">
-					stock_type = #{stockType} and
+					a.stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${limitField} between #{min} and #{max} and
+					a.${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${limitField} &gt;= #{min} and
+					a.${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${limitField} &lt;= #{max} and
+					a.${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
-					msa_day = #{end}
+					a.msa_day = #{end}
 				</if>
 			</trim>
 		</where>	
@@ -126,24 +128,26 @@
 		left join stock b on a.symbol = b.symbol
 		<where> 
 			<trim suffixOverrides="and">
-				left(a.symbol, 1) !='3' and
 				<if test="symbol != null">
-					symbol = #{symbol} and
+					a.symbol = #{symbol} and
+				</if>
+				<if test="symbol == null">
+					left(a.symbol, 1) !='3' and
 				</if>
 				<if test="stockType != null">
-					stock_type = #{stockType} and
+					a.stock_type = #{stockType} and
 				</if>
 				<if test="min != null and max != null">
-					${limitField} between #{min} and #{max} and
+					a.${limitField} between #{min} and #{max} and
 				</if>
 				<if test="min != null and max == null">
-					${limitField} &gt;= #{min} and
+					a.${limitField} &gt;= #{min} and
 				</if>
 				<if test="min == null and max != null">
-					${limitField} &lt;= #{max} and
+					a.${limitField} &lt;= #{max} and
 				</if>
 				<if test="end != null">
-					msa_day = #{end}
+					a.msa_day = #{end}
 				</if>
 			</trim>
 		</where>	
