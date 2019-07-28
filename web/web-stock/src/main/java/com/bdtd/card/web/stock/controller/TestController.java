@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bdtd.card.common.util.JsonUtil;
-import com.bdtd.card.common.util.MapUtil;
+import com.base.card.common.util.JsonUtil;
+import com.base.card.common.util.MapUtil;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.Stock;
 import com.bdtd.card.data.stock.service.IStockService;
@@ -74,8 +74,6 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test2() throws Exception {
 		initStockServiceI.initStockEveryDay(null);
-		for (int i = 2000; i <= 2019; i++) {
-		}
 		return MapUtil.createSuccessMap();
 	}
 	

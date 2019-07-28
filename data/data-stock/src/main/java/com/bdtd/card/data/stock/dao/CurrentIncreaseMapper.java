@@ -1,5 +1,6 @@
 package com.bdtd.card.data.stock.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -27,5 +28,7 @@ public interface CurrentIncreaseMapper extends BaseMapper<CurrentIncrease> {
 	long countBySql(CurrentIncreaseQuery query);
 
 	List<CurrentIncrease> findBySql(CurrentIncreaseQuery query);
+
+	LocalDate findMaxMsaDay();
 	
 }

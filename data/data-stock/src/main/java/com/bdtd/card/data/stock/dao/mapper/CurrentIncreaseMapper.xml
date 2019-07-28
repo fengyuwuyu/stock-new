@@ -122,6 +122,10 @@
 		</where>	
 	</select>
 	
+	<select id="findMaxMsaDay" resultType="java.time.LocalDate">
+		select max(msa_day) from msa_current_increase
+	</select>
+	
 	<select id="findByQuery" parameterType="com.bdtd.card.data.stock.model.query.CurrentIncreaseQuery" resultType="com.bdtd.card.data.stock.model.CurrentIncrease">
 		select <include refid="Base_Column_List_Prefix"></include>, cast(left(b.code,1) as unsigned integer) stockCategory
 		from msa_current_increase a
@@ -165,8 +169,8 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				<!-- (a.increase &gt;= 9.9 or a.pre_increase &gt;= 9.9) and -->
-				a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and
+				 a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and
+				<!-- a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and -->
 				<if test="symbol != null">
 					a.symbol = #{symbol} and
 				</if>
@@ -182,12 +186,15 @@
 				<if test="min == null and max != null">
 					a.${limitField} &lt;= #{max} and
 				</if>
-				<!-- <if test="begin != null">
+				 <if test="begin != null">
 					a.msa_day &gt;= #{begin} and
-				</if> -->
+				</if> 
 				<if test="end != null">
+					a.msa_day &lt;= #{end} and
+				</if> 
+				<!-- <if test="end != null">
 					a.msa_day = #{end} and
-				</if>
+				</if> -->
 			</trim>
 		</where>	
 	</select>
@@ -199,8 +206,8 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				<!-- (a.increase &gt;= 9.9 or a.pre_increase &gt;= 9.9) and -->
-				a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and
+				a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and
+				<!-- a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and -->
 				<if test="symbol != null">
 					a.symbol = #{symbol} and
 				</if>
@@ -216,15 +223,18 @@
 				<if test="min == null and max != null">
 					a.${limitField} &lt;= #{max} and
 				</if>
-				<!-- <if test="begin != null">
+				 <if test="begin != null">
 					a.msa_day &gt;= #{begin} and
-				</if> -->
+				</if> 
 				<if test="end != null">
+					a.msa_day &lt;= #{end} and
+				</if> 
+				<!-- <if test="end != null">
 					a.msa_day = #{end} and
-				</if>
+				</if> -->
 			</trim>
 		</where>	
-		order by ${sortField} <if test="asc">asc</if><if test="!asc">desc</if>
+		order by (second_level_increase + third_level_increase) <if test="asc">asc</if><if test="!asc">desc</if>
 		<if test="bizLimit != null">
 			limit 0, #{bizLimit}
 		</if>

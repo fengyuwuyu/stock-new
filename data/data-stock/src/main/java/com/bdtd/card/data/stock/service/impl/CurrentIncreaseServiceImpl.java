@@ -17,9 +17,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.base.card.common.model.OriginMask;
+import com.base.card.common.util.DateUtil;
 import com.bdtd.card.base.consts.StockConsts;
-import com.bdtd.card.common.model.OriginMask;
-import com.bdtd.card.common.util.DateUtil;
 import com.bdtd.card.data.stock.base.MidStockLevel;
 import com.bdtd.card.data.stock.dao.CurrentIncreaseMapper;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
@@ -254,6 +254,11 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 	public void insertAll(List<CurrentIncrease> list) {
 		
 		this.baseMapper.insertAll(list);
+	}
+
+	@Override
+	public LocalDate findMaxMsaDay() {
+		return this.baseMapper.findMaxMsaDay();
 	}
 
 }

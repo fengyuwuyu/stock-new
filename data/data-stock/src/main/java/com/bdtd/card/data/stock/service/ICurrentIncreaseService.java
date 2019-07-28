@@ -1,5 +1,6 @@
 package com.bdtd.card.data.stock.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,5 +24,7 @@ public interface ICurrentIncreaseService extends IService<CurrentIncrease> {
 	IPage<CurrentIncrease> initAnalysis(CurrentIncreaseQuery query, List<StockMain> stockMainList) ;
 
 	IPage<CurrentIncrease> findBySql(CurrentIncreaseQuery query);
+
+	LocalDate findMaxMsaDay();
 
 }

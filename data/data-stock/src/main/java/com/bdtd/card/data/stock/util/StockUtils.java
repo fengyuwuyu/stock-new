@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bdtd.card.common.util.HttpUtils;
-import com.bdtd.card.common.util.StringUtil;
+import com.base.card.common.util.HttpUtils;
+import com.base.card.common.util.StringUtil;
 import com.bdtd.card.data.stock.base.MidStockLevel;
 import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.model.ResultCompare;
@@ -339,7 +339,7 @@ public class StockUtils {
 		float close = 0;
 		for (int i = begin + 1; i <= end; i++) {
 			close = stockMains.get(i).getClose();
-			if (close >= max) {
+			if (close > max) {
 				max = close;
 				maxIndex = i;
 			} else if (close < min) {
@@ -348,7 +348,7 @@ public class StockUtils {
 			}
 		}
 		
-		if (max >= base) {
+		if (max > base) {
 			maxIncrease = (max - base) * 100 / base;
 		} else {
 			maxIncrease = (min - base) * 100 / base;

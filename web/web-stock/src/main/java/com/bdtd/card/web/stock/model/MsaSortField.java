@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bdtd.card.common.util.MapUtil;
+import com.base.card.common.util.MapUtil;
 
 public enum MsaSortField {
 
