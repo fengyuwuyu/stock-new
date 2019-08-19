@@ -2,8 +2,8 @@ package com.bdtd.card.web.stock.util;
 
 import java.util.List;
 
-import com.base.card.common.util.FileUtil;
-import com.base.card.common.util.StringUtil;
+import com.bdtd.card.common.util.FileUtil;
+import com.bdtd.card.common.util.StringUtil;
 
 public class StockUtil {
 	

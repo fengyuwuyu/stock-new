@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.base.card.common.util.JsonUtil;
-import com.base.card.common.util.MapUtil;
+import com.bdtd.card.common.util.JsonUtil;
+import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.Stock;
 import com.bdtd.card.data.stock.service.IStockService;

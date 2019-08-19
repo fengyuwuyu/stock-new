@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.base.card.common.util.MapUtil;
-import com.base.card.common.web.base.BaseController;
+import com.bdtd.card.common.util.MapUtil;
+import com.bdtd.card.common.web.base.BaseController;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
 import com.bdtd.card.web.stock.model.FutureDay;
 import com.bdtd.card.web.stock.model.SearchType;

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.base.card.common.util.DateUtil;
+import com.bdtd.card.common.util.DateUtil;
 import com.bdtd.card.data.stock.dao.HolidayMapper;
 import com.bdtd.card.data.stock.model.ResultDetail;
 

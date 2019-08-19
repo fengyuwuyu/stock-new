@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.base.card.common.util.HttpUtils;
-import com.base.card.common.util.StringUtil;
+import com.bdtd.card.common.util.HttpUtils;
+import com.bdtd.card.common.util.StringUtil;
 import com.bdtd.card.data.stock.base.MidStockLevel;
 import com.bdtd.card.data.stock.base.StockType;
 import com.bdtd.card.data.stock.model.ResultCompare;

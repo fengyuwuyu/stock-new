@@ -6,9 +6,9 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.base.card.web.admin.AdminApplication;
+import com.bdtd.card.web.admin.AdminApplication;
 
-@SpringBootApplication(scanBasePackages = { "com.bdtd.card" })
+@SpringBootApplication(scanBasePackages = { "com.bdtd.card", "com.bdtd.card" })
 @EnableTransactionManagement
 @EnableCaching
 @ServletComponentScan

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.base.card.common.util.StringUtil;
+import com.bdtd.card.common.util.StringUtil;
 /**
  * <p>
  * 

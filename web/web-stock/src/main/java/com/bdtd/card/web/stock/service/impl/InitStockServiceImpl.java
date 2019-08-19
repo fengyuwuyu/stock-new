@@ -19,9 +19,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.base.card.common.util.MapUtil;
-import com.base.card.common.util.StringUtil;
-import com.base.card.common.util.ThreadPool;
+import com.bdtd.card.common.util.MapUtil;
+import com.bdtd.card.common.util.StringUtil;
+import com.bdtd.card.common.util.ThreadPool;
 import com.bdtd.card.data.stock.dao.HolidayMapper;
 import com.bdtd.card.data.stock.dao.StockDetailMapper;
 import com.bdtd.card.data.stock.dao.StockMainMapper;

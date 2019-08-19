@@ -1,6 +1,6 @@
 package com.bdtd.card.data.stock.model.query;
 
-import com.base.card.common.util.StringUtil;
+import com.bdtd.card.common.util.StringUtil;
 
 public class CurrentIncreaseQuery extends BaseQuery {
 
