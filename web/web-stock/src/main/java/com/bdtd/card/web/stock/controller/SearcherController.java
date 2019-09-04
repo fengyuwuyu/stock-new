@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bdtd.card.common.util.MapUtil;
 import com.bdtd.card.common.web.base.BaseController;
 import com.bdtd.card.data.stock.model.CurrentIncrease;
+import com.bdtd.card.data.stock.model.ResultDetail;
 import com.bdtd.card.web.stock.model.FutureDay;
 import com.bdtd.card.web.stock.model.SearchType;
 import com.bdtd.card.web.stock.service.SearcherServiceI;
@@ -67,9 +68,9 @@ public class SearcherController extends BaseController {
 		if (begin == null) {
 			return MapUtil.createSuccessMap("rows", Collections.emptyList(), "total", 0);
 		}
-		List<CurrentIncrease> list = (List<CurrentIncrease>)searcherServiceI.findIncreaseTopn(begin, limit, maxIncrease, searchType).get("rows");
+		List<ResultDetail> list = (List<ResultDetail>)findIncreaseTopn(begin, limit, maxIncrease, searchType, futureDay).get("rows");
 		list = list.stream().filter((item) -> {return !item.getSymbol().substring(0, 1).equals("3");}).collect(Collectors.toList());
-    	StockUtil.exportStock(list.stream().map(CurrentIncrease::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
+    	StockUtil.exportStock(list.stream().map(ResultDetail::getSymbol).collect(Collectors.toList()), tmpDir + File.separator + "自选股.txt");
 		return SUCCESS_TIP;
 	}
 	

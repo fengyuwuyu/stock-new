@@ -2,6 +2,7 @@ package com.bdtd.card.data.stock.util;
 
 import java.sql.Date;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,10 @@ import com.bdtd.card.data.stock.util.model.CurrentStockData;
 public class StockUtils {
 	
 	private static Logger log = LoggerFactory.getLogger(StockUtils.class);
+	
+	public static void sort(List<ResultDetail> list, Comparator<ResultDetail> comparator) {
+		list.sort(comparator);
+	}
 	
 	public static Map<String, CurrentStockData> getCurrentStockData(String stockCurrDataUrl, List<String> symbols, List<Integer> types) {
 		StringBuilder sb = new StringBuilder();

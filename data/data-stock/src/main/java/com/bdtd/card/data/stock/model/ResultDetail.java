@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 public class ResultDetail {
 	private Integer id;
 
@@ -44,13 +43,15 @@ public class ResultDetail {
 	private Float hasIncrease;
 
 	private String closes;
+	private Float fluctuate;
+	private Integer lowerShadow;
 
 	public ResultDetail() {
 		super();
 	}
 
-	public ResultDetail(StockMain curr, Float maxIncrease, String increases, String volumes, String closes, Float volumeRatio, 
-			Float futureIncrease, Float hasIncrease, String futureIncreases, String futureVolumes) {
+	public ResultDetail(StockMain curr, Float maxIncrease, String increases, String volumes, String closes,
+			Float volumeRatio, Float futureIncrease, Float hasIncrease, String futureIncreases, String futureVolumes) {
 		this.symbol = curr.getSymbol();
 		this.day = curr.getDay();
 		this.open = curr.getOpen();
@@ -68,6 +69,22 @@ public class ResultDetail {
 		this.closes = closes;
 		this.futureIncreases = futureIncreases;
 		this.futureVolumes = futureVolumes;
+	}
+
+	public Integer getLowerShadow() {
+		return lowerShadow;
+	}
+
+	public void setLowerShadow(Integer lowerShadow) {
+		this.lowerShadow = lowerShadow;
+	}
+
+	public Float getFluctuate() {
+		return fluctuate;
+	}
+
+	public void setFluctuate(Float fluctuate) {
+		this.fluctuate = fluctuate;
 	}
 
 	public Integer getId() {
@@ -232,7 +249,7 @@ public class ResultDetail {
 				+ ", increase=" + increase + ", maxIncrease=" + maxIncrease + ", futureIncrease=" + futureIncrease
 				+ ", increases=" + increases + ", volumes=" + volumes + ", futureIncreases=" + futureIncreases
 				+ ", futureVolumes=" + futureVolumes + ", volumeRate=" + volumeRate + ", hasIncrease=" + hasIncrease
-				+ ", closes=" + closes + "]";
+				+ ", closes=" + closes + ", fluctuate=" + fluctuate + ", lowerShadow=" + lowerShadow + "]";
 	}
 
 }

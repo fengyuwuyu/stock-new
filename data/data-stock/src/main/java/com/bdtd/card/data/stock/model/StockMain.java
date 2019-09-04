@@ -9,7 +9,7 @@ public class StockMain implements Comparable<StockMain> {
 
 	private String symbol;
 
-	 @JsonFormat(pattern="yyyyMMdd", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyyMMdd", timezone = "GMT+8")
 	private Date day;
 
 	private Float open;
@@ -25,6 +25,8 @@ public class StockMain implements Comparable<StockMain> {
 	private Float increase;
 
 	private Float maxIncrease;
+	private Float fluctuate;
+	private Integer lowerShadow;
 
 	public StockMain() {
 	}
@@ -47,6 +49,22 @@ public class StockMain implements Comparable<StockMain> {
 		this.min = min;
 		this.volume = volume;
 		this.increase = increase;
+	}
+
+	public Integer getLowerShadow() {
+		return lowerShadow;
+	}
+
+	public void setLowerShadow(Integer lowerShadow) {
+		this.lowerShadow = lowerShadow;
+	}
+
+	public Float getFluctuate() {
+		return fluctuate;
+	}
+
+	public void setFluctuate(Float fluctuate) {
+		this.fluctuate = fluctuate;
 	}
 
 	public Integer getId() {
@@ -133,7 +151,7 @@ public class StockMain implements Comparable<StockMain> {
 	public String toString() {
 		return "StockMain [id=" + id + ", symbol=" + symbol + ", day=" + day + ", open=" + open + ", close=" + close
 				+ ", max=" + max + ", min=" + min + ", volume=" + volume + ", increase=" + increase + ", maxIncrease="
-				+ maxIncrease + "]";
+				+ maxIncrease + ", fluctuate=" + fluctuate + ", lowerShadow=" + lowerShadow + "]";
 	}
 
 	public int compareTo(StockMain o) {

@@ -2,6 +2,7 @@ package com.bdtd.card.web.stock.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,6 +68,15 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
 		List<ResultDetail> result = new ArrayList<>(300);
 //		List<ResultDetail> list = new ArrayList<>();
+
+		
+		Comparator<ResultDetail> comparator = new Comparator<ResultDetail>() {
+			
+			@Override
+			public int compare(ResultDetail o1, ResultDetail o2) {
+				return (int)(o1.getFluctuate()- o2.getFluctuate());
+			}
+		};
 		for (List<StockMain> stockMains : stockMainMap.values()) {
 			float max = 0;
 			int maxIndex = stockMains.size() - 1;
@@ -103,6 +113,13 @@ public class SearcherServiceImpl implements SearcherServiceI {
 					break;
 				case SERIAL_LOW_VOLUME:
 					serialLowVolumeStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					comparator = new Comparator<ResultDetail>() {
+						
+						@Override
+						public int compare(ResultDetail o1, ResultDetail o2) {
+							return o2.getLowerShadow() - o1.getLowerShadow();
+						}
+					};
 					break;
 				case SERIAL_INCREASE:
 					serialIncreaseStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
@@ -127,6 +144,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 					break;
 				case PRICE_LOW_SHOCK:
 					priceLowShockStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
 				case MAX_RECENT_INCREASE:
 					priceLowShockStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 					break;
@@ -140,7 +158,9 @@ public class SearcherServiceImpl implements SearcherServiceI {
 		if (type == SearchType.MAKE_MONEY) {
 //			StockUtils.statistics(result);
 		}
-//		result = StockUtils.sortAndLimit(result, limit, maxIncrease);
+		StockUtils.sort(result, comparator);
+		int rightSize = result.size() > 100 ? 100 : result.size();
+		result = result.subList(0, rightSize);
 		return MapUtil.createSuccessMap("rows", result, "total", result.size());
 	}
 

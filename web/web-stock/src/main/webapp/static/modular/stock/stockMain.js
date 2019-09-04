@@ -1,6 +1,6 @@
 $package("YiYa.stockMain");
 
-YiYa.stockMain.createStockFile = function() {
+function createStockFile() {
 	var queryData = $('#searchForm').serializeObject();
 	Feng.ajaxJson(Feng.ctxPath + '/searcher/createStockFile', queryData, function(data) {
 		if (data.code == 200) {
