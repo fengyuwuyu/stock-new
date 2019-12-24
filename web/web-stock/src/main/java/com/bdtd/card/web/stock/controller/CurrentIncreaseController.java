@@ -70,13 +70,23 @@ public class CurrentIncreaseController extends BaseController {
     	query.setSortField("increase");
     	query.setOffset(0);
     	query.setLimit(1);
-    	query.setBegin(Date.valueOf(LocalDate.of(2018, Month.OCTOBER, 1)));
+    	LocalDate tmp = LocalDate.of(2018, Month.OCTOBER, 1);
+    	query.setBegin(Date.valueOf(tmp));
     	LocalDate last = LocalDate.now();
+    	tmp = LocalDate.of(2019, Month.JANUARY, 1);
+    	long dayDiff = last.getDayOfYear() - tmp.getDayOfYear();
+    	
     	LocalDate end = currentIncreaseService.findMaxMsaDay();
-    	long dayDiff = last.getDayOfYear() - end.getDayOfYear();
-    	QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
-    	queryWrapper.gt("msa_day", end);
-		this.currentIncreaseService.remove(queryWrapper);
+    	if (end != null) {
+    		end = end.plus(-14, ChronoUnit.DAYS);
+    		dayDiff = last.getDayOfYear() - end.getDayOfYear();
+    		QueryWrapper<CurrentIncrease> queryWrapper = new QueryWrapper<>();
+    		queryWrapper.gt("msa_day", end);
+    		this.currentIncreaseService.remove(queryWrapper);
+    	} else {
+    		end = tmp;
+    	}
+    	
 		List<StockMain> stockMainList = this.stockMainMapper.findByQuery(query);
     	for (int i = 1; i <= dayDiff; i++) {
     		query.setEnd(Date.valueOf(end.plus(i, ChronoUnit.DAYS)));

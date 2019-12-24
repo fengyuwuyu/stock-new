@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bdtd.card.data.stock.model.LastStockDay;
 import com.bdtd.card.data.stock.model.StockDetail;
 import com.bdtd.card.data.stock.model.StockVol;
 
@@ -32,4 +33,6 @@ public interface StockDetailMapper {
 	List<String> selectAllCode();
 
 	String selectLastDay(String symbol);
+	
+	List<LastStockDay> selectLastDays();
 }

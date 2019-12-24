@@ -83,16 +83,18 @@
 		open, close, max, min,
 		volume, increase)
 		values
-		<foreach collection="list" item="item" separator=",">
+		<foreach collection="allSymbol" item="data" separator=",">
+			<foreach collection="data.list" item="item" separator=",">
 			<foreach collection="item" open="(" close=")" separator=","
 				item="it" index="index">
 				<if test="index==0">
-					#{symbol},#{it}
+					#{data.symbol},#{it}
 				</if>
 				<if test="index!=0">
 					#{it}
 				</if>
 			</foreach>
+		</foreach>
 		</foreach>
 	</insert>
 	<insert id="insertSelective" parameterType="com.bdtd.card.data.stock.model.StockMain">

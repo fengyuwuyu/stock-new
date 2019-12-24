@@ -187,7 +187,7 @@ CurrentIncrease.createStockFile = function() {
 
 CurrentIncrease.exportStockFile = function() {
 	var queryData = $('#searchForm').serializeObject();
-	Feng.ajaxJson(Feng.ctxPath + '/currentIncrease/exportStockFile', queryData);
+	Feng.ajaxJson(Feng.ctxPath + '/currentIncrease/createStockFile', queryData);
 }
 
 $(function () {

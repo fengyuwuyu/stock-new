@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
@@ -26,6 +27,7 @@ import com.bdtd.card.data.stock.dao.HolidayMapper;
 import com.bdtd.card.data.stock.dao.StockDetailMapper;
 import com.bdtd.card.data.stock.dao.StockMainMapper;
 import com.bdtd.card.data.stock.model.FBVolume;
+import com.bdtd.card.data.stock.model.LastStockDay;
 import com.bdtd.card.data.stock.model.StockBuySell;
 import com.bdtd.card.data.stock.model.StockConstant;
 import com.bdtd.card.data.stock.model.StockFilterBean;
@@ -153,6 +155,14 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	public Map<String, Object> initStockEveryDay(String year) throws Exception {
 		List<String> codes = this.stockDetailMapper.selectAllCode();
 		year = StringUtil.isNullEmpty(year) ? CommonsUtil.formatDateToString5(new Date()) : year;
+		List<Map<String, Object>> result = new ArrayList<>(codes.size());
+		
+		List<LastStockDay> symbols = this.stockDetailMapper.selectLastDays();
+		Map<String, String> map = new HashedMap<>(symbols.size());
+		for (LastStockDay lastStockDay : symbols) {
+			map.put(lastStockDay.getSymbol(), lastStockDay.getLastDay());
+		}
+		
 		for (String code : codes) {
 			HttpEntity entity = HttpClientUtil
 					.get("http://img1.money.126.net/data/hs/kline/day/history/" + year + "/" + code + ".json");
@@ -170,7 +180,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 					List<List<Object>> list = (List<List<Object>>) detail.get("data");
 					if (list != null && list.size() > 0) {
 						String symbol = code.substring(1);
-						String lastDay = this.stockDetailMapper.selectLastDay(symbol);
+						String lastDay = map.get(symbol);
 						if (lastDay != null) {
 							lastDay = lastDay.replaceAll("-", "");
 							List<List<Object>> inserts = new ArrayList<List<Object>>();
@@ -181,20 +191,24 @@ public class InitStockServiceImpl implements InitStockServiceI {
 								inserts.add(list.get(i));
 							}
 							if (inserts.size() > 0) {
-								this.stockMainMapper.insert(MapUtil.createMap("list", inserts, "symbol", symbol));
+//								this.stockMainMapper.insert(MapUtil.createMap("list", inserts, "symbol", symbol));
+								result.add(MapUtil.createMap("list", inserts, "symbol", symbol));
 								 log.info("更新数据成功！插入的数据时 ： " + inserts.size());
 							}
 						} else {
-							 log.info("发现新的股票数据，开始插入， " + list.size());
-							this.stockMainMapper.insert(MapUtil.createMap("list", list, "symbol", symbol));
+							log.info("发现新的股票数据，开始插入， " + list.size());
+							result.add(MapUtil.createMap("list", list, "symbol", symbol));
+//							this.stockMainMapper.insert(MapUtil.createMap("list", list, "symbol", symbol));
 						}
 					}
 				}
 			}
 		}
+		
+		this.stockMainMapper.insert(MapUtil.createMap("allSymbol", result));
 		return MapUtil.createSuccessMap();
 	}
-
+	
 	public Map<String, Object> initBuyAndSell(String day, String tableName) {
 		List<String> codes = this.stockMainMapper.selectAllCodes();
 		int length = codes.size();

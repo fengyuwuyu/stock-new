@@ -169,7 +169,7 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				 a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and
+				 <!-- a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and -->
 				<!-- a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and -->
 				<if test="symbol != null">
 					a.symbol = #{symbol} and
@@ -206,7 +206,7 @@
 		<where>
 			<trim suffixOverrides="and">
 				<!-- a.pre_increase &gt; 6 and a.pre_volume*0.8 &gt; a.volume and a.first_level_increase &gt; 30 and a.increase &lt; 3 and a.increase &gt; -1 and -->
-				a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and
+				<!-- a.increase &gt;= 9.5 and a.pre_increase &gt;= 9.5 and -->
 				<!-- a.thress_increase &gt;= 8 and a.increase &gt;= -2 and a.increase &lt;= 2 and -->
 				<if test="symbol != null">
 					a.symbol = #{symbol} and

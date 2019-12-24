@@ -253,4 +253,8 @@
   <select id="selectLastDay" parameterType="string" resultType="string">
   	select max(day) from stock_main where symbol = #{symbol}
   </select>
+  
+  <select id="selectLastDays" resultType="com.bdtd.card.data.stock.model.LastStockDay">
+  	select symbol, max(day) lastDay from stock_main group by symbol
+  </select>
 </mapper>

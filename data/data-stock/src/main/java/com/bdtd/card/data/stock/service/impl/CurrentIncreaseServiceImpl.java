@@ -172,61 +172,62 @@ public class CurrentIncreaseServiceImpl extends ServiceImpl<CurrentIncreaseMappe
 			} catch (Exception e) {
 			}
 
-			Float twoIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 2, index).getMaxIncrease();
-			Float thressIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
-			Float fourIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
-			Float fiveIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
-			Float tenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 10, index).getMaxIncrease();
-			Float fifteenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 15, index).getMaxIncrease();
-			Float twentyIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 20, index).getMaxIncrease();
-			Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
-			StringBuilder increases = new StringBuilder();
-			StringBuilder volumes = new StringBuilder();
-			Float futureOneDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 1).getMaxIncrease();
-			Float futureTwoDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 2).getMaxIncrease();
-			Float futureThreeDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 3).getMaxIncrease();
-			Float futureFiveDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 5).getMaxIncrease();
-			Float futureTenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 10).getMaxIncrease();
-			Float futureFifteenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 15).getMaxIncrease();
-			Float futureTwentyDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 20).getMaxIncrease();
-			StringBuilder futureIncreases = new StringBuilder();
-			StringBuilder futureVolumes = new StringBuilder();
-			float dayVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 1);
-			float twoVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 2);
-			float threeVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 3);
-			float fourVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 4);
-			float fiveVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 5);
-
-			int tmp = index - (historyDay - 1);
-			tmp = tmp >= 0 ? tmp : 0;
-			for (int i = tmp; i <= index; i++) {
-				StockMain main = stockMains.get(i);
-				increases.append(main.getIncrease() + ", ");
-				volumes.append(CommonsUtil.formatDecimal(main.getVolume().doubleValue() / curr.getVolume().doubleValue())+ ", ");
-			}
-
-			if (index + 1 < stockMains.size()) {
-				int a = index + futureDay >= stockMains.size() ? stockMains.size() - 1 : index + futureDay;
-				for (int i = index + 1; i <= a; i++) {
-					StockMain main = stockMains.get(i);
-					futureIncreases.append(main.getIncrease() + ", ");
-					futureVolumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
-				}
-			}
 			
-			MidStockLevel midStockLevel = StockUtils.getStockLevel(stockMains, index - 10, index);
-			Integer firstLevelDay = midStockLevel.getFirstLevelDay();
-			Float firstLevelIncrease = midStockLevel.getFirstLevelIncrease();
-			Integer secondLevelDay = midStockLevel.getSecondLevelDay();
-			Float secondLevelIncrease = midStockLevel.getSecondLevelIncrease();
-			Integer thirdLevelDay = midStockLevel.getThirdLevelDay();
-			Float thirdLevelIncrease = midStockLevel.getThirdLevelIncrease();
-			Integer fourLevelDay = midStockLevel.getFourLevelDay();
-			Float fourLevelIncrease = midStockLevel.getFourLevelIncrease();
-			Integer fiveLevelDay = midStockLevel.getFiveLevelDay();
-			Float fiveLevelIncrease = midStockLevel.getFiveLevelIncrease();
-			Integer stockType = midStockLevel.getStockType();
 			try {
+				Float twoIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 2, index).getMaxIncrease();
+				Float thressIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 3, index).getMaxIncrease();
+				Float fourIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 4, index).getMaxIncrease();
+				Float fiveIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 5, index).getMaxIncrease();
+				Float tenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 10, index).getMaxIncrease();
+				Float fifteenIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 15, index).getMaxIncrease();
+				Float twentyIncrease = StockUtils.findRecentMaxIncrease(stockMains, index - 20, index).getMaxIncrease();
+				Float maxIncrease = StockUtils.findMaxIncrease(stockMains, 0, index).getMaxIncrease();
+				StringBuilder increases = new StringBuilder();
+				StringBuilder volumes = new StringBuilder();
+				Float futureOneDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 1).getMaxIncrease();
+				Float futureTwoDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 2).getMaxIncrease();
+				Float futureThreeDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 3).getMaxIncrease();
+				Float futureFiveDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 5).getMaxIncrease();
+				Float futureTenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 10).getMaxIncrease();
+				Float futureFifteenDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 15).getMaxIncrease();
+				Float futureTwentyDayIncrease = StockUtils.findFutureMaxIncrease(stockMains, index, index + 20).getMaxIncrease();
+				StringBuilder futureIncreases = new StringBuilder();
+				StringBuilder futureVolumes = new StringBuilder();
+				float dayVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 1);
+				float twoVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 2);
+				float threeVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 3);
+				float fourVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 4);
+				float fiveVolumeAvg = StockUtils.getVolumeAvgCompare(stockMains, index, 5);
+
+				int tmp = index - (historyDay - 1);
+				tmp = tmp >= 0 ? tmp : 0;
+				for (int i = tmp; i <= index; i++) {
+					StockMain main = stockMains.get(i);
+					increases.append(main.getIncrease() + ", ");
+					volumes.append(CommonsUtil.formatDecimal(main.getVolume().doubleValue() / curr.getVolume().doubleValue())+ ", ");
+				}
+
+				if (index + 1 < stockMains.size()) {
+					int a = index + futureDay >= stockMains.size() ? stockMains.size() - 1 : index + futureDay;
+					for (int i = index + 1; i <= a; i++) {
+						StockMain main = stockMains.get(i);
+						futureIncreases.append(main.getIncrease() + ", ");
+						futureVolumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
+					}
+				}
+				
+				MidStockLevel midStockLevel = StockUtils.getStockLevel(stockMains, index - 10, index);
+				Integer firstLevelDay = midStockLevel.getFirstLevelDay();
+				Float firstLevelIncrease = midStockLevel.getFirstLevelIncrease();
+				Integer secondLevelDay = midStockLevel.getSecondLevelDay();
+				Float secondLevelIncrease = midStockLevel.getSecondLevelIncrease();
+				Integer thirdLevelDay = midStockLevel.getThirdLevelDay();
+				Float thirdLevelIncrease = midStockLevel.getThirdLevelIncrease();
+				Integer fourLevelDay = midStockLevel.getFourLevelDay();
+				Float fourLevelIncrease = midStockLevel.getFourLevelIncrease();
+				Integer fiveLevelDay = midStockLevel.getFiveLevelDay();
+				Float fiveLevelIncrease = midStockLevel.getFiveLevelIncrease();
+				Integer stockType = midStockLevel.getStockType();
 				CurrentIncrease currentIncrease = new CurrentIncrease(symbol, name, code, max, min, increase, volume, twoIncrease, thressIncrease, fourIncrease, fiveIncrease, tenIncrease, fifteenIncrease, twentyIncrease, maxIncrease, 
 						increases.toString(), volumes.toString(), futureFiveDayIncrease, futureTenDayIncrease, futureFifteenDayIncrease, futureTwentyDayIncrease, futureIncreases.toString(), futureVolumes.toString(), dayVolumeAvg, twoVolumeAvg, threeVolumeAvg, fourVolumeAvg, 
 						fiveVolumeAvg, firstLevelDay, firstLevelIncrease, secondLevelDay, secondLevelIncrease, thirdLevelDay, thirdLevelIncrease, fourLevelDay, fourLevelIncrease, fiveLevelDay, fiveLevelIncrease, stockType, msaDay, close, 
